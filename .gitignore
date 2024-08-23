@@ -1,0 +1,70 @@
+# .NET
+bin/
+obj/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.dmg
+*.nupkg
+*.snupkg
+*.tgz
+*.gz
+*.7z
+*.zip
+*.tar
+*.rar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# ASP.NET
+*.db
+*.sql
+*.sqlite
+*.sqlite3
+*.suo
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Visual Studio
+.vscode/
+.vs/
+*.csproj.user
+*.csproj.*
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+*.suo
+*.cache
+*.config
+
+# NuGet
+.nuget/
+*.nupkg
+*.snupkg
+*.nupkg.metadata
+*.nuget/
+
+# DotCover
+*.dotCover
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# User-specific files
+*.swp
+*.swo
+*.swn
