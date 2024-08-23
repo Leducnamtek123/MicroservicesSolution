@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InternalGateway")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bcc13a1d38e1d7953242914259ed0cb620e77ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c42183b798badfdb89705a9427fa1b57d8d85cf3")]
 [assembly: System.Reflection.AssemblyProductAttribute("InternalGateway")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InternalGateway")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

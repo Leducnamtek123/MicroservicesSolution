@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
       "projectName": "Account.Postgres",
-      "projectPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.Postgres\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

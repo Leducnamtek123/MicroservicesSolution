@@ -521,11 +521,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\InternalGateway\\InternalGateway.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
       "projectName": "InternalGateway",
-      "projectPath": "C:\\MicroserviceSolution\\InternalGateway\\InternalGateway.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\InternalGateway\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

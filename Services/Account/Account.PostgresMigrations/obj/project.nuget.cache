@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r3yUqRwJsbU=",
+  "dgSpecHash": "fRP85O1IVIY=",
   "success": true,
-  "projectFilePath": "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

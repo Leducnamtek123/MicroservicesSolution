@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj": {}
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
         "projectName": "CatalogService.Infrastructure",
-        "projectPath": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

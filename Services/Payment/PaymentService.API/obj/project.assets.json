@@ -465,11 +465,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.API\\PaymentService.API.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.API\\PaymentService.API.csproj",
       "projectName": "PaymentService.API",
-      "projectPath": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.API\\PaymentService.API.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.API\\PaymentService.API.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.API\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

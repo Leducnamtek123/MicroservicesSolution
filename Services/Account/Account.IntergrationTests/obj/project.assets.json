@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Account\\Account.IntergrationTests\\Account.IntergrationTests.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.IntergrationTests\\Account.IntergrationTests.csproj",
       "projectName": "Account.IntergrationTests",
-      "projectPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.IntergrationTests\\Account.IntergrationTests.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.IntergrationTests\\Account.IntergrationTests.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.IntergrationTests\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.IntergrationTests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

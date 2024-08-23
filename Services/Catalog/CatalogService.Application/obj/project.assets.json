@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Application\\CatalogService.Application.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Application\\CatalogService.Application.csproj",
       "projectName": "CatalogService.Application",
-      "projectPath": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Application\\CatalogService.Application.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Application\\CatalogService.Application.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\Services\\Catalog\\CatalogService.Application\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

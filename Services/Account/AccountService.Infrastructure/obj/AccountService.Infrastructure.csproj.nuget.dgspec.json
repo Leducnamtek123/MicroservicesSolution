@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\MicroserviceSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj": {}
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\MicroserviceSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj",
         "projectName": "AccountService.Infrastructure",
-        "projectPath": "C:\\MicroserviceSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Infrastructure\\AccountService.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\MicroserviceSolution\\Services\\Account\\AccountService.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

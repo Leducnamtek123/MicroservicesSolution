@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NZkGya5C8Yo=",
+  "dgSpecHash": "y2q81ehKihQ=",
   "success": true,
-  "projectFilePath": "C:\\MicroserviceSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

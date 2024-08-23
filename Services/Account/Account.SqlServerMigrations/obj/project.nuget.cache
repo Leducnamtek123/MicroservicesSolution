@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "v0xTrPD1te0=",
+  "dgSpecHash": "fVdw3akyCwE=",
   "success": true,
-  "projectFilePath": "C:\\MicroserviceSolution\\Services\\Account\\Account.SqlServerMigrations\\Account.SqlServerMigrations.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.SqlServerMigrations\\Account.SqlServerMigrations.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

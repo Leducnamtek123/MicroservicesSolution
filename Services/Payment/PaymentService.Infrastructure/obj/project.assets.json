@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.Infrastructure\\PaymentService.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Infrastructure\\PaymentService.Infrastructure.csproj",
       "projectName": "PaymentService.Infrastructure",
-      "projectPath": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.Infrastructure\\PaymentService.Infrastructure.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Infrastructure\\PaymentService.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\MicroserviceSolution\\Services\\Payment\\PaymentService.Infrastructure\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

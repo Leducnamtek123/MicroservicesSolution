@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CXjpMbkeHXI=",
+  "dgSpecHash": "v2Y0aeIHNxw=",
   "success": true,
-  "projectFilePath": "C:\\MicroserviceSolution\\Services\\Account\\Account.SqlServer\\Account.SqlServer.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.SqlServer\\Account.SqlServer.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

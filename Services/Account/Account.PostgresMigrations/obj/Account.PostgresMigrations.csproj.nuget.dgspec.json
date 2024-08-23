@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {}
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {}
   },
   "projects": {
-    "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
         "projectName": "Account.PostgresMigrations",
-        "projectPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\MicroserviceSolution\\Services\\Account\\Account.PostgresMigrations\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
