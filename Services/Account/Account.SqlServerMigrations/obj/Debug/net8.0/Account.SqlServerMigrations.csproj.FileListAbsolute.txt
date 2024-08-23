@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.deps.json
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.pdb
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\refint\Account.SqlServerMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.pdb
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\ref\Account.SqlServerMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.sourcelink.json

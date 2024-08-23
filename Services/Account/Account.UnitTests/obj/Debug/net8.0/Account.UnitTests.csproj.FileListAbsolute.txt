@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.deps.json
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.dll
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.pdb
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.dll
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\refint\Account.UnitTests.dll
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.pdb
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\ref\Account.UnitTests.dll
+C:\MicroserviceSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.sourcelink.json

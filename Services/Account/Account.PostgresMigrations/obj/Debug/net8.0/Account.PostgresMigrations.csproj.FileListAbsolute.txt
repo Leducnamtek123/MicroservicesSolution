@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\Account.PostgresMigrations.deps.json
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\Account.PostgresMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\Account.PostgresMigrations.pdb
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\refint\Account.PostgresMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.pdb
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\ref\Account.PostgresMigrations.dll
+C:\MicroserviceSolution\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.sourcelink.json

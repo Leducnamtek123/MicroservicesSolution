@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\AccountService.Infrastructure.deps.json
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\AccountService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\AccountService.Infrastructure.pdb
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\refint\AccountService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.pdb
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\ref\AccountService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.sourcelink.json

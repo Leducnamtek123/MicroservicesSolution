@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Shared\Common\bin\Debug\net8.0\Common.deps.json
+C:\MicroserviceSolution\Shared\Common\bin\Debug\net8.0\Common.dll
+C:\MicroserviceSolution\Shared\Common\bin\Debug\net8.0\Common.pdb
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.AssemblyInfo.cs
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.dll
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\refint\Common.dll
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.pdb
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\ref\Common.dll
+C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.sourcelink.json

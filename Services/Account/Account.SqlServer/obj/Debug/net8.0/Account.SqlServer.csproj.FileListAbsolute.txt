@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.deps.json
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.pdb
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\refint\Account.SqlServer.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.pdb
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\ref\Account.SqlServer.dll
+C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.sourcelink.json

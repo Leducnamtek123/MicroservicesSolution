@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.deps.json
+C:\MicroserviceSolution\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.dll
+C:\MicroserviceSolution\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.pdb
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.dll
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\refint\Account.Postgres.dll
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.pdb
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\ref\Account.Postgres.dll
+C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.sourcelink.json

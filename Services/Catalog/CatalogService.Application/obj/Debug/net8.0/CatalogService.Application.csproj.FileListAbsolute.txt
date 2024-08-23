@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.deps.json
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.pdb
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\refint\CatalogService.Application.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.pdb
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\ref\CatalogService.Application.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.sourcelink.json

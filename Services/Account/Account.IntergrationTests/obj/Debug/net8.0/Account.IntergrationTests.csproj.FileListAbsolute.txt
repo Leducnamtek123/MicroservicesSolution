@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.deps.json
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.dll
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.pdb
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.dll
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\refint\Account.IntergrationTests.dll
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.pdb
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\ref\Account.IntergrationTests.dll
+C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.sourcelink.json

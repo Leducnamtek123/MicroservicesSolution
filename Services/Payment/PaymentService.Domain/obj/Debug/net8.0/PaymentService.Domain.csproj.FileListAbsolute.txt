@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.deps.json
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.dll
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.pdb
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.dll
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\refint\PaymentService.Domain.dll
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.pdb
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\ref\PaymentService.Domain.dll
+C:\MicroserviceSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.sourcelink.json

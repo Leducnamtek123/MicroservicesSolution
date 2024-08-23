@@ -1,0 +1,12 @@
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.deps.json
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.pdb
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.AssemblyInfoInputs.cache
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.AssemblyInfo.cs
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\refint\CatalogService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.pdb
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\ref\CatalogService.Infrastructure.dll
+C:\MicroserviceSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.sourcelink.json
