@@ -68,3 +68,16 @@ Thumbs.db
 *.swp
 *.swo
 *.swn
+
+# Bỏ qua các thư mục ổ đĩa không cần thiết
+/C:/
+/D:/
+
+# Bỏ qua các tệp cấu hình nhạy cảm
+*.config
+*.env
+
+# Bỏ qua thư mục build
+/build/
+/bin/
+/obj/
