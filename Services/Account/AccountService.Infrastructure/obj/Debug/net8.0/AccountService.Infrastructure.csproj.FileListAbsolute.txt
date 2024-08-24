@@ -28,3 +28,5 @@ D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\ob
 D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountS.8113BFAF.Up2Date
 D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\AccountService.Infrastructure.runtimeconfig.json
 D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\obj\Debug\net8.0\AccountService.Infrastructure.genruntimeconfig.cache
+D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\Common.dll
+D:\Project-Study\Microservices\Services\Account\AccountService.Infrastructure\bin\Debug\net8.0\Common.pdb

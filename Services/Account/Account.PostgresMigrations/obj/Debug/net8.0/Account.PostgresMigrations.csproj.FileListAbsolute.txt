@@ -28,3 +28,5 @@ D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\bin\D
 D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\AccountService.Domain.pdb
 D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account.PostgresMigrations.csproj.AssemblyReference.cache
 D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\obj\Debug\net8.0\Account..B1770060.Up2Date
+D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\Common.dll
+D:\Project-Study\Microservices\Services\Account\Account.PostgresMigrations\bin\Debug\net8.0\Common.pdb

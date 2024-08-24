@@ -22,3 +22,4 @@ D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.dll
 D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\refint\Common.dll
 D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.pdb
 D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\ref\Common.dll
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.csproj.AssemblyReference.cache

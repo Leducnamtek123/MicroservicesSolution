@@ -1,5 +1,10 @@
-﻿using AccountService.Domain.Models;
+﻿using Account.Presentation.Endpoints;
+using AccountService.Application.AutoMapper;
+using AccountService.Application.Services;
+using AccountService.Domain.Models;
+using AccountService.Domain.Repositories;
 using AccountService.Infrastructure.Context;
+using AccountService.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -38,11 +43,17 @@ builder.Services.AddSwaggerGen(c =>
 // Add Identity services
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
+// Register application services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Add DbContext configuration
 builder.Services.AddDbContext<AccountDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Account"), b => b.MigrationsAssembly("Account.PostgresMigrations")));
+
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<AccountDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,14 +62,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapGet("/", () => "Hello, World!");
-app.MapGet("/requires-auth", (ClaimsPrincipal user) => $"Hello, {user.Identity?.Name}!").RequireAuthorization();
+//Minimals APIs
 
-app.MapGroup("/identity").MapIdentityApi<User>();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapIdentityApi<User>();
+
+//Map group Endpoints
+UserEndpoints.Map(app);
+//Identity call map group
+app.MapGroup("/Account").MapIdentityApi<User>();
+
 // Run the application
 app.Run();

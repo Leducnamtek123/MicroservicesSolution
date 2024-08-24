@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Common\Common.csproj" />
     <ProjectReference Include="..\AccountService.Domain\AccountService.Domain.csproj" />
   </ItemGroup>
 

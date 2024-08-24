@@ -22,3 +22,7 @@ D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\D
 D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\Debug\net8.0\refint\AccountService.Application.dll
 D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\Debug\net8.0\AccountService.Application.pdb
 D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\Debug\net8.0\ref\AccountService.Application.dll
+D:\Project-Study\Microservices\Services\Account\AccountService.Application\bin\Debug\net8.0\AccountService.Domain.dll
+D:\Project-Study\Microservices\Services\Account\AccountService.Application\bin\Debug\net8.0\AccountService.Domain.pdb
+D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\Debug\net8.0\AccountService.Application.csproj.AssemblyReference.cache
+D:\Project-Study\Microservices\Services\Account\AccountService.Application\obj\Debug\net8.0\AccountS.C8291789.Up2Date

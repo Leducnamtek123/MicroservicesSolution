@@ -1,11 +1,23 @@
 {
   "Version": 1,
-  "Hash": "A9b+wuMaKS17AepKu+N5igYwQ9pGfIs5Aj/+Wpg1U4Q=",
+  "Hash": "gIfx3DJq/Fh1jqNDaoUxMMgf+d6lB2wwU/PqywRHlA0=",
   "Source": "AccountService.API",
   "BasePath": "_content/AccountService.API",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.API\\CatalogService.API.csproj",
+      "Version": 2,
+      "Source": "CatalogService.API",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
   "DiscoveryPatterns": [],
   "Assets": []
 }

@@ -1,347 +1,98 @@
 [
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_2",
-    "RelativePath": "",
+    "ContainingType": "Account.Presentation.Endpoints.IdentityEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapIdentityEndpoints\u003Eb__0_1",
+    "RelativePath": "api/identity/login",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "signInManager",
+        "Type": "Microsoft.AspNetCore.Identity.SignInManager\u00601[[Microsoft.AspNetCore.Identity.IdentityUser, Microsoft.Extensions.Identity.Stores, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Account.Presentation.Endpoints.IdentityEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapIdentityEndpoints\u003Eb__0_2",
+    "RelativePath": "api/identity/me",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain"
-        ],
+        "Type": "System.Void",
+        "MediaTypes": [],
         "StatusCode": 200
       }
     ]
   },
   {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_3",
-    "RelativePath": "confirmEmail",
+    "ContainingType": "Account.Presentation.Endpoints.IdentityEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapIdentityEndpoints\u003Eb__0_0",
+    "RelativePath": "api/identity/register",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userManager",
+        "Type": "Microsoft.AspNetCore.Identity.UserManager\u00601[[Microsoft.AspNetCore.Identity.IdentityUser, Microsoft.Extensions.Identity.Stores, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Account.Presentation.Endpoints.UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMap\u003Eb__0_1",
+    "RelativePath": "api/users",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userRequestDto",
+        "Type": "AccountService.Application.Dtos.UserRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Account.Presentation.Endpoints.UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMap\u003Eb__0_0",
+    "RelativePath": "api/users/{id:guid}",
     "HttpMethod": "GET",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "code",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "changedEmail",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "MapIdentityApi-/confirmEmail"
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__6",
-    "RelativePath": "forgotPassword",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "resetRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ForgotPasswordRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_3",
-    "RelativePath": "identity/confirmEmail",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "code",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "changedEmail",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "MapIdentityApi-/identity/confirmEmail"
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__6",
-    "RelativePath": "identity/forgotPassword",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "resetRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ForgotPasswordRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_1",
-    "RelativePath": "identity/login",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "Microsoft.AspNetCore.Identity.Data.LoginRequest",
-        "IsRequired": false
-      },
-      {
-        "Name": "useCookies",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "useSessionCookies",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Authentication.BearerToken.AccessTokenResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_8",
-    "RelativePath": "identity/manage/2fa",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tfaRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.TwoFactorRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.TwoFactorResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_9",
-    "RelativePath": "identity/manage/info",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__10",
-    "RelativePath": "identity/manage/info",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "infoRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__2",
-    "RelativePath": "identity/refresh",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "refreshRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.RefreshRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Authentication.BearerToken.AccessTokenResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__0",
-    "RelativePath": "identity/register",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "registration",
-        "Type": "Microsoft.AspNetCore.Identity.Data.RegisterRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__5",
-    "RelativePath": "identity/resendConfirmationEmail",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "resendRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ResendConfirmationEmailRequest",
-        "IsRequired": false
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -353,253 +104,22 @@
     ]
   },
   {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_7",
-    "RelativePath": "identity/resetPassword",
-    "HttpMethod": "POST",
+    "ContainingType": "Account.Presentation.Endpoints.UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMap\u003Eb__0_2",
+    "RelativePath": "api/users/{id:guid}",
+    "HttpMethod": "PUT",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "resetRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ResetPasswordRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
       },
       {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_1",
-    "RelativePath": "login",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "Microsoft.AspNetCore.Identity.Data.LoginRequest",
-        "IsRequired": false
-      },
-      {
-        "Name": "useCookies",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "useSessionCookies",
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Authentication.BearerToken.AccessTokenResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_8",
-    "RelativePath": "manage/2fa",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tfaRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.TwoFactorRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.TwoFactorResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_9",
-    "RelativePath": "manage/info",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__10",
-    "RelativePath": "manage/info",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "infoRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Identity.Data.InfoResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      },
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 404
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__2",
-    "RelativePath": "refresh",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "refreshRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.RefreshRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Microsoft.AspNetCore.Authentication.BearerToken.AccessTokenResponse",
-        "MediaTypes": [
-          "application/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__0",
-    "RelativePath": "register",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "registration",
-        "Type": "Microsoft.AspNetCore.Identity.Data.RegisterRequest",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
-      }
-    ]
-  },
-  {
-    "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_3",
-    "RelativePath": "requires-auth",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__5",
-    "RelativePath": "resendConfirmationEmail",
-    "HttpMethod": "POST",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "resendRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ResendConfirmationEmailRequest",
-        "IsRequired": false
+        "Name": "userRequestDto",
+        "Type": "AccountService.Application.Dtos.UserRequestDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -611,17 +131,17 @@
     ]
   },
   {
-    "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__1\u00601[[AccountService.Domain.Models.User, AccountService.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "\u003CMapIdentityApi\u003Eb__1_7",
-    "RelativePath": "resetPassword",
-    "HttpMethod": "POST",
+    "ContainingType": "Account.Presentation.Endpoints.UserEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMap\u003Eb__0_3",
+    "RelativePath": "api/users/{id:guid}",
+    "HttpMethod": "DELETE",
     "IsController": false,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "resetRequest",
-        "Type": "Microsoft.AspNetCore.Identity.Data.ResetPasswordRequest",
-        "IsRequired": false
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -629,13 +149,6 @@
         "Type": "System.Void",
         "MediaTypes": [],
         "StatusCode": 200
-      },
-      {
-        "Type": "Microsoft.AspNetCore.Http.HttpValidationProblemDetails",
-        "MediaTypes": [
-          "application/problem\u002Bjson"
-        ],
-        "StatusCode": 400
       }
     ]
   }

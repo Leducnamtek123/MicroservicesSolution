@@ -1124,6 +1124,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "AccountService.Domain": "1.0.0",
+          "Common": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.8",
           "Npgsql": "8.0.3",
@@ -1134,6 +1135,19 @@
         },
         "runtime": {
           "bin/placeholder/AccountService.Infrastructure.dll": {}
+        }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.8"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
         }
       }
     }
@@ -3028,6 +3042,11 @@
       "type": "project",
       "path": "../AccountService.Infrastructure/AccountService.Infrastructure.csproj",
       "msbuildProject": "../AccountService.Infrastructure/AccountService.Infrastructure.csproj"
+    },
+    "Common/1.0.0": {
+      "type": "project",
+      "path": "../../../Shared/Common/Common.csproj",
+      "msbuildProject": "../../../Shared/Common/Common.csproj"
     }
   },
   "projectFileDependencyGroups": {

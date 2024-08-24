@@ -1634,6 +1634,19 @@
         "runtime": {
           "bin/placeholder/AccountService.Domain.dll": {}
         }
+      },
+      "Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.8"
+        },
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
       }
     }
   },
@@ -4362,11 +4375,17 @@
       "type": "project",
       "path": "../AccountService.Domain/AccountService.Domain.csproj",
       "msbuildProject": "../AccountService.Domain/AccountService.Domain.csproj"
+    },
+    "Common/1.0.0": {
+      "type": "project",
+      "path": "../../../Shared/Common/Common.csproj",
+      "msbuildProject": "../../../Shared/Common/Common.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "AccountService.Domain >= 1.0.0",
+      "Common >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.8",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.8",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.8",
@@ -4405,6 +4424,9 @@
           "projectReferences": {
             "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj": {
               "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj"
+            },
+            "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj": {
+              "projectPath": "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj"
             }
           }
         }
