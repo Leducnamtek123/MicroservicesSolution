@@ -11,7 +11,7 @@ This project is built using .NET and consists of multiple microservices that pro
 - **OrderService**: Manages orders and related operations.
 - **ProductService**: Handles product-related functionalities.
 - **CustomerService**: Manages customer information and interactions.
-- **IdentityService**: Handles authentication and authorization using ASP.NET Core Identity.
+- **IdentityService**: Handles authentication and authorization using [ASP.NET Core Identity](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0&tabs=visual-studio).
 
 ## 🛠️ Setup Instructions
 
