@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\n
 C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.pdb
 C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\ref\Account.SqlServerMigrations.dll
 C:\MicroserviceSolution\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.deps.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\bin\Debug\net8.0\Account.SqlServerMigrations.pdb
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\refint\Account.SqlServerMigrations.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\Account.SqlServerMigrations.pdb
+D:\Project-Study\Microservices\Services\Account\Account.SqlServerMigrations\obj\Debug\net8.0\ref\Account.SqlServerMigrations.dll

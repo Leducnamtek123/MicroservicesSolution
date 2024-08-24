@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\refin
 C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.pdb
 C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\ref\Account.Postgres.dll
 C:\MicroserviceSolution\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.deps.json
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.dll
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\bin\Debug\net8.0\Account.Postgres.pdb
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.dll
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\refint\Account.Postgres.dll
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\Account.Postgres.pdb
+D:\Project-Study\Microservices\Services\Account\Account.Postgres\obj\Debug\net8.0\ref\Account.Postgres.dll

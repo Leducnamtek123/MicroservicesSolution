@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\refi
 C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.pdb
 C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\ref\Account.SqlServer.dll
 C:\MicroserviceSolution\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.deps.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\bin\Debug\net8.0\Account.SqlServer.pdb
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\refint\Account.SqlServer.dll
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\Account.SqlServer.pdb
+D:\Project-Study\Microservices\Services\Account\Account.SqlServer\obj\Debug\net8.0\ref\Account.SqlServer.dll

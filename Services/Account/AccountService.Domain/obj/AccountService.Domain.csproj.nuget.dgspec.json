@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj": {}
+    "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj": {
+    "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj",
+        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj",
         "projectName": "AccountService.Domain",
-        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\AccountService.Domain\\obj\\",
+        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\AccountService.Domain.csproj",
+        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\AccountService.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,6 +45,32 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.SqlServer.Server": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

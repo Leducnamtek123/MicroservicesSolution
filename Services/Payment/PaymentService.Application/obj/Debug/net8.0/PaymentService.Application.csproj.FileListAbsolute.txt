@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Payment\PaymentService.Application\obj\Debug\ne
 C:\MicroserviceSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.pdb
 C:\MicroserviceSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\ref\PaymentService.Application.dll
 C:\MicroserviceSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.sourcelink.json
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.deps.json
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.dll
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.pdb
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.sourcelink.json
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.dll
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\refint\PaymentService.Application.dll
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.pdb
+D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\ref\PaymentService.Application.dll

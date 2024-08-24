@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\refint\Common.dll
 C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.pdb
 C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\ref\Common.dll
 C:\MicroserviceSolution\Shared\Common\obj\Debug\net8.0\Common.sourcelink.json
+D:\Project-Study\Microservices\Shared\Common\bin\Debug\net8.0\Common.deps.json
+D:\Project-Study\Microservices\Shared\Common\bin\Debug\net8.0\Common.dll
+D:\Project-Study\Microservices\Shared\Common\bin\Debug\net8.0\Common.pdb
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.AssemblyInfo.cs
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.sourcelink.json
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.dll
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\refint\Common.dll
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\Common.pdb
+D:\Project-Study\Microservices\Shared\Common\obj\Debug\net8.0\ref\Common.dll

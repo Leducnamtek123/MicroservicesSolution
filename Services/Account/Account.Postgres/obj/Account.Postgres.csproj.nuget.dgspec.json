@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj": {}
+    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj": {
+    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
+        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
         "projectName": "Account.Postgres",
-        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Postgres\\obj\\",
+        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Postgres\\Account.Postgres.csproj",
+        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Postgres\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

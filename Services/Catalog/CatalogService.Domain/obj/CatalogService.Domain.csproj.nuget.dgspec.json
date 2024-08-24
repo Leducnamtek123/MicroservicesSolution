@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj": {}
+    "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj": {
+    "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj",
+        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj",
         "projectName": "CatalogService.Domain",
-        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Domain\\obj\\",
+        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Domain\\CatalogService.Domain.csproj",
+        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

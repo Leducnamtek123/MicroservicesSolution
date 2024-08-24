@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net
 C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.pdb
 C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\ref\Account.IntergrationTests.dll
 C:\MicroserviceSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.deps.json
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.dll
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.pdb
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.sourcelink.json
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.dll
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\refint\Account.IntergrationTests.dll
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.pdb
+D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\ref\Account.IntergrationTests.dll

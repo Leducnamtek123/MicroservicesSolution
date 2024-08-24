@@ -10,3 +10,15 @@ C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\ne
 C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.pdb
 C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\ref\CatalogService.Application.dll
 C:\MicroserviceSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.sourcelink.json
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.deps.json
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.dll
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.pdb
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfoInputs.cache
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfo.cs
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.csproj.CoreCompileInputs.cache
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.sourcelink.json
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.dll
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\refint\CatalogService.Application.dll
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.pdb
+D:\Project-Study\Microservices\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\ref\CatalogService.Application.dll

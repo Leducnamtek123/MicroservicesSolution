@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj": {}
+    "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj": {
+    "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
+        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
         "projectName": "PaymentService.Domain",
-        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\obj\\",
+        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
+        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
