@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternalGateway", "Internal
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Account", "Account", "{24ED8D85-8841-4185-B171-D9B2FF28F0CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountService.API", "Services\Account\AccountService.API\AccountService.API.csproj", "{C754A7F7-184E-4155-B8C9-926C0E888A00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.API", "Services\Account\Account.API\Account.API.csproj", "{C754A7F7-184E-4155-B8C9-926C0E888A00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountService.Application", "Services\Account\AccountService.Application\AccountService.Application.csproj", "{E2F73390-5AB5-4345-8B05-C6029D2DC6B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.Application", "Services\Account\Account.Application\Account.Application.csproj", "{E2F73390-5AB5-4345-8B05-C6029D2DC6B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountService.Domain", "Services\Account\AccountService.Domain\AccountService.Domain.csproj", "{A2924A5A-AE10-42E8-B7A9-939C72A5179F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.Domain", "Services\Account\Account.Domain\Account.Domain.csproj", "{A2924A5A-AE10-42E8-B7A9-939C72A5179F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountService.Infrastructure", "Services\Account\AccountService.Infrastructure\AccountService.Infrastructure.csproj", "{778C34FF-9AC2-4F21-B91E-AC99640D606D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.Infrastructure", "Services\Account\Account.Infrastructure\Account.Infrastructure.csproj", "{778C34FF-9AC2-4F21-B91E-AC99640D606D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{6652CD36-0093-44BE-ABC9-D322F4ED1C39}"
 EndProject
@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.UnitTests", "Servic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{18D3ED81-80C4-4884-89C2-25B18B2BD9AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Account.Presentation", "Account.Presentation\Account.Presentation.csproj", "{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Account.Presentation", "Services\Account\Account.Presentation\Account.Presentation.csproj", "{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,10 +131,10 @@ Global
 		{CA7C906F-4CCD-4164-ABBF-009F8941B342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA7C906F-4CCD-4164-ABBF-009F8941B342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA7C906F-4CCD-4164-ABBF-009F8941B342}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,7 +161,7 @@ Global
 		{BB65F13F-88E1-4781-ADBC-B526F1AB1055} = {24ED8D85-8841-4185-B171-D9B2FF28F0CF}
 		{B3EFCEED-2B14-4F6D-8C45-0B382FB02E94} = {24ED8D85-8841-4185-B171-D9B2FF28F0CF}
 		{CA7C906F-4CCD-4164-ABBF-009F8941B342} = {24ED8D85-8841-4185-B171-D9B2FF28F0CF}
-		{F0C78562-83E3-4FD3-A9C9-0321C8F0E4D1} = {24ED8D85-8841-4185-B171-D9B2FF28F0CF}
+		{A8E41724-D693-4CE3-B0EE-1CDB3C4E58BB} = {24ED8D85-8841-4185-B171-D9B2FF28F0CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F050DB71-0AD5-4CAA-9E9B-1AE37514C06A}
