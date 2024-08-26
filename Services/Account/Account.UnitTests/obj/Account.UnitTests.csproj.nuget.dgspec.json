@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj": {}
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj": {}
   },
   "projects": {
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
         "projectName": "Account.UnitTests",
-        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
-        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.UnitTests\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\Account.UnitTests.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.UnitTests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

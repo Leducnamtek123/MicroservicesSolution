@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Account.SqlServerMigrations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2800ce75dc85db6d716c987d9f704bd95220317b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f5bd5e341e43eae7ebac1c62d086676adf1f90c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Account.SqlServerMigrations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Account.SqlServerMigrations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

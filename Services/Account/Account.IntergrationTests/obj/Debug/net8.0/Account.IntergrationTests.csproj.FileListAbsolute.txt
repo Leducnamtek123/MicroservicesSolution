@@ -22,3 +22,15 @@ D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\De
 D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\refint\Account.IntergrationTests.dll
 D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.pdb
 D:\Project-Study\Microservices\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\ref\Account.IntergrationTests.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.deps.json
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\bin\Debug\net8.0\Account.IntergrationTests.pdb
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.AssemblyInfo.cs
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.sourcelink.json
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\refint\Account.IntergrationTests.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\Account.IntergrationTests.pdb
+C:\Users\admin\Documents\MicroservicesSolution\Services\Account\Account.IntergrationTests\obj\Debug\net8.0\ref\Account.IntergrationTests.dll
