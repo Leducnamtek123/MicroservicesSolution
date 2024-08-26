@@ -8,16 +8,15 @@ namespace Common.Dtos
 {
     public class ErrorDto
     {
-        public string ErrorCode { get; set; }
-        public string ErrorMessage { get; set; }
-        public List<string> Errors { get; set; }
+        public string Code { get; set; }
+        public string Message { get; set; }
 
-        public ErrorDto(string errorCode, string errorMessage, List<string> errors = null)
+        public ErrorDto(string code, string message)
         {
-            ErrorCode = errorCode;
-            ErrorMessage = errorMessage;
-            Errors = errors ?? new List<string>();
+            Code = code;
+            Message = message;
         }
     }
+
 }
 

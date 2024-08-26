@@ -8,6 +8,7 @@ using Account.Infrastructure.Context;
 using Account.Infrastructure.Repositories;
 using Account.Presentation.Endpoints;
 using Common.Cache;
+using Common.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -68,7 +69,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
 // Register application services
-builder.Services.AddTransient<IEmailSender,EmailSender>();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<ITemplateService, TemplateService>();
+
 
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 builder.Services.AddScoped<UserRedisCache>();
@@ -82,9 +86,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Add DbContext configuration
 builder.Services.AddDbContext<AccountDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Account"), b => b.MigrationsAssembly("Account.PostgresMigrations")));
+    
 builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<AccountDbContext>()
-    .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddHsts(options =>
 {
@@ -94,7 +98,10 @@ builder.Services.AddHsts(options =>
     options.ExcludedHosts.Add("example.com");
     options.ExcludedHosts.Add("www.example.com");
 });
-
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

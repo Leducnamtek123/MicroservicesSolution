@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5VTXseUyqHw=",
+  "dgSpecHash": "c260yajAhSk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

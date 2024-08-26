@@ -2,12 +2,14 @@
 using Account.Application.Services;
 using Account.Domain.Filters;
 using Account.Domain.Models;
+using Common.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Account.Presentation.Endpoints
 {
@@ -35,7 +37,10 @@ namespace Account.Presentation.Endpoints
                 var user = await userService.GetUserByIdAsync(id);
                 if (user == null)
                 {
-                    return Results.NotFound();
+                    var errorCode = "404";
+                    var message = "User not found";
+                    var error = new ErrorDto(errorCode,message);
+                    return Results.NotFound(error); // Trả về mã trạng thái 404 và đối tượng lỗi
                 }
                 return Results.Ok(user);
             });

@@ -15,6 +15,6 @@ namespace Account.Application.Services
         Task<RoleResponseDto> CreateRoleAsync(RoleRequestDto roleRequestDto);
         Task<RoleResponseDto> UpdateRoleAsync(string id, RoleRequestDto roleRequestDto);
         Task<bool> DeleteRoleAsync(string id);
-        Task<PagedDto<RoleResponseDto>> GetPagedRolesAsync(RoleFilter filter); // Add this method
+        Task<PagedDto<RoleResponseDto>> GetPagedRolesAsync(RoleFilter filter);
     }
 }

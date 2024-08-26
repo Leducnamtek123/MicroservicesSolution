@@ -6,25 +6,52 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace Account.Application.Services
 {
     public class EmailSender : IEmailSender
     {
+        private readonly EmailSettings _emailSettings;
+
+        public EmailSender(IOptions<EmailSettings> emailSettings)
+        {
+            _emailSettings = emailSettings.Value;
+        }
+
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            SmtpClient client = new SmtpClient
+            var client = new SmtpClient
             {
-                Port = 587,
-                Host = "smtp.gmail.com", //or another email sender provider
+                Port = _emailSettings.SmtpPort,
+                Host = _emailSettings.SmtpServer,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("your email sender", "password")
+                Credentials = new NetworkCredential(_emailSettings.SmtpUser, _emailSettings.SmtpPassword)
             };
 
-            return client.SendMailAsync("your email sender", email, subject, htmlMessage);
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_emailSettings.SmtpUser),
+                Subject = subject,
+                Body = htmlMessage,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(email);
+
+            return client.SendMailAsync(mailMessage);
         }
+
+    }
+
+    public class EmailSettings
+    {
+        public string SmtpServer { get; set; }
+        public int SmtpPort { get; set; }
+        public string SmtpUser { get; set; }
+        public string SmtpPassword { get; set; }
     }
 
 }

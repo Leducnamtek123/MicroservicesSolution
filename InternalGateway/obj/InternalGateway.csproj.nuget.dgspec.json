@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj": {}
+    "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj": {
+    "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
+        "projectUniqueName": "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
         "projectName": "InternalGateway",
-        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\InternalGateway\\obj\\",
+        "projectPath": "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\InternalGateway\\InternalGateway.csproj",
+        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vcecp\\Documents\\MicroservicesSolution\\InternalGateway\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

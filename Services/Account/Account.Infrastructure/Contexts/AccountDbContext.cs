@@ -4,17 +4,16 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Account.Infrastructure.Context
 {
-    public class AccountDbContext : IdentityDbContext<User,Role,string>
+    public partial class AccountDbContext(DbContextOptions<AccountDbContext> options) : IdentityDbContext<User, Role,string>(options)
     {
-        public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options)
-        {
-        }
-
+        public AccountDbContext() : this(new DbContextOptions<AccountDbContext>()) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<User>().Property(e => e.Initials).HasMaxLength(5);
+            builder.Entity<Role>().Property(r => r.Description).HasMaxLength(250);
+
             builder.HasDefaultSchema("Account");
             // Fluent API configurations go here.
             // For example:

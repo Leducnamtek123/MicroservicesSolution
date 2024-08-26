@@ -34,3 +34,15 @@ C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.I
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\refint\PaymentService.Infrastructure.dll
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.pdb
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\ref\PaymentService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\bin\Debug\net8.0\PaymentService.Infrastructure.deps.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\bin\Debug\net8.0\PaymentService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\bin\Debug\net8.0\PaymentService.Infrastructure.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.AssemblyInfo.cs
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.sourcelink.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\refint\PaymentService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\PaymentService.Infrastructure.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Infrastructure\obj\Debug\net8.0\ref\PaymentService.Infrastructure.dll
