@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Dtos
 {
-    public class UserDto
+    public class RegisterDto
     {
-        public Guid Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
 
-        public UserDto(Guid id, string userName, string email)
-        {
-            Id = id;
-            UserName = userName;
-            Email = email;
-        }
+
+        public string Password { get; set; }
     }
 }

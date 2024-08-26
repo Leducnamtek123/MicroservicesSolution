@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yOeSWK7e6ZU=",
+  "dgSpecHash": "spaXtV/gTDw=",
   "success": true,
-  "projectFilePath": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Domain\\PaymentService.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {}
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {}
   },
   "projects": {
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\Account.Domain.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\Account.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\Account.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\Account.Domain.csproj",
         "projectName": "Account.Domain",
-        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\Account.Domain.csproj",
-        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\Account.Domain.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -29,8 +29,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj": {
-                "projectPath": "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj"
+              "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj"
               }
             }
           }
@@ -95,17 +95,17 @@
         }
       }
     },
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj",
         "projectName": "Account.Infrastructure",
-        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -120,11 +120,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\Account.Domain.csproj": {
-                "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Domain\\Account.Domain.csproj"
+              "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\Account.Domain.csproj": {
+                "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Domain\\Account.Domain.csproj"
               },
-              "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj": {
-                "projectPath": "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj"
+              "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj"
               }
             }
           }
@@ -193,17 +193,17 @@
         }
       }
     },
-    "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
         "projectName": "Account.PostgresMigrations",
-        "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
-        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-        "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -218,8 +218,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
-                "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj"
+              "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj"
               }
             }
           }
@@ -258,17 +258,17 @@
         }
       }
     },
-    "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj": {
+    "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "D:\\Project-Study\\Microservices\\Shared\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-        "outputPath": "D:\\Project-Study\\Microservices\\Shared\\Common\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Shared\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

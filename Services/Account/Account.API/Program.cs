@@ -8,6 +8,9 @@ using Account.Infrastructure.Context;
 using Account.Infrastructure.Repositories;
 using Account.Presentation.Endpoints;
 using Common.Cache;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -18,7 +21,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    // Thêm cấu hình Bearer Token cho Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Please enter JWT Bearer token in the format **Bearer [token]**",
@@ -43,11 +45,14 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+
 // Thêm cấu hình Redis
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
+
 //Rate limiting middlewares
 builder.Services.AddRateLimiter(_ => _
     .AddFixedWindowLimiter(policyName: "fixed", options =>
@@ -58,24 +63,29 @@ builder.Services.AddRateLimiter(_ => _
         options.QueueLimit = 2;
     }));
 
-
-
 // Add Identity services
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
+
 // Register application services
+builder.Services.AddTransient<IEmailSender,EmailSender>();
+
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 builder.Services.AddScoped<UserRedisCache>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Add DbContext configuration
 builder.Services.AddDbContext<AccountDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Account"), b => b.MigrationsAssembly("Account.PostgresMigrations")));
-
 builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<AccountDbContext>();
+    .AddEntityFrameworkStores<AccountDbContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -95,19 +105,24 @@ if (app.Environment.IsDevelopment())
     app.UseHsts();
 
 }
-//Minimals APIs
-
+app.UseExceptionHandler(exceptionHandlerApp
+    => exceptionHandlerApp.Run(async context
+        => await Results.Problem()
+                     .ExecuteAsync(context)));
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
 
+//Minimals APIs
 //Map group Endpoints
+//app.MapGroup("/Auth").MapIdentityApi<User>();
+IdentityEndpoints.Map(app);
 UserEndpoints.Map(app);
-IdentityEndpoints.MapCustomIdentityApi<User>(app);
+RoleEndpoints.Map(app);
 
-//Identity call map group
-//app.MapGroup("/Account").MapIdentityApi<User>();
+//IdentityEndpoints.MapCustomIdentityApi<User>(app);
+
 
 // Run the application
 app.Run();

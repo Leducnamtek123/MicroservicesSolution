@@ -1,44 +1,59 @@
-﻿
+﻿using Account.Domain.Filters;
 using Account.Domain.Models;
 using Account.Domain.Repositories;
 using Account.Infrastructure.Context;
-using Common.Repositories;
+using Common.Data;
+using Common.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Account.Infrastructure.Repositories
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<User>,IUserRepository
     {
-        public UserRepository(AccountDbContext context) : base(context)
+        public UserRepository(AccountDbContext context, ILogger<UserRepository> logger)
+            : base(context, logger)
         {
         }
 
-        public async Task<User> GetByIdAsync(Guid id)
+        public async Task<User?> GetByIdAsync(string id)
         {
-            return await _dbSet.FindAsync(id);  // Sử dụng _dbSet từ BaseRepository
+            // Retrieve the user from the database using the provided ID
+            return await _dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<PagedDto<User>> GetPagedAsync(UserFilter filter)
         {
-            return await _dbSet.ToListAsync();  // Sử dụng _dbSet từ BaseRepository
-        }
+            var query = _dbSet.AsQueryable();
 
-        public async Task AddAsync(User user)
-        {
-            await _dbSet.AddAsync(user);  // Sử dụng _dbSet từ BaseRepository
-            await SaveChangesAsync();
-        }
+            // Apply filtering based on keyword
+            if (!string.IsNullOrWhiteSpace(filter.Keyword))
+            {
+                query = query.Where(u => u.UserName!.Contains(filter.Keyword)); // Example filter
+            }
 
-        public void Update(User user)
-        {
-            _dbSet.Update(user);  // Sử dụng _dbSet từ BaseRepository
-            SaveChangesAsync().Wait();  // Đợi để đảm bảo thay đổi được lưu
-        }
+            // Apply sorting
+            if (!string.IsNullOrWhiteSpace(filter.SortBy))
+            {
+                query = filter.IsSortDescending
+                    ? query.OrderByDescending(e => EF.Property<object>(e, filter.SortBy))
+                    : query.OrderBy(e => EF.Property<object>(e, filter.SortBy));
+            }
 
-        public void Remove(User user)
-        {
-            _dbSet.Remove(user);  // Sử dụng _dbSet từ BaseRepository
-            SaveChangesAsync().Wait();  // Đợi để đảm bảo thay đổi được lưu
+            // Get total count for pagination
+            var totalCount = await query.CountAsync();
+
+            // Apply paging
+            var items = await query
+                .Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return new PagedDto<User>(items, totalCount, filter.PageIndex, filter.PageSize);
         }
     }
 }

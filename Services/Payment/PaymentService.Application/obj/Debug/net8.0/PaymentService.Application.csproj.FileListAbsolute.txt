@@ -22,3 +22,15 @@ D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\D
 D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\refint\PaymentService.Application.dll
 D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.pdb
 D:\Project-Study\Microservices\Services\Payment\PaymentService.Application\obj\Debug\net8.0\ref\PaymentService.Application.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.deps.json
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\bin\Debug\net8.0\PaymentService.Application.pdb
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.AssemblyInfo.cs
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.sourcelink.json
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\refint\PaymentService.Application.dll
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\PaymentService.Application.pdb
+C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Application\obj\Debug\net8.0\ref\PaymentService.Application.dll

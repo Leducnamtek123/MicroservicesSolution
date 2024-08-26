@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WataTek.Common;
 
-namespace Account.Presentation
+namespace Account.Domain.Filters
 {
-    public interface IUnitOfWork
+    public class RoleFilter : FilterBase
     {
-        Task SaveChangesAsync();
     }
 }
