@@ -34,3 +34,15 @@ C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.D
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\refint\PaymentService.Domain.dll
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.pdb
 C:\Users\admin\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\ref\PaymentService.Domain.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.deps.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\bin\Debug\net8.0\PaymentService.Domain.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.AssemblyInfoInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.AssemblyInfo.cs
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.csproj.CoreCompileInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.sourcelink.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\refint\PaymentService.Domain.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\PaymentService.Domain.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Payment\PaymentService.Domain\obj\Debug\net8.0\ref\PaymentService.Domain.dll

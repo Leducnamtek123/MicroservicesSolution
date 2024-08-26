@@ -34,3 +34,15 @@ C:\Users\admin\Documents\MicroservicesSolution\Services\Catalog\CatalogService.I
 C:\Users\admin\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\refint\CatalogService.Infrastructure.dll
 C:\Users\admin\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.pdb
 C:\Users\admin\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\ref\CatalogService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.deps.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\bin\Debug\net8.0\CatalogService.Infrastructure.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.AssemblyInfo.cs
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.sourcelink.json
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\refint\CatalogService.Infrastructure.dll
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\CatalogService.Infrastructure.pdb
+C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Infrastructure\obj\Debug\net8.0\ref\CatalogService.Infrastructure.dll

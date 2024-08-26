@@ -1,6 +1,8 @@
 ﻿using Account.Application.Dtos;
 using Account.Domain.Filters;
 using Account.Domain.Models;
+using Account.Domain.Repositories;
+using AutoMapper;
 using Common.Dtos;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -12,102 +14,87 @@ namespace Account.Application.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly RoleManager<Role> _roleManager;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IMapper _mapper;
 
-        public RoleService(RoleManager<Role> roleManager)
+        public RoleService(IRoleRepository roleRepository, IMapper mapper)
         {
-            _roleManager = roleManager;
-        }
-
-        public async Task<RoleResponseDto> CreateRoleAsync(RoleRequestDto roleRequestDto)
-        {
-            var role = new Role { Name = roleRequestDto.Name };
-
-            var result = await _roleManager.CreateAsync(role);
-            if (result.Succeeded)
-            {
-                return new RoleResponseDto
-                {
-                    Id = role.Id.ToString(), // Chuyển đổi Guid thành string
-                    Name = role.Name
-                };
-            }
-
-            throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
-        }
-
-        public async Task<bool> DeleteRoleAsync(string id)
-        {
-            if (!Guid.TryParse(id, out var roleId))
-            {
-                return false;
-            }
-
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role == null) return false;
-
-            var result = await _roleManager.DeleteAsync(role);
-            return result.Succeeded;
-        }
-
-        public async Task<PagedDto<RoleResponseDto>> GetPagedRolesAsync(RoleFilter filter)
-        {
-            var roles = _roleManager.Roles
-                .Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize)
-                .ToList();
-
-            var totalCount = _roleManager.Roles.Count();
-
-            var roleDtos = roles.Select(role => new RoleResponseDto
-            {
-                Id = role.Id.ToString(), // Chuyển đổi Guid thành string
-                Name = role.Name
-            });
-
-            return new PagedDto<RoleResponseDto>(roleDtos, totalCount, filter.PageIndex, filter.PageSize);
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<RoleResponseDto> GetRoleByIdAsync(string id)
         {
-            if (!Guid.TryParse(id, out var roleId))
+            var role = await _roleRepository.GetByIdAsync(id);
+            if (role == null)
             {
-                return null;
+                return null; // or throw an exception if preferred
             }
 
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role == null) return null;
+            return _mapper.Map<RoleResponseDto>(role);
+        }
 
-            return new RoleResponseDto
+        public async Task<RoleResponseDto> CreateRoleAsync(RoleRequestDto roleRequestDto)
+        {
+            if (roleRequestDto == null)
             {
-                Id = role.Id.ToString(), // Chuyển đổi Guid thành string
-                Name = role.Name
-            };
+                throw new ArgumentNullException(nameof(roleRequestDto));
+            }
+
+            var role = _mapper.Map<Role>(roleRequestDto);
+            await _roleRepository.AddAsync(role);
+            return _mapper.Map<RoleResponseDto>(role);
         }
 
         public async Task<RoleResponseDto> UpdateRoleAsync(string id, RoleRequestDto roleRequestDto)
         {
-            if (!Guid.TryParse(id, out var roleId))
+            if (roleRequestDto == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(roleRequestDto));
             }
 
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role == null) return null;
-
-            role.Name = roleRequestDto.Name;
-
-            var result = await _roleManager.UpdateAsync(role);
-            if (result.Succeeded)
+            var role = await _roleRepository.GetByIdAsync(id);
+            if (role == null)
             {
-                return new RoleResponseDto
-                {
-                    Id = role.Id.ToString(), // Chuyển đổi Guid thành string
-                    Name = role.Name
-                };
+                return null; // or throw an exception if preferred
             }
 
-            throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+            _mapper.Map(roleRequestDto, role);
+            await _roleRepository.UpdateAsync(role);
+            return _mapper.Map<RoleResponseDto>(role);
+        }
+
+        public async Task<bool> DeleteRoleAsync(string id)
+        {
+            var role = await _roleRepository.GetByIdAsync(id);
+            if (role == null)
+            {
+                return false; // or throw an exception if preferred
+            }
+
+            await _roleRepository.DeleteAsync(role);
+            return true;
+        }
+
+        public async Task<PagedDto<RoleResponseDto>> GetPagedRolesAsync(RoleFilter filter)
+        {
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
+            var pagedRoles = await _roleRepository.GetPagedAsync(filter);
+
+            var roleResponseDtos = _mapper.Map<IEnumerable<RoleResponseDto>>(pagedRoles.Items);
+
+            var pagedResponse = new PagedDto<RoleResponseDto>(
+                roleResponseDtos,
+                pagedRoles.TotalCount,
+                pagedRoles.PageIndex,
+                pagedRoles.PageSize
+            );
+
+            return pagedResponse;
         }
     }
 }
