@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379" # Map cổng 6379 của container với cổng 6379 của host
+    volumes:
+      - redis-data:/data # Mount volume để lưu dữ liệu Redis
+
+volumes:
+  redis-data:
