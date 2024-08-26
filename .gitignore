@@ -234,3 +234,11 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+01_Documents/
+02_Source/docker/.env
+02_Source/services/Media/NVC.Media.Host/wwwroot/uploads/
+02_Source/applications/NVC.Identity/wwwroot/uploads/
+.sonarqube/
+docker/.env
+services/Account/WataTek.Account.Host/wwwroot/images/
