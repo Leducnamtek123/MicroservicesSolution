@@ -10,11 +10,14 @@ using Account.Infrastructure.Repositories;
 using Account.Presentation.Endpoints;
 using Common.Cache;
 using Common.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,8 +69,23 @@ builder.Services.AddRateLimiter(_ => _
 
 // Add Identity services
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication();
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtSettings = builder.Configuration.GetSection("Jwt");
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ClockSkew = TimeSpan.Zero // Đặt ClockSkew để không có độ trễ cho token hết hạn
+        };
+    });
 // Register application services
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -81,6 +99,8 @@ builder.Services.AddScoped<IUserRedisCache,UserRedisCache>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<JwtTokenService>();
+
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);

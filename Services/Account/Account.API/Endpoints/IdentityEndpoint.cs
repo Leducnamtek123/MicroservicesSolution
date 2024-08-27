@@ -15,9 +15,17 @@ using Account.Application.Services;
 using Account.Infrastructure.Cache;
 using Account.Application.Dtos;
 using Microsoft.AspNetCore.Http;
+using Account.Domain.Models;
+using Common.Dtos;
 
 namespace Account.Presentation.Endpoints
 {
+    public class AccessTokenResponse
+    {
+        public string Token { get; set; }
+        public string Expiry { get; set; }
+    }
+
     public static class IdentityEndpoints
     {
       
@@ -48,56 +56,47 @@ namespace Account.Presentation.Endpoints
 
                 var routeGroup = endpoints.MapGroup("Auth");
 
-            // NOTE: We cannot inject UserManager<TUser> directly because the TUser generic parameter is currently unsupported by RDG.
-            // https://github.com/dotnet/aspnetcore/issues/47338
-            routeGroup.MapPost("/register", async Task<Results<Ok, ValidationProblem>>
- ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
+            routeGroup.MapPost("/register", async Task<Results<Ok, BadRequest<ErrorDto>>>
+             ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
 
                 var email = userRequestDto.Email;
                 // Store email in Redis using your custom service
                 await userRedisCache.SetUserDataAsync(Guid.NewGuid().ToString(), email);
                 var createdUser = await userService.CreateUserAsync(userRequestDto);
-                if (createdUser==null)
+                if (createdUser == null)
                 {
-                    TypedResults.Text("User cannot created");
+                    var error = new ErrorDto("UserCreationError", "User cannot be created");
+                    return TypedResults.BadRequest(error);
                 }
                 return TypedResults.Ok();
             });
+            routeGroup.MapPost("/login", async Task<Results<Ok<AccessTokenResponse>, BadRequest<ErrorDto>>>
+            ([FromBody] LoginRequest login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                var jwtTokenService = sp.GetRequiredService<JwtTokenService>();
 
-            routeGroup.MapPost("/login", async Task<Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>>
-                    ([FromBody] LoginRequest login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies, [FromServices] IServiceProvider sp) =>
+                var user = await userManager.FindByEmailAsync(login.Email);
+                if (user == null || !await userManager.CheckPasswordAsync(user, login.Password))
                 {
-                    var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
+                    var error = new ErrorDto("InvalidLogin", "Invalid login attempt");
+                    return TypedResults.BadRequest(error);
+                }
 
-                    var useCookieScheme = (useCookies == true) || (useSessionCookies == true);
-                    var isPersistent = (useCookies == true) && (useSessionCookies != true);
-                    signInManager.AuthenticationScheme = useCookieScheme ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
+                // Create and return JWT token
+                var token = await jwtTokenService.GenerateTokenAsync(user);
+                var response = new AccessTokenResponse
+                {
+                    Token = token,
+                    Expiry = DateTime.UtcNow.AddMinutes(Convert.ToDouble(sp.GetRequiredService<IConfiguration>().GetSection("Jwt")["ExpiryInMinutes"])).ToString("o")
+                };
 
-                    var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent, lockoutOnFailure: true);
+                return TypedResults.Ok(response);
+            });
 
-                    if (result.RequiresTwoFactor)
-                    {
-                        if (!string.IsNullOrEmpty(login.TwoFactorCode))
-                        {
-                            result = await signInManager.TwoFactorAuthenticatorSignInAsync(login.TwoFactorCode, isPersistent, rememberClient: isPersistent);
-                        }
-                        else if (!string.IsNullOrEmpty(login.TwoFactorRecoveryCode))
-                        {
-                            result = await signInManager.TwoFactorRecoveryCodeSignInAsync(login.TwoFactorRecoveryCode);
-                        }
-                    }
 
-                    if (!result.Succeeded)
-                    {
-                        return TypedResults.Problem(result.ToString(), statusCode: StatusCodes.Status401Unauthorized);
-                    }
-
-                    // The signInManager already produced the needed response in the form of a cookie or bearer token.
-                    return TypedResults.Empty;
-                });
-
-                routeGroup.MapPost("/refresh", async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>>
+            routeGroup.MapPost("/refresh", async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>>
                     ([FromBody] RefreshRequest refreshRequest, [FromServices] IServiceProvider sp) =>
                 {
                     var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
