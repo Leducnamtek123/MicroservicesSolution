@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Account.Presentation.Endpoints
+namespace Account.API.Endpoints
 {
     public static class UserEndpoints
     {
@@ -29,9 +29,7 @@ namespace Account.Presentation.Endpoints
                     // Log the exception if necessary
                     return Results.Problem(ex.Message);
                 }
-            }).WithOpenApi()
-.RequireAuthorization(); ;
-
+            });
             app.MapGet("/users/{id:guid}", async (IUserService userService, string id) =>
             {
                 var user = await userService.GetUserByIdAsync(id);

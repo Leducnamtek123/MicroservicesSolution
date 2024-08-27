@@ -1,4 +1,5 @@
 ﻿
+using Account.API.Endpoints;
 using Account.Application.AutoMapper;
 using Account.Application.Services;
 using Account.Domain.Models;
@@ -75,7 +76,7 @@ builder.Services.AddTransient<ITemplateService, TemplateService>();
 
 
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
-builder.Services.AddScoped<UserRedisCache>();
+builder.Services.AddScoped<IUserRedisCache,UserRedisCache>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -124,7 +125,7 @@ app.UseRateLimiter();
 //Minimals APIs
 //Map group Endpoints
 //app.MapGroup("/Auth").MapIdentityApi<User>();
-IdentityEndpoints.Map(app);
+IdentityEndpoints.MapIdentityApi<User>(app);
 UserEndpoints.Map(app);
 RoleEndpoints.Map(app);
 
