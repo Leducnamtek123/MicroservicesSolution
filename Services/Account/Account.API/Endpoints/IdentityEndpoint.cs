@@ -46,7 +46,7 @@ namespace Account.Presentation.Endpoints
                 // We'll figure out a unique endpoint name based on the final route pattern during endpoint generation.
                 string? confirmEmailEndpointName = null;
 
-                var routeGroup = endpoints.MapGroup("");
+                var routeGroup = endpoints.MapGroup("Auth");
 
             // NOTE: We cannot inject UserManager<TUser> directly because the TUser generic parameter is currently unsupported by RDG.
             // https://github.com/dotnet/aspnetcore/issues/47338
@@ -56,7 +56,7 @@ namespace Account.Presentation.Endpoints
 
                 var email = userRequestDto.Email;
                 // Store email in Redis using your custom service
-                await userRedisCache.SetUserDataAsync(new Guid().ToString(), email);
+                await userRedisCache.SetUserDataAsync(Guid.NewGuid().ToString(), email);
                 var createdUser = await userService.CreateUserAsync(userRequestDto);
                 if (createdUser==null)
                 {
