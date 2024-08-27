@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace Account.Presentation.Endpoints
+namespace Account.API.Endpoints
 {
     public static class RoleEndpoints
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Account.Infrastructure.Cache
 {
-    public class UserRedisCache
+    public class UserRedisCache : IUserRedisCache
     {
         private readonly ICacheService _cacheService;
 
