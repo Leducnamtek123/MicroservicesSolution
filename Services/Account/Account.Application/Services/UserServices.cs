@@ -7,9 +7,10 @@ using AutoMapper;
 using Common.Cache;
 using Common.Dtos;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using RazorLight;
+using System.Text;
 
 public class UserService : IUserService
 {
@@ -56,17 +57,12 @@ public class UserService : IUserService
 
         if (result.Succeeded)
         {
-            // Generate email confirmation token
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodeToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var activationLink = $"http://localhost:5165/Auth/ConfirmEmail?userId={user.Id}&code={encodeToken}";
 
-            // Create activation link
-            var activationLink = "locahost:5165/activate?userId={user.Id}&token={Uri.EscapeDataString(token)}";
-
-            // Send email with activation link using a template
-            var emailModel = new { UserName = user.UserName, ActivationLink = activationLink };
-            var emailBody = await GetEmailTemplateAsync("WelcomeTemplate", emailModel);
-            await _emailSender.SendEmailAsync(user.Email, "Please confirm your email address", emailBody);
-
+            // Kiểm tra giá trị email tại đây
+            await SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
             return _mapper.Map<UserResponseDto>(user);
         }
 
@@ -93,7 +89,6 @@ public class UserService : IUserService
         {
             // Send email after user update
             var emailBody = "Your profile has been updated.";
-            await _emailSender.SendEmailAsync(user.Email, "Profile Updated", emailBody);
 
             return _mapper.Map<UserResponseDto>(user);
         }
@@ -147,17 +142,17 @@ public class UserService : IUserService
 
         return pagedResponse;
     }
-
-    private async Task<string> GetEmailTemplateAsync(string templateName, object model)
+    public async Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink)
     {
-        // Load template content from a file or database
-        var template = await System.IO.File.ReadAllTextAsync($"Templates/{templateName}.cshtml");
+        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "WelcomeEmail.html");
+        var emailBody = await File.ReadAllTextAsync(templatePath);
 
-        // Render template with RazorLight
-        var engine = new RazorLightEngineBuilder()
-            .UseMemoryCachingProvider()
-            .Build();
+        // Thay thế các biến
+        emailBody = emailBody.Replace("{{UserName}}", userName);
+        emailBody = emailBody.Replace("{{ConfirmationLink}}", confirmationLink);
 
-        return await engine.CompileRenderStringAsync("templateKey", template, model);
+        // Gửi email sử dụng IEmailSender
+        await _emailSender.SendEmailAsync(email, "Welcome to Our Service", emailBody);
     }
+
 }
