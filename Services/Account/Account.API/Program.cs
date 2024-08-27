@@ -10,7 +10,6 @@ using Account.Presentation.Endpoints;
 using Common.Cache;
 using Common.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +69,8 @@ builder.Services.AddAuthentication();
 
 // Register application services
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 builder.Services.AddTransient<ITemplateService, TemplateService>();
 
 
@@ -87,7 +87,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddDbContext<AccountDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Account"), b => b.MigrationsAssembly("Account.PostgresMigrations")));
     
-builder.Services.AddIdentityApiEndpoints<User>()
+builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>()
     .AddEntityFrameworkStores<AccountDbContext>();
 
 builder.Services.AddHsts(options =>

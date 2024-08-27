@@ -11,86 +11,53 @@ namespace Account.Presentation.Endpoints
     public static class IdentityEndpoints
     {
         public static void Map(WebApplication app)
-
         {
+            // Đăng ký các điểm cuối API Identity
             app.MapGroup("/Auth").MapIdentityApi<User>();
 
+            // Điểm cuối tùy chỉnh của bạn
+            app.MapPost("/Auth/custom-register", async (UserManager<User> userManager, RegisterDto registerDto) =>
+            {
+                // Logic tùy chỉnh của bạn
+                if (!IsValidUsername(registerDto.UserName))
+                {
+                    return Results.BadRequest("Invalid username.");
+                }
 
-            //        // Register new user
-            //        routeGroup.MapPost("/register", async (UserManager<TUser> userManager, RegisterDto registerDto) =>
-            //        {
-            //            if (!IsValidUsername(registerDto.UserName))
-            //            {
-            //                return Results.BadRequest("Invalid username.");
-            //            }
+                var user = new User
+                {
+                    UserName = registerDto.UserName,
+                    Email = registerDto.Email
+                };
 
-            //            var user = new TUser
-            //            {
-            //                UserName = registerDto.UserName,
-            //                Email = registerDto.Email // Assuming email is still stored but not validated here
-            //            };
+                var result = await userManager.CreateAsync(user, registerDto.Password);
 
-            //            var result = await userManager.CreateAsync(user, registerDto.Password);
+                if (result.Succeeded)
+                {
+                    return Results.Created($"/Auth/users/{user.Id}", user.Id);
+                }
 
-            //            if (result.Succeeded)
-            //            {
-            //                return Results.Created($"/api/identity/users/{user.Id}", user.Id);
-            //            }
+                return Results.BadRequest(result.Errors);
+            });
 
-            //            return Results.BadRequest(result.Errors);
-            //        });
+            app.MapPost("/Auth/custom-login", async (SignInManager<User> signInManager, UserRedisCache userCache, LoginDto loginDto) =>
+            {
+                var result = await signInManager.PasswordSignInAsync(loginDto.UserName, loginDto.Password, loginDto.RememberMe, lockoutOnFailure: false);
 
-            //        // User login
-            //        routeGroup.MapPost("/login", async (SignInManager<TUser> signInManager, UserRedisCache userCache, LoginDto loginDto) =>
-            //        {
-            //            var result = await signInManager.PasswordSignInAsync(loginDto.UserName, loginDto.Password, loginDto.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    var cacheKey = $"User:{loginDto.UserName}";
+                    var token = "generated_token"; // Tạo token của bạn tại đây
 
-            //            if (result.Succeeded)
-            //            {
-            //                var cacheKey = $"User:{loginDto.UserName}";
-            //                var token = "generated_token"; // Generate your token here
+                    await userCache.SetUserDataAsync(cacheKey, token, TimeSpan.FromMinutes(30));
 
-            //                await userCache.SetUserDataAsync(cacheKey, token, TimeSpan.FromMinutes(30));
+                    return Results.Ok(new { Token = token });
+                }
 
-            //                return Results.Ok("Login successful");
-            //            }
+                return Results.Unauthorized();
+            });
 
-            //            return Results.Unauthorized();
-            //        });
-
-            //        // Get user by ID
-            //        routeGroup.MapGet("/users/{id}", async (UserManager<TUser> userManager, UserRedisCache userCache, string id) =>
-            //        {
-            //            var cacheKey = $"User:{id}";
-            //            var cachedUser = await userCache.GetUserDataAsync(cacheKey);
-
-            //            if (cachedUser != null)
-            //            {
-            //                return Results.Ok(cachedUser); // Note: You may need to deserialize data before returning
-            //            }
-
-            //            var userFromDb = await userManager.FindByIdAsync(id);
-            //            if (userFromDb == null)
-            //            {
-            //                return Results.NotFound();
-            //            }
-
-            //            var userJson = System.Text.Json.JsonSerializer.Serialize(userFromDb);
-            //            await userCache.SetUserDataAsync(cacheKey, userJson, TimeSpan.FromHours(1));
-
-            //            return Results.Ok(userFromDb);
-            //        });
-            //    }
-
-            //    private static bool IsValidUsername(string username)
-            //    {
-            //        // Example validation logic: username should not be empty and have a minimum length
-            //        return !string.IsNullOrWhiteSpace(username) && username.Length >= 3;
-            //    }
-            //}
-
-            app.MapPost("/Auth/logout", async (SignInManager<User> signInManager,
-    [FromBody] object empty) =>
+            app.MapPost("/Auth/logout", async (SignInManager<User> signInManager, [FromBody] object empty) =>
             {
                 if (empty != null)
                 {
@@ -99,8 +66,13 @@ namespace Account.Presentation.Endpoints
                 }
                 return Results.Unauthorized();
             })
-.WithOpenApi()
-.RequireAuthorization();
+            .WithOpenApi()
+            .RequireAuthorization();
+        }
+
+        private static bool IsValidUsername(string username)
+        {
+            return !string.IsNullOrWhiteSpace(username) && username.Length >= 3;
         }
     }
 }
