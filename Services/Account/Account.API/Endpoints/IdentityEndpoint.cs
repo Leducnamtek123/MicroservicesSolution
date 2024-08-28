@@ -51,6 +51,7 @@ namespace Account.API.Endpoints
             string? confirmEmailEndpointName = null;
 
             var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
+
             routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
        ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
@@ -165,13 +166,9 @@ namespace Account.API.Endpoints
                     var errorResponse = BaseResponse<string>.Failure("User validation failed");
                     return Results.BadRequest(errorResponse);
                 }
-                // Xóa refresh token cũ
-                var tokenRevoked = await jwtTokenService.RevokeRefreshTokenAsync(token.UserId);
-                if (!tokenRevoked)
-                {
-                    var errorResponse = BaseResponse<string>.Failure("Failed to revoke old refresh token");
-                    return Results.BadRequest(errorResponse);
-                }                // Tạo access token mới
+                   // Xóa refresh token cũ
+                await jwtTokenService.RevokeRefreshTokenAsync(token.UserId);
+                // Tạo access token mới
                 var newAccessToken = jwtTokenService.GenerateAccessToken(token.UserId);
 
                 // Tạo refresh token mới

@@ -8,6 +8,7 @@ using Account.Infrastructure.Cache;
 using Account.Infrastructure.Context;
 using Account.Infrastructure.Repositories;
 using Common.Cache;
+using Common.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
@@ -105,6 +106,8 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Add DbContext configuration
