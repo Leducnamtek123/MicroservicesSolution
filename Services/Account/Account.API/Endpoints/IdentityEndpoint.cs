@@ -17,384 +17,463 @@ using Account.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Account.Domain.Models;
 using Common.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
-namespace Account.Presentation.Endpoints
+namespace Account.API.Endpoints
 {
-    public class AccessTokenResponse
-    {
-        public string Token { get; set; }
-        public string Expiry { get; set; }
-    }
-
     public static class IdentityEndpoints
     {
-      
-            // Validate the email address using DataAnnotations like the UserValidator does when RequireUniqueEmail = true.
-            private static readonly EmailAddressAttribute _emailAddressAttribute = new();
 
-            /// <summary>
-            /// Add endpoints for registering, logging in, and logging out using ASP.NET Core Identity.
-            /// </summary>
-            /// <typeparam name="TUser">The type describing the user. This should match the generic parameter in <see cref="UserManager{TUser}"/>.</typeparam>
-            /// <param name="endpoints">
-            /// The <see cref="IEndpointRouteBuilder"/> to add the identity endpoints to.
-            /// Call <see cref="EndpointRouteBuilderExtensions.MapGroup(IEndpointRouteBuilder, string)"/> to add a prefix to all the endpoints.
-            /// </param>
-            /// <returns>An <see cref="IEndpointConventionBuilder"/> to further customize the added endpoints.</returns>
-            public static IEndpointConventionBuilder MapIdentityApi<TUser>(this IEndpointRouteBuilder endpoints)
-                where TUser : class, new()
+        // Validate the email address using DataAnnotations like the UserValidator does when RequireUniqueEmail = true.
+        private static readonly EmailAddressAttribute _emailAddressAttribute = new();
+
+        /// <summary>
+        /// Add endpoints for registering, logging in, and logging out using ASP.NET Core Identity.
+        /// </summary>
+        /// <typeparam name="TUser">The type describing the user. This should match the generic parameter in <see cref="UserManager{TUser}"/>.</typeparam>
+        /// <param name="endpoints">
+        /// The <see cref="IEndpointRouteBuilder"/> to add the identity endpoints to.
+        /// Call <see cref="EndpointRouteBuilderExtensions.MapGroup(IEndpointRouteBuilder, string)"/> to add a prefix to all the endpoints.
+        /// </param>
+        /// <returns>An <see cref="IEndpointConventionBuilder"/> to further customize the added endpoints.</returns>
+        public static IEndpointConventionBuilder MapIdentityApi<TUser>(this IEndpointRouteBuilder endpoints)
+            where TUser : class, new()
+        {
+            ArgumentNullException.ThrowIfNull(endpoints);
+
+            var timeProvider = endpoints.ServiceProvider.GetRequiredService<TimeProvider>();
+            var bearerTokenOptions = endpoints.ServiceProvider.GetRequiredService<IOptionsMonitor<BearerTokenOptions>>();
+            var emailSender = endpoints.ServiceProvider.GetRequiredService<IEmailSender<TUser>>();
+            var linkGenerator = endpoints.ServiceProvider.GetRequiredService<LinkGenerator>();
+
+            // We'll figure out a unique endpoint name based on the final route pattern during endpoint generation.
+            string? confirmEmailEndpointName = null;
+
+            var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
+            routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
+       ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
-                ArgumentNullException.ThrowIfNull(endpoints);
-
-                var timeProvider = endpoints.ServiceProvider.GetRequiredService<TimeProvider>();
-                var bearerTokenOptions = endpoints.ServiceProvider.GetRequiredService<IOptionsMonitor<BearerTokenOptions>>();
-                var emailSender = endpoints.ServiceProvider.GetRequiredService<IEmailSender<TUser>>();
-                var linkGenerator = endpoints.ServiceProvider.GetRequiredService<LinkGenerator>();
-
-                // We'll figure out a unique endpoint name based on the final route pattern during endpoint generation.
-                string? confirmEmailEndpointName = null;
-
-                var routeGroup = endpoints.MapGroup("Auth");
-
-            routeGroup.MapPost("/register", async Task<Results<Ok, BadRequest<ErrorDto>>>
-             ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
-            {
-
                 var email = userRequestDto.Email;
+
                 // Store email in Redis using your custom service
                 await userRedisCache.SetUserDataAsync(Guid.NewGuid().ToString(), email);
-                var createdUser = await userService.CreateUserAsync(userRequestDto);
-                if (createdUser == null)
+
+                // Attempt to create the user
+                var createUserResponse = await userService.CreateUserAsync(userRequestDto);
+
+                if (!createUserResponse.IsSuccess)
                 {
-                    var error = new ErrorDto("UserCreationError", "User cannot be created");
-                    return TypedResults.BadRequest(error);
+                    // Return BadRequest with the errors from the BaseResponse
+                    return TypedResults.BadRequest(createUserResponse);
                 }
-                return TypedResults.Ok();
+
+                // Return Ok with the user data
+                return TypedResults.Ok(createUserResponse);
             });
-            routeGroup.MapPost("/login", async Task<Results<Ok<AccessTokenResponse>, BadRequest<ErrorDto>>>
-            ([FromBody] LoginRequest login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies, [FromServices] IServiceProvider sp) =>
+            #region Login 
+            routeGroup.MapPost("/login", async Task<IResult>
+    ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<User>>();
-                var jwtTokenService = sp.GetRequiredService<JwtTokenService>();
+                var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
+                var userRedisCache = sp.GetRequiredService<IUserRedisCache>(); // Inject cache service
+                var configuration = sp.GetRequiredService<IConfiguration>();
 
+                // Tìm người dùng theo email
                 var user = await userManager.FindByEmailAsync(login.Email);
                 if (user == null || !await userManager.CheckPasswordAsync(user, login.Password))
                 {
-                    var error = new ErrorDto("InvalidLogin", "Invalid login attempt");
-                    return TypedResults.BadRequest(error);
+                    // Trả về phản hồi thất bại với thông báo lỗi chuỗi
+                    var errorResponse = BaseResponse<string>.Failure("Invalid login attempt");
+                    return Results.BadRequest(errorResponse);
                 }
 
-                // Create and return JWT token
-                var token = await jwtTokenService.GenerateTokenAsync(user);
-                var response = new AccessTokenResponse
+                var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
+                var tokenKey = $"jwt_token_{user.Id}";
+                var cachedToken = await userRedisCache.GetUserDataAsync(tokenKey);
+
+                AccessTokenResponse response;
+
+                if (cachedToken != null)
                 {
-                    Token = token,
-                    Expiry = DateTime.UtcNow.AddMinutes(Convert.ToDouble(sp.GetRequiredService<IConfiguration>().GetSection("Jwt")["ExpiryInMinutes"])).ToString("o")
-                };
+                    // Revoke the old refresh token
+                    await jwtTokenService.RevokeRefreshTokenAsync(user.Id);
 
-                return TypedResults.Ok(response);
-            });
+                    // Generate new refresh token
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
 
-
-            routeGroup.MapPost("/refresh", async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>>
-                    ([FromBody] RefreshRequest refreshRequest, [FromServices] IServiceProvider sp) =>
+                    response = new AccessTokenResponse
+                    {
+                        AccessToken = cachedToken,
+                        ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                        RefreshToken = refreshToken
+                    };
+                }
+                else
                 {
-                    var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
-                    var refreshTokenProtector = bearerTokenOptions.Get(IdentityConstants.BearerScheme).RefreshTokenProtector;
-                    var refreshTicket = refreshTokenProtector.Unprotect(refreshRequest.RefreshToken);
-
-                    // Reject the /refresh attempt with a 401 if the token expired or the security stamp validation fails
-                    if (refreshTicket?.Properties?.ExpiresUtc is not { } expiresUtc ||
-                        timeProvider.GetUtcNow() >= expiresUtc ||
-                        await signInManager.ValidateSecurityStampAsync(refreshTicket.Principal) is not TUser user)
-
+                    var token =  jwtTokenService.GenerateAccessToken(user.Id);
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+                    response = new AccessTokenResponse
                     {
-                        return TypedResults.Challenge();
-                    }
-
-                    var newPrincipal = await signInManager.CreateUserPrincipalAsync(user);
-                    return TypedResults.SignIn(newPrincipal, authenticationScheme: IdentityConstants.BearerScheme);
-                });
-
-                routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
-                    ([FromQuery] string userId, [FromQuery] string code, [FromQuery] string? changedEmail, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-                    if (await userManager.FindByIdAsync(userId) is not { } user)
-                    {
-                        // We could respond with a 404 instead of a 401 like Identity UI, but that feels like unnecessary information.
-                        return TypedResults.Unauthorized();
-                    }
-
-                    try
-                    {
-                        code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-                    }
-                    catch (FormatException)
-                    {
-                        return TypedResults.Unauthorized();
-                    }
-
-                    IdentityResult result;
-
-                    if (string.IsNullOrEmpty(changedEmail))
-                    {
-                        result = await userManager.ConfirmEmailAsync(user, code);
-                    }
-                    else
-                    {
-                        // As with Identity UI, email and user name are one and the same. So when we update the email,
-                        // we need to update the user name.
-                        result = await userManager.ChangeEmailAsync(user, changedEmail, code);
-
-                        if (result.Succeeded)
-                        {
-                            result = await userManager.SetUserNameAsync(user, changedEmail);
-                        }
-                    }
-
-                    if (!result.Succeeded)
-                    {
-                        return TypedResults.Unauthorized();
-                    }
-
-                    return TypedResults.Text("Thank you for confirming your email.");
-                })
-                .Add(endpointBuilder =>
-                {
-                    var finalPattern = ((RouteEndpointBuilder)endpointBuilder).RoutePattern.RawText;
-                    confirmEmailEndpointName = $"{nameof(MapIdentityApi)}-{finalPattern}";
-                    endpointBuilder.Metadata.Add(new EndpointNameMetadata(confirmEmailEndpointName));
-                });
-
-                routeGroup.MapPost("/resendConfirmationEmail", async Task<Ok>
-                    ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-                    if (await userManager.FindByEmailAsync(resendRequest.Email) is not { } user)
-                    {
-                        return TypedResults.Ok();
-                    }
-
-                    await SendConfirmationEmailAsync(user, userManager, context, resendRequest.Email);
-                    return TypedResults.Ok();
-                });
-
-                routeGroup.MapPost("/forgotPassword", async Task<Results<Ok, ValidationProblem>>
-                    ([FromBody] ForgotPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-                    var user = await userManager.FindByEmailAsync(resetRequest.Email);
-
-                    if (user is not null && await userManager.IsEmailConfirmedAsync(user))
-                    {
-                        var code = await userManager.GeneratePasswordResetTokenAsync(user);
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                        await emailSender.SendPasswordResetCodeAsync(user, resetRequest.Email, HtmlEncoder.Default.Encode(code));
-                    }
-
-                    // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
-                    // returned a 400 for an invalid code given a valid user email.
-                    return TypedResults.Ok();
-                });
-
-                routeGroup.MapPost("/resetPassword", async Task<Results<Ok, ValidationProblem>>
-                    ([FromBody] ResetPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-
-                    var user = await userManager.FindByEmailAsync(resetRequest.Email);
-
-                    if (user is null || !(await userManager.IsEmailConfirmedAsync(user)))
-                    {
-                        // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
-                        // returned a 400 for an invalid code given a valid user email.
-                        return CreateValidationProblem(IdentityResult.Failed(userManager.ErrorDescriber.InvalidToken()));
-                    }
-
-                    IdentityResult result;
-                    try
-                    {
-                        var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetRequest.ResetCode));
-                        result = await userManager.ResetPasswordAsync(user, code, resetRequest.NewPassword);
-                    }
-                    catch (FormatException)
-                    {
-                        result = IdentityResult.Failed(userManager.ErrorDescriber.InvalidToken());
-                    }
-
-                    if (!result.Succeeded)
-                    {
-                        return CreateValidationProblem(result);
-                    }
-
-                    return TypedResults.Ok();
-                });
-
-                var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
-
-                accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
-                    (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
-                {
-                    var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
-                    var userManager = signInManager.UserManager;
-                    if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
-                    {
-                        return TypedResults.NotFound();
-                    }
-
-                    if (tfaRequest.Enable == true)
-                    {
-                        if (tfaRequest.ResetSharedKey)
-                        {
-                            return CreateValidationProblem("CannotResetSharedKeyAndEnable",
-                                "Resetting the 2fa shared key must disable 2fa until a 2fa token based on the new shared key is validated.");
-                        }
-                        else if (string.IsNullOrEmpty(tfaRequest.TwoFactorCode))
-                        {
-                            return CreateValidationProblem("RequiresTwoFactor",
-                                "No 2fa token was provided by the request. A valid 2fa token is required to enable 2fa.");
-                        }
-                        else if (!await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, tfaRequest.TwoFactorCode))
-                        {
-                            return CreateValidationProblem("InvalidTwoFactorCode",
-                                "The 2fa token provided by the request was invalid. A valid 2fa token is required to enable 2fa.");
-                        }
-
-                        await userManager.SetTwoFactorEnabledAsync(user, true);
-                    }
-                    else if (tfaRequest.Enable == false || tfaRequest.ResetSharedKey)
-                    {
-                        await userManager.SetTwoFactorEnabledAsync(user, false);
-                    }
-
-                    if (tfaRequest.ResetSharedKey)
-                    {
-                        await userManager.ResetAuthenticatorKeyAsync(user);
-                    }
-
-                    string[]? recoveryCodes = null;
-                    if (tfaRequest.ResetRecoveryCodes || (tfaRequest.Enable == true && await userManager.CountRecoveryCodesAsync(user) == 0))
-                    {
-                        var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-                        recoveryCodes = recoveryCodesEnumerable?.ToArray();
-                    }
-
-                    if (tfaRequest.ForgetMachine)
-                    {
-                        await signInManager.ForgetTwoFactorClientAsync();
-                    }
-
-                    var key = await userManager.GetAuthenticatorKeyAsync(user);
-                    if (string.IsNullOrEmpty(key))
-                    {
-                        await userManager.ResetAuthenticatorKeyAsync(user);
-                        key = await userManager.GetAuthenticatorKeyAsync(user);
-
-                        if (string.IsNullOrEmpty(key))
-                        {
-                            throw new NotSupportedException("The user manager must produce an authenticator key after reset.");
-                        }
-                    }
-
-                    return TypedResults.Ok(new TwoFactorResponse
-                    {
-                        SharedKey = key,
-                        RecoveryCodes = recoveryCodes,
-                        RecoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user),
-                        IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
-                        IsMachineRemembered = await signInManager.IsTwoFactorClientRememberedAsync(user),
-                    });
-                });
-
-                accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
-                    (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-                    if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
-                    {
-                        return TypedResults.NotFound();
-                    }
-
-                    return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
-                });
-
-                accountGroup.MapPost("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
-                    (ClaimsPrincipal claimsPrincipal, [FromBody] InfoRequest infoRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
-                {
-                    var userManager = sp.GetRequiredService<UserManager<TUser>>();
-                    if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
-                    {
-                        return TypedResults.NotFound();
-                    }
-
-                    if (!string.IsNullOrEmpty(infoRequest.NewEmail) && !_emailAddressAttribute.IsValid(infoRequest.NewEmail))
-                    {
-                        return CreateValidationProblem(IdentityResult.Failed(userManager.ErrorDescriber.InvalidEmail(infoRequest.NewEmail)));
-                    }
-
-                    if (!string.IsNullOrEmpty(infoRequest.NewPassword))
-                    {
-                        if (string.IsNullOrEmpty(infoRequest.OldPassword))
-                        {
-                            return CreateValidationProblem("OldPasswordRequired",
-                                "The old password is required to set a new password. If the old password is forgotten, use /resetPassword.");
-                        }
-
-                        var changePasswordResult = await userManager.ChangePasswordAsync(user, infoRequest.OldPassword, infoRequest.NewPassword);
-                        if (!changePasswordResult.Succeeded)
-                        {
-                            return CreateValidationProblem(changePasswordResult);
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(infoRequest.NewEmail))
-                    {
-                        var email = await userManager.GetEmailAsync(user);
-
-                        if (email != infoRequest.NewEmail)
-                        {
-                            await SendConfirmationEmailAsync(user, userManager, context, infoRequest.NewEmail, isChange: true);
-                        }
-                    }
-
-                    return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
-                });
-
-                async Task SendConfirmationEmailAsync(TUser user, UserManager<TUser> userManager, HttpContext context, string email, bool isChange = false)
-                {
-                    if (confirmEmailEndpointName is null)
-                    {
-                        throw new NotSupportedException("No email confirmation endpoint was registered!");
-                    }
-
-                    var code = isChange
-                        ? await userManager.GenerateChangeEmailTokenAsync(user, email)
-                        : await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                    var userId = await userManager.GetUserIdAsync(user);
-                    var routeValues = new RouteValueDictionary()
-                    {
-                        ["userId"] = userId,
-                        ["code"] = code,
+                        AccessToken = token,
+                        ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                        RefreshToken = refreshToken // Provide a mechanism to handle refresh tokens if needed
                     };
 
-                    if (isChange)
-                    {
-                        // This is validated by the /confirmEmail endpoint on change.
-                        routeValues.Add("changedEmail", email);
-                    }
-
-                    var confirmEmailUrl = linkGenerator.GetUriByName(context, confirmEmailEndpointName, routeValues)
-                        ?? throw new NotSupportedException($"Could not find endpoint named '{confirmEmailEndpointName}'.");
-
-                    await emailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(confirmEmailUrl));
+                    // Store token in cache
+                    await userRedisCache.SetUserDataAsync(tokenKey, token, TimeSpan.FromMinutes(expiryInMinutes));
                 }
 
-                return new IdentityEndpointsConventionBuilder(routeGroup);
+                var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
+                return Results.Ok(successResponse);
+            });
+            #endregion
+
+            #region Refresh Token
+            routeGroup.MapPost("/refresh", async Task<IResult> (
+                [FromServices] IServiceProvider sp,
+                [FromBody] RefreshRequest refreshRequest) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
+                var userRedisCache = sp.GetRequiredService<IUserRedisCache>();
+                var configuration = sp.GetRequiredService<IConfiguration>();
+
+                // Lấy refresh token từ yêu cầu
+                var refreshTokenCode = refreshRequest.RefreshToken;
+
+                // Kiểm tra tính hợp lệ của refresh token
+                if (!await jwtTokenService.ValidateRefreshToken(refreshTokenCode))
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Invalid or expired refresh token");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                // Lấy thông tin từ refresh token
+                var token = await jwtTokenService.GetTokenByCodeAsync(refreshTokenCode);
+                if (token == null || token.Expiry < DateTime.UtcNow)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Invalid or expired refresh token");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                // Xác thực người dùng bằng UserManager
+                var user = await userManager.FindByIdAsync(token.UserId);
+                if (user == null)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("User validation failed");
+                    return Results.BadRequest(errorResponse);
+                }
+                // Xóa refresh token cũ
+                var tokenRevoked = await jwtTokenService.RevokeRefreshTokenAsync(token.UserId);
+                if (!tokenRevoked)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Failed to revoke old refresh token");
+                    return Results.BadRequest(errorResponse);
+                }                // Tạo access token mới
+                var newAccessToken = jwtTokenService.GenerateAccessToken(token.UserId);
+
+                // Tạo refresh token mới
+                var newRefreshToken =  jwtTokenService.GenerateRefreshToken(token.UserId);
+
+
+                // Lưu token mới vào cache
+                var tokenKey = $"jwt_token_{token.UserId}";
+                var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
+                await userRedisCache.SetUserDataAsync(tokenKey, newAccessToken, TimeSpan.FromMinutes(expiryInMinutes));
+
+                var response = new AccessTokenResponse
+                {
+                    AccessToken = newAccessToken,
+                    ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                    RefreshToken = newRefreshToken
+                };
+
+                var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
+                return Results.Ok(successResponse);
+            });
+            #endregion
+
+            routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
+                ([FromQuery] string userId, [FromQuery] string code, [FromQuery] string? changedEmail, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                if (await userManager.FindByIdAsync(userId) is not { } user)
+                {
+                    // We could respond with a 404 instead of a 401 like Identity UI, but that feels like unnecessary information.
+                    return TypedResults.Unauthorized();
+                }
+
+                try
+                {
+                    code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                }
+                catch (FormatException)
+                {
+                    return TypedResults.Unauthorized();
+                }
+
+                IdentityResult result;
+
+                if (string.IsNullOrEmpty(changedEmail))
+                {
+                    result = await userManager.ConfirmEmailAsync(user, code);
+                }
+                else
+                {
+                    // As with Identity UI, email and user name are one and the same. So when we update the email,
+                    // we need to update the user name.
+                    result = await userManager.ChangeEmailAsync(user, changedEmail, code);
+
+                    if (result.Succeeded)
+                    {
+                        result = await userManager.SetUserNameAsync(user, changedEmail);
+                    }
+                }
+
+                if (!result.Succeeded)
+                {
+                    return TypedResults.Unauthorized();
+                }
+
+                return TypedResults.Text("Thank you for confirming your email.");
+            })
+            .Add(endpointBuilder =>
+            {
+                var finalPattern = ((RouteEndpointBuilder)endpointBuilder).RoutePattern.RawText;
+                confirmEmailEndpointName = $"{nameof(MapIdentityApi)}-{finalPattern}";
+                endpointBuilder.Metadata.Add(new EndpointNameMetadata(confirmEmailEndpointName));
+            });
+
+            routeGroup.MapPost("/resendConfirmationEmail", async Task<Ok>
+                ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                if (await userManager.FindByEmailAsync(resendRequest.Email) is not { } user)
+                {
+                    return TypedResults.Ok();
+                }
+
+                await SendConfirmationEmailAsync(user, userManager, context, resendRequest.Email);
+                return TypedResults.Ok();
+            });
+
+            routeGroup.MapPost("/forgotPassword", async Task<Results<Ok, ValidationProblem>>
+                ([FromBody] ForgotPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                var user = await userManager.FindByEmailAsync(resetRequest.Email);
+
+                if (user is not null && await userManager.IsEmailConfirmedAsync(user))
+                {
+                    var code = await userManager.GeneratePasswordResetTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    await emailSender.SendPasswordResetCodeAsync(user, resetRequest.Email, HtmlEncoder.Default.Encode(code));
+                }
+
+                // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
+                // returned a 400 for an invalid code given a valid user email.
+                return TypedResults.Ok();
+            });
+
+            routeGroup.MapPost("/resetPassword", async Task<Results<Ok, ValidationProblem>>
+                ([FromBody] ResetPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+
+                var user = await userManager.FindByEmailAsync(resetRequest.Email);
+
+                if (user is null || !(await userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
+                    // returned a 400 for an invalid code given a valid user email.
+                    return CreateValidationProblem(IdentityResult.Failed(userManager.ErrorDescriber.InvalidToken()));
+                }
+
+                IdentityResult result;
+                try
+                {
+                    var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetRequest.ResetCode));
+                    result = await userManager.ResetPasswordAsync(user, code, resetRequest.NewPassword);
+                }
+                catch (FormatException)
+                {
+                    result = IdentityResult.Failed(userManager.ErrorDescriber.InvalidToken());
+                }
+
+                if (!result.Succeeded)
+                {
+                    return CreateValidationProblem(result);
+                }
+
+                return TypedResults.Ok();
+            });
+
+            var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
+
+            accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
+            {
+                var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
+                var userManager = signInManager.UserManager;
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                if (tfaRequest.Enable == true)
+                {
+                    if (tfaRequest.ResetSharedKey)
+                    {
+                        return CreateValidationProblem("CannotResetSharedKeyAndEnable",
+                            "Resetting the 2fa shared key must disable 2fa until a 2fa token based on the new shared key is validated.");
+                    }
+                    else if (string.IsNullOrEmpty(tfaRequest.TwoFactorCode))
+                    {
+                        return CreateValidationProblem("RequiresTwoFactor",
+                            "No 2fa token was provided by the request. A valid 2fa token is required to enable 2fa.");
+                    }
+                    else if (!await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, tfaRequest.TwoFactorCode))
+                    {
+                        return CreateValidationProblem("InvalidTwoFactorCode",
+                            "The 2fa token provided by the request was invalid. A valid 2fa token is required to enable 2fa.");
+                    }
+
+                    await userManager.SetTwoFactorEnabledAsync(user, true);
+                }
+                else if (tfaRequest.Enable == false || tfaRequest.ResetSharedKey)
+                {
+                    await userManager.SetTwoFactorEnabledAsync(user, false);
+                }
+
+                if (tfaRequest.ResetSharedKey)
+                {
+                    await userManager.ResetAuthenticatorKeyAsync(user);
+                }
+
+                string[]? recoveryCodes = null;
+                if (tfaRequest.ResetRecoveryCodes || (tfaRequest.Enable == true && await userManager.CountRecoveryCodesAsync(user) == 0))
+                {
+                    var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                    recoveryCodes = recoveryCodesEnumerable?.ToArray();
+                }
+
+                if (tfaRequest.ForgetMachine)
+                {
+                    await signInManager.ForgetTwoFactorClientAsync();
+                }
+
+                var key = await userManager.GetAuthenticatorKeyAsync(user);
+                if (string.IsNullOrEmpty(key))
+                {
+                    await userManager.ResetAuthenticatorKeyAsync(user);
+                    key = await userManager.GetAuthenticatorKeyAsync(user);
+
+                    if (string.IsNullOrEmpty(key))
+                    {
+                        throw new NotSupportedException("The user manager must produce an authenticator key after reset.");
+                    }
+                }
+
+                return TypedResults.Ok(new TwoFactorResponse
+                {
+                    SharedKey = key,
+                    RecoveryCodes = recoveryCodes,
+                    RecoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user),
+                    IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
+                    IsMachineRemembered = await signInManager.IsTwoFactorClientRememberedAsync(user),
+                });
+            });
+
+            accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
+            });
+
+            accountGroup.MapPost("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromBody] InfoRequest infoRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                if (!string.IsNullOrEmpty(infoRequest.NewEmail) && !_emailAddressAttribute.IsValid(infoRequest.NewEmail))
+                {
+                    return CreateValidationProblem(IdentityResult.Failed(userManager.ErrorDescriber.InvalidEmail(infoRequest.NewEmail)));
+                }
+
+                if (!string.IsNullOrEmpty(infoRequest.NewPassword))
+                {
+                    if (string.IsNullOrEmpty(infoRequest.OldPassword))
+                    {
+                        return CreateValidationProblem("OldPasswordRequired",
+                            "The old password is required to set a new password. If the old password is forgotten, use /resetPassword.");
+                    }
+
+                    var changePasswordResult = await userManager.ChangePasswordAsync(user, infoRequest.OldPassword, infoRequest.NewPassword);
+                    if (!changePasswordResult.Succeeded)
+                    {
+                        return CreateValidationProblem(changePasswordResult);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(infoRequest.NewEmail))
+                {
+                    var email = await userManager.GetEmailAsync(user);
+
+                    if (email != infoRequest.NewEmail)
+                    {
+                        await SendConfirmationEmailAsync(user, userManager, context, infoRequest.NewEmail, isChange: true);
+                    }
+                }
+
+                return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
+            });
+
+            async Task SendConfirmationEmailAsync(TUser user, UserManager<TUser> userManager, HttpContext context, string email, bool isChange = false)
+            {
+                if (confirmEmailEndpointName is null)
+                {
+                    throw new NotSupportedException("No email confirmation endpoint was registered!");
+                }
+
+                var code = isChange
+                    ? await userManager.GenerateChangeEmailTokenAsync(user, email)
+                    : await userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var userId = await userManager.GetUserIdAsync(user);
+                var routeValues = new RouteValueDictionary()
+                {
+                    ["userId"] = userId,
+                    ["code"] = code,
+                };
+
+                if (isChange)
+                {
+                    // This is validated by the /confirmEmail endpoint on change.
+                    routeValues.Add("changedEmail", email);
+                }
+
+                var confirmEmailUrl = linkGenerator.GetUriByName(context, confirmEmailEndpointName, routeValues)
+                    ?? throw new NotSupportedException($"Could not find endpoint named '{confirmEmailEndpointName}'.");
+
+                await emailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(confirmEmailUrl));
             }
+
+            return new IdentityEndpointsConventionBuilder(routeGroup);
+        }
         private static ValidationProblem CreateValidationProblem(string errorCode, string errorDescription) =>
     TypedResults.ValidationProblem(new Dictionary<string, string[]> {
             { errorCode, [errorDescription] }
@@ -463,4 +542,4 @@ namespace Account.Presentation.Endpoints
             public string? Name => null;
         }
     }
-    }
+}

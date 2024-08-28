@@ -23,6 +23,30 @@ namespace Account.PostgresMigrations.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Account.Domain.Models.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Expiry")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TokenCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens", "Account");
+                });
+
             modelBuilder.Entity("Account.Domain.Models.Role", b =>
                 {
                     b.Property<string>("Id")

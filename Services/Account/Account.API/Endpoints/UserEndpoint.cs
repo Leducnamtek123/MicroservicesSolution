@@ -5,11 +5,8 @@ using Account.Domain.Models;
 using Common.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Account.API.Endpoints
 {
@@ -17,66 +14,115 @@ namespace Account.API.Endpoints
     {
         public static void Map(WebApplication app)
         {
-            app.MapGet("/users", async ([FromServices] IUserService userService, [AsParameters] UserFilter filter) =>
+            var userGroup = app.MapGroup("/users")
+         .WithTags("User").RequireAuthorization(); // Yêu cầu xác thực cho tất cả các endpoint trong nhóm này
+
+            userGroup.MapGet("/", async ([FromServices] IUserService userService, [AsParameters] UserFilter filter) =>
             {
                 try
                 {
                     var pagedUsers = await userService.GetPagedUsersAsync(filter);
-                    return Results.Ok(pagedUsers);
+                    var response = BaseResponse<PagedDto<UserResponseDto>>.Success(pagedUsers);
+                    return Results.Ok(response);
                 }
                 catch (Exception ex)
                 {
                     // Log the exception if necessary
-                    return Results.Problem(ex.Message);
+                    var errorResponse = BaseResponse<PagedDto<UserResponseDto>>.Failure("An error occurred while retrieving users.");
+                    return Results.Problem(detail: errorResponse.Errors[0]);
                 }
-            });
-            app.MapGet("/users/{id:guid}", async (IUserService userService, string id) =>
-            {
-                var user = await userService.GetUserByIdAsync(id);
-                if (user == null)
-                {
-                    var errorCode = "404";
-                    var message = "User not found";
-                    var error = new ErrorDto(errorCode,message);
-                    return Results.NotFound(error); // Trả về mã trạng thái 404 và đối tượng lỗi
-                }
-                return Results.Ok(user);
             });
 
-            app.MapPost("/users", async (IUserService userService, [FromBody] UserRequestDto createUserDto) =>
+            userGroup.MapGet("/{id:guid}", async (IUserService userService, string id) =>
+            {
+                try
+                {
+                    var userResponse = await userService.GetUserByIdAsync(id);
+                    if (userResponse == null)
+                    {
+                        var errorResponse = BaseResponse<UserResponseDto>.Failure("User not found.");
+                        return Results.NotFound(errorResponse);
+                    }
+                    return Results.Ok(userResponse);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while retrieving the user.");
+                    return Results.Problem(detail: errorResponse.Errors[0]);
+                }
+            });
+
+            userGroup.MapPost("/", async (IUserService userService, [FromBody] UserRequestDto createUserDto) =>
             {
                 if (createUserDto == null)
                 {
-                    return Results.BadRequest("User data is required.");
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("User data is required.");
+                    return Results.BadRequest(errorResponse);
                 }
 
-                var user = await userService.CreateUserAsync(createUserDto);
-                return Results.Created($"/users/{user.Id}", user);
+                try
+                {
+                    var userResponse = await userService.CreateUserAsync(createUserDto);
+                    if (userResponse == null)
+                    {
+                        var errorResponse = BaseResponse<UserResponseDto>.Failure("User creation failed.");
+                        return Results.BadRequest(errorResponse);
+                    }
+                    return Results.Ok(userResponse);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while creating the user.");
+                    return Results.Problem(detail: errorResponse.Errors[0]);
+                }
             });
 
-            app.MapPut("/users/{id:guid}", async (IUserService userService, string id, [FromBody] UserRequestDto updateUserDto) =>
+            userGroup.MapPut("/{id:guid}", async (IUserService userService, string id, [FromBody] UserRequestDto updateUserDto) =>
             {
                 if (updateUserDto == null)
                 {
-                    return Results.BadRequest("User data is required.");
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("User data is required.");
+                    return Results.BadRequest(errorResponse);
                 }
 
-                var updatedUser = await userService.UpdateUserAsync(id, updateUserDto);
-                if (updatedUser == null)
+                try
                 {
-                    return Results.NotFound();
+                    var userResponse = await userService.UpdateUserAsync(id, updateUserDto);
+                    if (userResponse == null)
+                    {
+                        var errorResponse = BaseResponse<UserResponseDto>.Failure("User not found.");
+                        return Results.NotFound(errorResponse);
+                    }
+                    return Results.Ok(userResponse);
                 }
-                return Results.Ok(updatedUser);
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while updating the user.");
+                    return Results.Problem(detail: errorResponse.Errors[0]);
+                }
             });
 
-            app.MapDelete("/users/{id:guid}", async (IUserService userService, string id) =>
+            userGroup.MapDelete("/{id:guid}", async (IUserService userService, string id) =>
             {
-                var success = await userService.DeleteUserAsync(id);
-                if (!success)
+                try
                 {
-                    return Results.NotFound();
+                    var response = await userService.DeleteUserAsync(id);
+                    if (!response.IsSuccess)
+                    {
+                        var errorResponse = BaseResponse<UserResponseDto>.Failure("User not found.");
+                        return Results.NotFound(errorResponse);
+                    }
+                    return Results.NoContent();
                 }
-                return Results.NoContent();
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while deleting the user.");
+                    return Results.Problem(detail: errorResponse.Errors[0]);
+                }
             });
         }
     }

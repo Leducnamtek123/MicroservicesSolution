@@ -9,7 +9,6 @@ using Common.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using RazorLight;
 using System.Text;
 
 public class UserService : IUserService
@@ -20,6 +19,7 @@ public class UserService : IUserService
     private readonly UserManager<User> _userManager;
     private readonly IEmailSender _emailSender;
 
+    #region Constructor
     public UserService(
         IUserRepository userRepository,
         IMapper mapper,
@@ -33,23 +33,36 @@ public class UserService : IUserService
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
     }
+    #endregion
 
-    public async Task<UserResponseDto> GetUserByIdAsync(string id)
+    #region Get User by Id
+
+    public async Task<BaseResponse<UserResponseDto>> GetUserByIdAsync(string id)
     {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return BaseResponse<UserResponseDto>.Failure("User ID cannot be null or empty.");
+        }
+
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {
-            return null; // Consider throwing a custom exception
+            return BaseResponse<UserResponseDto>.Failure("User not found.");
         }
 
-        return _mapper.Map<UserResponseDto>(user);
+        var userResponseDto = _mapper.Map<UserResponseDto>(user);
+        return BaseResponse<UserResponseDto>.Success(userResponseDto);
     }
 
-    public async Task<UserResponseDto> CreateUserAsync(UserRequestDto userRequestDto)
+    #endregion
+
+    #region Create User
+
+    public async Task<BaseResponse<UserResponseDto>> CreateUserAsync(UserRequestDto userRequestDto)
     {
         if (userRequestDto == null)
         {
-            throw new ArgumentNullException(nameof(userRequestDto));
+            return BaseResponse<UserResponseDto>.Failure("User request cannot be null.");
         }
 
         var user = _mapper.Map<User>(userRequestDto);
@@ -61,63 +74,83 @@ public class UserService : IUserService
             var encodeToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var activationLink = $"http://localhost:5165/Auth/ConfirmEmail?userId={user.Id}&code={encodeToken}";
 
-            // Kiểm tra giá trị email tại đây
+            // Gửi email chào mừng với liên kết kích hoạt
             await SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
-            return _mapper.Map<UserResponseDto>(user);
-        }
 
-        var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-        throw new InvalidOperationException($"User creation failed: {errors}");
+            // Trả về phản hồi thành công với dữ liệu người dùng đã tạo
+            var userResponseDto = _mapper.Map<UserResponseDto>(user);
+            return BaseResponse<UserResponseDto>.Success(userResponseDto);
+        }
+        else
+        {
+            // Xử lý lỗi từ IdentityResult
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<UserResponseDto>.Failure(errors);
+        }
     }
 
-    public async Task<UserResponseDto> UpdateUserAsync(string id, UserRequestDto userRequestDto)
+    #endregion
+
+    #region Update User
+
+    public async Task<BaseResponse<UserResponseDto>> UpdateUserAsync(string id, UserRequestDto userRequestDto)
     {
         if (userRequestDto == null)
         {
-            throw new ArgumentNullException(nameof(userRequestDto));
+            return BaseResponse<UserResponseDto>.Failure("User request cannot be null.");
         }
 
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {
-            return null; // Consider throwing a custom exception
+            return BaseResponse<UserResponseDto>.Failure("User not found.");
         }
 
+        // Ánh xạ thông tin từ DTO vào đối tượng người dùng
         _mapper.Map(userRequestDto, user);
         var result = await _userManager.UpdateAsync(user);
+
         if (result.Succeeded)
         {
-            // Send email after user update
-            var emailBody = "Your profile has been updated.";
-
-            return _mapper.Map<UserResponseDto>(user);
+            // Trả về phản hồi thành công với dữ liệu người dùng đã cập nhật
+            var userResponseDto = _mapper.Map<UserResponseDto>(user);
+            return BaseResponse<UserResponseDto>.Success(userResponseDto);
         }
-
-        var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-        throw new InvalidOperationException($"User update failed: {errors}");
+        else
+        {
+            // Xử lý lỗi từ IdentityResult
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<UserResponseDto>.Failure(errors);
+        }
     }
 
-    public async Task<bool> DeleteUserAsync(string id)
+    #endregion
+
+    #region Delete User
+
+    public async Task<BaseResponse<bool>> DeleteUserAsync(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {
-            return false;
+            return BaseResponse<bool>.Failure("User not found.");
         }
 
         var result = await _userManager.DeleteAsync(user);
-        return result.Succeeded;
+        if (result.Succeeded)
+        {
+            return BaseResponse<bool>.Success(true);
+        }
+        else
+        {
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
     }
 
-    public async Task<string> GetUserTokenAsync(string userId)
-    {
-        return await _cacheService.GetCacheAsync(userId);
-    }
+    #endregion
 
-    public async Task SetUserTokenAsync(string userId, string token, TimeSpan expiration)
-    {
-        await _cacheService.SetCacheAsync(userId, token, expiration);
-    }
+    #region Get Paged Users
 
     public async Task<PagedDto<UserResponseDto>> GetPagedUsersAsync(UserFilter filter)
     {
@@ -142,6 +175,11 @@ public class UserService : IUserService
 
         return pagedResponse;
     }
+
+    #endregion
+
+    #region Send Welcome Email
+
     public async Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink)
     {
         var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "WelcomeEmail.html");
@@ -155,4 +193,5 @@ public class UserService : IUserService
         await _emailSender.SendEmailAsync(email, "Welcome to Our Service", emailBody);
     }
 
+    #endregion
 }

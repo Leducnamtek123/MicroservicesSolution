@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Account.Domain.Models
 {
-    public class Token
+    public class TokenResponseDto
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

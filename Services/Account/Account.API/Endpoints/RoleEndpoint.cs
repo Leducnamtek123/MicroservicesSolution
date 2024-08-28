@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace Account.Presentation.Endpoints
+namespace Account.API.Endpoints
 {
     public static class RoleEndpoints
     {
         public static void Map(WebApplication app)
         {
+            var userGroup = app.MapGroup("/roles")
+.WithTags("Role");
             // Endpoint để lấy danh sách các vai trò phân trang
-            app.MapGet("/roles", async ([FromServices] IRoleService roleService, [AsParameters] RoleFilter filter) =>
+            userGroup.MapGet("", async ([FromServices] IRoleService roleService, [AsParameters] RoleFilter filter) =>
             {
                 try
                 {
@@ -29,7 +31,7 @@ namespace Account.Presentation.Endpoints
             .RequireAuthorization();
 
             // Endpoint để lấy thông tin vai trò theo ID
-            app.MapGet("/roles/{id:guid}", async (IRoleService roleService, string id) =>
+            userGroup.MapGet("/{id:guid}", async (IRoleService roleService, string id) =>
             {
                 var role = await roleService.GetRoleByIdAsync(id);
                 if (role == null)
@@ -41,7 +43,7 @@ namespace Account.Presentation.Endpoints
             .RequireAuthorization();
 
             // Endpoint để tạo một vai trò mới
-            app.MapPost("/roles", async (IRoleService roleService, [FromBody] RoleRequestDto createRoleDto) =>
+            userGroup.MapPost("", async (IRoleService roleService, [FromBody] RoleRequestDto createRoleDto) =>
             {
                 if (createRoleDto == null)
                 {
@@ -49,12 +51,12 @@ namespace Account.Presentation.Endpoints
                 }
 
                 var role = await roleService.CreateRoleAsync(createRoleDto);
-                return Results.Created($"/roles/{role}", role);
+                return Results.Created($"/{role}", role);
             }).WithOpenApi()
             .RequireAuthorization();
 
             // Endpoint để cập nhật thông tin vai trò theo ID
-            app.MapPut("/roles/{id:guid}", async (IRoleService roleService, string id, [FromBody] RoleRequestDto updateRoleDto) =>
+            userGroup.MapPut("/{id:guid}", async (IRoleService roleService, string id, [FromBody] RoleRequestDto updateRoleDto) =>
             {
                 if (updateRoleDto == null)
                 {
@@ -71,7 +73,7 @@ namespace Account.Presentation.Endpoints
             .RequireAuthorization();
 
             // Endpoint để xóa vai trò theo ID
-            app.MapDelete("/roles/{id:guid}", async (IRoleService roleService, string id) =>
+            userGroup.MapDelete("/{id:guid}", async (IRoleService roleService, string id) =>
             {
                 var success = await roleService.DeleteRoleAsync(id);
                 if (!success)
