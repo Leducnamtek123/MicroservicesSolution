@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Command\**" />
+    <Compile Remove="Query Handle\**" />
+    <EmbeddedResource Remove="Command\**" />
+    <EmbeddedResource Remove="Query Handle\**" />
+    <None Remove="Command\**" />
+    <None Remove="Query Handle\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.35.0" />
@@ -15,11 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Command\" />
-    <Folder Include="Query Handle\" />
+    <ProjectReference Include="..\Account.Infrastructure\Account.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
