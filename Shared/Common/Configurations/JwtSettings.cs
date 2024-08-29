@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common.Configurations
 {
-    public class AppSettings
+    public class JwtSettings
     {
- 
+        public string ConnectionString { get; set; }
+        public string JwtSecret { get; set; }
     }
 }

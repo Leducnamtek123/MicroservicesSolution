@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Common.Configurations;
 
 namespace Account.Application.Services
 {
@@ -42,14 +43,18 @@ namespace Account.Application.Services
 
             return client.SendMailAsync(mailMessage);
         }
-    }
 
-    public class EmailSettings
-    {
-        public string SmtpServer { get; set; }
-        public int SmtpPort { get; set; }
-        public string SmtpUser { get; set; }
-        public string SmtpPassword { get; set; }
-    }
+        public async Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink)
+        {
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "WelcomeEmail.html");
+            var emailBody = await File.ReadAllTextAsync(templatePath);
 
+            // Replace placeholders in the email template
+            emailBody = emailBody.Replace("{{UserName}}", userName);
+            emailBody = emailBody.Replace("{{ConfirmationLink}}", confirmationLink);
+
+            // Send the email
+            await SendEmailAsync(email, "Welcome to Our Service", emailBody);
+        }
+    } 
 }

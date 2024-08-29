@@ -6,6 +6,7 @@ using Account.Domain.Repositories;
 using AutoMapper;
 using Common.Cache;
 using Common.Dtos;
+using Common.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,8 @@ public class UserService : IUserService
     private readonly ICacheService _cacheService;
     private readonly UserManager<User> _userManager;
     private readonly IEmailSender _emailSender;
+    private readonly IMailHelper _mailHelper
+;
 
     #region Constructor
     public UserService(
@@ -25,13 +28,16 @@ public class UserService : IUserService
         IMapper mapper,
         ICacheService cacheService,
         UserManager<User> userManager,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IMailHelper mailHelper
+        )
     {
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+        _mailHelper = mailHelper ?? throw new ArgumentNullException(nameof(mailHelper));
     }
     #endregion
 
@@ -75,7 +81,7 @@ public class UserService : IUserService
             var activationLink = $"http://localhost:5165/Auth/ConfirmEmail?userId={user.Id}&code={encodeToken}";
 
             // Gửi email chào mừng với liên kết kích hoạt
-            await SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
+            await _emailSender.SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
 
             // Trả về phản hồi thành công với dữ liệu người dùng đã tạo
             var userResponseDto = _mapper.Map<UserResponseDto>(user);
@@ -151,7 +157,6 @@ public class UserService : IUserService
     #endregion
 
     #region Get Paged Users
-
     public async Task<PagedDto<UserResponseDto>> GetPagedUsersAsync(UserFilter filter)
     {
         if (filter == null)
@@ -160,8 +165,6 @@ public class UserService : IUserService
         }
 
         var users = await _userManager.Users
-            .Skip(filter.PageIndex * filter.PageSize)
-            .Take(filter.PageSize)
             .ToListAsync();
 
         var userResponseDtos = _mapper.Map<IEnumerable<UserResponseDto>>(users);
@@ -175,23 +178,6 @@ public class UserService : IUserService
 
         return pagedResponse;
     }
-
     #endregion
 
-    #region Send Welcome Email
-
-    public async Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink)
-    {
-        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "WelcomeEmail.html");
-        var emailBody = await File.ReadAllTextAsync(templatePath);
-
-        // Thay thế các biến
-        emailBody = emailBody.Replace("{{UserName}}", userName);
-        emailBody = emailBody.Replace("{{ConfirmationLink}}", confirmationLink);
-
-        // Gửi email sử dụng IEmailSender
-        await _emailSender.SendEmailAsync(email, "Welcome to Our Service", emailBody);
-    }
-
-    #endregion
 }

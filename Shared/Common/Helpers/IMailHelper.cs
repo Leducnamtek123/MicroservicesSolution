@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Account.Application.Services
+namespace Common.Helpers
 {
-    public interface IEmailSender 
+    public interface IMailHelper
     {
-        Task SendEmailAsync(string email, string subject, string message);
         Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink);
-
     }
-
 }

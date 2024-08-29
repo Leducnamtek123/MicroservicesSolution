@@ -17,7 +17,8 @@ namespace Account.Application.AutoMapper
             CreateMap<User, UserResponseDto>();
             CreateMap<UserRequestDto, User>();
             CreateMap<Role, RoleResponseDto>();
-            CreateMap<RoleRequestDto, Role>();
+            CreateMap<RoleRequestDto, Role>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }
