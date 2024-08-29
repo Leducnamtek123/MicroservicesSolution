@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Services
 {
-    public interface IEmailSender
+    public interface IEmailSender 
     {
         Task SendEmailAsync(string email, string subject, string message);
+        Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink);
+
     }
 
 }

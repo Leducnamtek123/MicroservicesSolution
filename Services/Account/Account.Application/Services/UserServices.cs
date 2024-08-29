@@ -81,7 +81,7 @@ public class UserService : IUserService
             var activationLink = $"http://localhost:5165/Auth/ConfirmEmail?userId={user.Id}&code={encodeToken}";
 
             // Gửi email chào mừng với liên kết kích hoạt
-            await _mailHelper.SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
+            await _emailSender.SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
 
             // Trả về phản hồi thành công với dữ liệu người dùng đã tạo
             var userResponseDto = _mapper.Map<UserResponseDto>(user);
@@ -178,7 +178,6 @@ public class UserService : IUserService
 
         return pagedResponse;
     }
-
     #endregion
 
 }

@@ -52,6 +52,7 @@ namespace Account.API.Endpoints
 
             var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
 
+            #region Register
             routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
        ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
@@ -72,6 +73,8 @@ namespace Account.API.Endpoints
                 // Return Ok with the user data
                 return TypedResults.Ok(createUserResponse);
             });
+            #endregion
+
             #region Login 
             routeGroup.MapPost("/login", async Task<IResult>
     ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
@@ -192,6 +195,7 @@ namespace Account.API.Endpoints
             });
             #endregion
 
+            #region Confirm Email
             routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
                 ([FromQuery] string userId, [FromQuery] string code, [FromQuery] string? changedEmail, [FromServices] IServiceProvider sp) =>
             {
@@ -242,17 +246,25 @@ namespace Account.API.Endpoints
                 confirmEmailEndpointName = $"{nameof(MapIdentityApi)}-{finalPattern}";
                 endpointBuilder.Metadata.Add(new EndpointNameMetadata(confirmEmailEndpointName));
             });
+            #endregion
+
 
             routeGroup.MapPost("/resendConfirmationEmail", async Task<Ok>
                 ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
             {
-                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                var emailSender = endpoints.ServiceProvider.GetRequiredService<IEmailSender>();
+
+                var userManager = sp.GetRequiredService<UserManager<User>>();
                 if (await userManager.FindByEmailAsync(resendRequest.Email) is not { } user)
                 {
                     return TypedResults.Ok();
                 }
+                var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodeToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                var activationLink = $"http://localhost:5165/Auth/ConfirmEmail?userId={user.Id}&code={encodeToken}";
 
-                await SendConfirmationEmailAsync(user, userManager, context, resendRequest.Email);
+                // Gửi email chào mừng với liên kết kích hoạt
+                await emailSender.SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
                 return TypedResults.Ok();
             });
 
