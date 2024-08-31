@@ -1,9 +1,6 @@
 ﻿using Account.Domain.Models;
-using Common.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System.Reflection.Emit;
 namespace Account.Infrastructure.Context
 {
     public partial class AccountDbContext(DbContextOptions<AccountDbContext> options) : IdentityDbContext<User, Role,string>(options)
@@ -24,6 +21,7 @@ namespace Account.Infrastructure.Context
             // builder.Entity<SomeEntity>().Property(e => e.PropertyName).IsRequired();
         }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
     }
 }

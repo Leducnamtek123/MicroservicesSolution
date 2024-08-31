@@ -17,7 +17,7 @@ namespace Account.Application.Services
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
 
-        public RoleService(IRoleRepository roleRepository, IMapper mapper)
+        public RoleService(IRoleRepository roleRepository, IMapper mapper, RoleManager<Role> roleManager)
         {
             _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

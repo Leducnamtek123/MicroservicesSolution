@@ -12,10 +12,15 @@ namespace Account.API.Endpoints
     {
         public static void Map(WebApplication app)
         {
-            var userGroup = app.MapGroup("/roles").WithOpenApi()
-            .RequireAuthorization().WithTags("Role");
+            #region Define
+            var userGroup = app.MapGroup("/roles").WithTags("Role");
+            //.WithOpenApi()
+            //.RequireAuthorization();
+            #endregion
+
+            #region Get all roles
             // Endpoint để lấy danh sách các vai trò phân trang
-            userGroup.MapGet("", async ([FromServices] IRoleService roleService, [AsParameters] RoleFilter filter) =>
+            userGroup.MapGet("/", async ([FromServices] IRoleService roleService, [AsParameters] RoleFilter filter) =>
             {
                 try
                 {
@@ -28,7 +33,9 @@ namespace Account.API.Endpoints
                     return Results.Problem(ex.Message);
                 }
             });
+            #endregion
 
+            #region Get role by Id
             // Endpoint để lấy thông tin vai trò theo ID
             userGroup.MapGet("/{id:guid}", async (IRoleService roleService, string id) =>
             {
@@ -39,7 +46,9 @@ namespace Account.API.Endpoints
                 }
                 return Results.Ok(role);
             });
+            #endregion
 
+            #region Create Role
             // Endpoint để tạo một vai trò mới
             userGroup.MapPost("/", async (IRoleService roleService, [FromBody] RoleRequestDto createRoleDto) =>
             {
@@ -47,10 +56,13 @@ namespace Account.API.Endpoints
                 {
                     return Results.BadRequest("Role data is required.");
                 }
+
                 var role = await roleService.CreateRoleAsync(createRoleDto);
                 return Results.Created($"/{role}", role);
             });
+            #endregion
 
+            #region Update role
             // Endpoint để cập nhật thông tin vai trò theo ID
             userGroup.MapPut("/{id:guid}", async (IRoleService roleService, string id, [FromBody] RoleRequestDto updateRoleDto) =>
             {
@@ -66,7 +78,9 @@ namespace Account.API.Endpoints
                 }
                 return Results.Ok(updatedRole);
             });
+            #endregion
 
+            #region Update role
             // Endpoint để xóa vai trò theo ID
             userGroup.MapDelete("/{id:guid}", async (IRoleService roleService, string id) =>
             {
@@ -77,6 +91,7 @@ namespace Account.API.Endpoints
                 }
                 return Results.NoContent();
             });
+            #endregion
         }
     }
 }

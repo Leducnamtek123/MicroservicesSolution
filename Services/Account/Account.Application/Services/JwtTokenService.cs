@@ -33,7 +33,7 @@ namespace Account.Application.Services
             _refreshTokenExpiryInDays = int.Parse(_configuration["Jwt:ExpiryInDays"]);
         }
 
-        public string GenerateAccessToken(string userId)
+        public string GenerateAccessToken(string userId, string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_key);
@@ -42,9 +42,10 @@ namespace Account.Application.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userId),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                }),
+            new Claim(ClaimTypes.NameIdentifier, userId),
+            new Claim(ClaimTypes.Email, email), // Thêm email vào claim
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        }),
                 Expires = DateTime.UtcNow.AddMinutes(_accessTokenExpiryInMinutes),
                 Issuer = _issuer,
                 Audience = _audience,
@@ -54,6 +55,8 @@ namespace Account.Application.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+
         public string GenerateRefreshToken(string userId)
         {
             var randomNumber = new byte[32];

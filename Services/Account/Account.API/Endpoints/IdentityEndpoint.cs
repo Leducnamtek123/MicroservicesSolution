@@ -10,15 +10,12 @@ using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.Http.Metadata;
 using System.Diagnostics;
-using Microsoft.Extensions.Caching.Distributed;
 using Account.Application.Services;
 using Account.Infrastructure.Cache;
 using Account.Application.Dtos;
-using Microsoft.AspNetCore.Http;
 using Account.Domain.Models;
 using Common.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Common.Configurations;
 
 namespace Account.API.Endpoints
 {
@@ -28,18 +25,10 @@ namespace Account.API.Endpoints
         // Validate the email address using DataAnnotations like the UserValidator does when RequireUniqueEmail = true.
         private static readonly EmailAddressAttribute _emailAddressAttribute = new();
 
-        /// <summary>
-        /// Add endpoints for registering, logging in, and logging out using ASP.NET Core Identity.
-        /// </summary>
-        /// <typeparam name="TUser">The type describing the user. This should match the generic parameter in <see cref="UserManager{TUser}"/>.</typeparam>
-        /// <param name="endpoints">
-        /// The <see cref="IEndpointRouteBuilder"/> to add the identity endpoints to.
-        /// Call <see cref="EndpointRouteBuilderExtensions.MapGroup(IEndpointRouteBuilder, string)"/> to add a prefix to all the endpoints.
-        /// </param>
-        /// <returns>An <see cref="IEndpointConventionBuilder"/> to further customize the added endpoints.</returns>
         public static IEndpointConventionBuilder MapIdentityApi<TUser>(this IEndpointRouteBuilder endpoints)
             where TUser : class, new()
         {
+            #region Define 
             ArgumentNullException.ThrowIfNull(endpoints);
 
             var timeProvider = endpoints.ServiceProvider.GetRequiredService<TimeProvider>();
@@ -50,6 +39,8 @@ namespace Account.API.Endpoints
             // We'll figure out a unique endpoint name based on the final route pattern during endpoint generation.
             string? confirmEmailEndpointName = null;
 
+            #endregion
+
             var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
 
             #region Register
@@ -57,9 +48,6 @@ namespace Account.API.Endpoints
        ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
                 var email = userRequestDto.Email;
-
-                // Store email in Redis using your custom service
-                await userRedisCache.SetUserDataAsync(Guid.NewGuid().ToString(), email);
 
                 // Attempt to create the user
                 var createUserResponse = await userService.CreateUserAsync(userRequestDto);
@@ -72,7 +60,7 @@ namespace Account.API.Endpoints
 
                 // Return Ok with the user data
                 return TypedResults.Ok(createUserResponse);
-            });
+            }).ConfigureApiResponses();
             #endregion
 
             #region Login 
@@ -116,7 +104,7 @@ namespace Account.API.Endpoints
                 }
                 else
                 {
-                    var token =  jwtTokenService.GenerateAccessToken(user.Id);
+                    var token =  jwtTokenService.GenerateAccessToken(user.Id,user.Email);
                     var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
                     response = new AccessTokenResponse
                     {
@@ -131,7 +119,7 @@ namespace Account.API.Endpoints
 
                 var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
                 return Results.Ok(successResponse);
-            });
+            }).ConfigureApiResponses();
             #endregion
 
             #region Refresh Token
@@ -172,7 +160,7 @@ namespace Account.API.Endpoints
                    // Xóa refresh token cũ
                 await jwtTokenService.RevokeRefreshTokenAsync(token.UserId);
                 // Tạo access token mới
-                var newAccessToken = jwtTokenService.GenerateAccessToken(token.UserId);
+                var newAccessToken = jwtTokenService.GenerateAccessToken(token.UserId, user.Email);
 
                 // Tạo refresh token mới
                 var newRefreshToken =  jwtTokenService.GenerateRefreshToken(token.UserId);
@@ -192,7 +180,7 @@ namespace Account.API.Endpoints
 
                 var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
                 return Results.Ok(successResponse);
-            });
+            }).ConfigureApiResponses(); ;
             #endregion
 
             #region Confirm Email
@@ -248,7 +236,7 @@ namespace Account.API.Endpoints
             });
             #endregion
 
-
+            #region Resend confirm email
             routeGroup.MapPost("/resendConfirmationEmail", async Task<Ok>
                 ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
             {
@@ -267,7 +255,9 @@ namespace Account.API.Endpoints
                 await emailSender.SendWelcomeEmailAsync(user.Email, user.UserName, activationLink);
                 return TypedResults.Ok();
             });
+            #endregion
 
+            #region Forgot Password
             routeGroup.MapPost("/forgotPassword", async Task<Results<Ok, ValidationProblem>>
                 ([FromBody] ForgotPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
             {
@@ -286,7 +276,9 @@ namespace Account.API.Endpoints
                 // returned a 400 for an invalid code given a valid user email.
                 return TypedResults.Ok();
             });
+            #endregion
 
+            #region Reset password
             routeGroup.MapPost("/resetPassword", async Task<Results<Ok, ValidationProblem>>
                 ([FromBody] ResetPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
             {
@@ -319,9 +311,11 @@ namespace Account.API.Endpoints
 
                 return TypedResults.Ok();
             });
+            #endregion
 
             var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
 
+            #region 2fa
             accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
             {
@@ -395,7 +389,9 @@ namespace Account.API.Endpoints
                     IsMachineRemembered = await signInManager.IsTwoFactorClientRememberedAsync(user),
                 });
             });
+            #endregion
 
+            #region Get Info
             accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
             {
@@ -407,7 +403,9 @@ namespace Account.API.Endpoints
 
                 return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
             });
+            #endregion
 
+            #region Post info
             accountGroup.MapPost("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromBody] InfoRequest infoRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
             {
@@ -449,7 +447,9 @@ namespace Account.API.Endpoints
 
                 return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
             });
+            #endregion
 
+            #region Send email func
             async Task SendConfirmationEmailAsync(TUser user, UserManager<TUser> userManager, HttpContext context, string email, bool isChange = false)
             {
                 if (confirmEmailEndpointName is null)
@@ -480,6 +480,7 @@ namespace Account.API.Endpoints
 
                 await emailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(confirmEmailUrl));
             }
+            #endregion
 
             return new IdentityEndpointsConventionBuilder(routeGroup);
         }
