@@ -14,9 +14,12 @@ namespace Account.API.Endpoints
     {
         public static void Map(WebApplication app)
         {
+            #region Define
             var userGroup = app.MapGroup("/users")
-         .WithTags("User").RequireAuthorization(); // Yêu cầu xác thực cho tất cả các endpoint trong nhóm này
+                .WithTags("User").RequireAuthorization(); // Yêu cầu xác thực cho tất cả các endpoint trong nhóm này
+            #endregion
 
+            #region GetPagedUsers
             userGroup.MapGet("/", async ([FromServices] IUserService userService, [AsParameters] UserFilter filter) =>
             {
                 try
@@ -32,7 +35,9 @@ namespace Account.API.Endpoints
                     return Results.Problem(detail: errorResponse.Errors[0]);
                 }
             });
+            #endregion
 
+            #region GetUserById
             userGroup.MapGet("/{id:guid}", async (IUserService userService, string id) =>
             {
                 try
@@ -52,7 +57,9 @@ namespace Account.API.Endpoints
                     return Results.Problem(detail: errorResponse.Errors[0]);
                 }
             });
+            #endregion
 
+            #region CreateUser
             userGroup.MapPost("/", async (IUserService userService, [FromBody] UserRequestDto createUserDto) =>
             {
                 if (createUserDto == null)
@@ -78,7 +85,9 @@ namespace Account.API.Endpoints
                     return Results.Problem(detail: errorResponse.Errors[0]);
                 }
             });
+            #endregion
 
+            #region UpdateUser
             userGroup.MapPut("/{id:guid}", async (IUserService userService, string id, [FromBody] UserRequestDto updateUserDto) =>
             {
                 if (updateUserDto == null)
@@ -104,7 +113,9 @@ namespace Account.API.Endpoints
                     return Results.Problem(detail: errorResponse.Errors[0]);
                 }
             });
+            #endregion
 
+            #region DeleteUser
             userGroup.MapDelete("/{id:guid}", async (IUserService userService, string id) =>
             {
                 try
@@ -124,6 +135,7 @@ namespace Account.API.Endpoints
                     return Results.Problem(detail: errorResponse.Errors[0]);
                 }
             });
+            #endregion
         }
     }
 }

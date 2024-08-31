@@ -14,11 +14,20 @@ namespace Account.Application.AutoMapper
     {
         public MappingProfile()
         {
+            #region User
             CreateMap<User, UserResponseDto>();
             CreateMap<UserRequestDto, User>();
+            #endregion
+
+            #region Role
             CreateMap<Role, RoleResponseDto>();
-            CreateMap<RoleRequestDto, Role>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<Permission, PermissionResponseDto>();
+            #endregion
+
+            #region Permission
+            CreateMap<PermissionRequestDto, Permission>();
+            CreateMap<RoleRequestDto, Role>();
+            #endregion
         }
     }
 }

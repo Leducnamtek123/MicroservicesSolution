@@ -14,15 +14,13 @@ using System.Text;
 
 public class UserService : IUserService
 {
+    #region Constructor
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ICacheService _cacheService;
     private readonly UserManager<User> _userManager;
     private readonly IEmailSender _emailSender;
-    private readonly IMailHelper _mailHelper
-;
-
-    #region Constructor
+    private readonly IMailHelper _mailHelper;
     public UserService(
         IUserRepository userRepository,
         IMapper mapper,

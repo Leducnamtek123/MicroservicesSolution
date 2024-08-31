@@ -11,12 +11,14 @@ using Common.Cache;
 using Common.Configurations;
 using Common.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "JWT Auth",
+        Title = "AAMS (Account & Auth Manage System",
         Version = "v1"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -48,6 +50,8 @@ builder.Services.AddSwaggerGen(c => {
             new string[] {}
         }
     });
+    c.EnableAnnotations();
+
 });
 
 
@@ -102,11 +106,16 @@ builder.Services.AddScoped<IUserRedisCache,UserRedisCache>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 
@@ -117,6 +126,15 @@ builder.Services.AddDbContext<AccountDbContext>(options =>
     
 builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>()
     .AddEntityFrameworkStores<AccountDbContext>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddHsts(options =>
 {
@@ -136,10 +154,26 @@ if (app.Environment.IsDevelopment())
     app.UseHsts();
 
 }
-app.UseExceptionHandler(exceptionHandlerApp
-    => exceptionHandlerApp.Run(async context
-        => await Results.Problem()
-                     .ExecuteAsync(context)));
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+
+        var response = new
+        {
+            // Tạo cấu trúc JSON cho phản hồi lỗi
+            error = "An error occurred while processing your request.",
+            details = exception?.Message // Thêm thông tin chi tiết lỗi nếu cần
+        };
+
+        var responseJson = JsonSerializer.Serialize(response);
+
+        await context.Response.WriteAsync(responseJson);
+    });
+});
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -151,9 +185,12 @@ app.UseRateLimiter();
 IdentityEndpoints.MapIdentityApi<User>(app);
 UserEndpoints.Map(app);
 RoleEndpoints.Map(app);
+PermissionEndpoints.Map(app);
 
 //IdentityEndpoints.MapCustomIdentityApi<User>(app);
 
+//Allow cors
+app.UseCors("AllowAll");
 
 // Run the application
 app.Run();

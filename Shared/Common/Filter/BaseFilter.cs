@@ -3,10 +3,10 @@
     public class FilterBase
     {
         // Từ khóa tìm kiếm
-        public string? Keyword { get; set; }
+        public string? Keyword { get; set; } = null;
 
         // Tên cột để sắp xếp
-        public string? SortBy { get; set; }
+        public string? SortBy { get; set; } = null;
 
         // Có phải sắp xếp giảm dần hay không
         public bool IsSortDescending { get; set; } = false;

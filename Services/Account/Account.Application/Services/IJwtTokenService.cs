@@ -11,7 +11,7 @@ namespace Account.Application.Services
 {
     public interface IJwtTokenService
     {
-        string GenerateAccessToken(string userId);
+        string GenerateAccessToken(string userId,string email);
         string GenerateRefreshToken(string userId);
         ClaimsPrincipal GetPrincipalFromExpiredAccessToken(string token);
         Task<bool> RevokeRefreshTokenAsync(string userId);
