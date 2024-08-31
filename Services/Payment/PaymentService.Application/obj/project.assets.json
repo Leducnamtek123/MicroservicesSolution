@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\vcecp\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Application\\PaymentService.Application.csproj",
+      "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Application\\PaymentService.Application.csproj",
       "projectName": "PaymentService.Application",
-      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Application\\PaymentService.Application.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Payment\\PaymentService.Application\\obj\\",
+      "projectPath": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Application\\PaymentService.Application.csproj",
+      "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+      "outputPath": "D:\\Project-Study\\Microservices\\Services\\Payment\\PaymentService.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
