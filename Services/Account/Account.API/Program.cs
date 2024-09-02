@@ -22,6 +22,7 @@ using System.Text.Json;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -128,11 +129,12 @@ builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>()
     .AddEntityFrameworkStores<AccountDbContext>();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigins", builder =>
     {
-        policy.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        builder.WithOrigins("http://localhost:3000", "http://localhost:4200") // Add multiple origins
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials(); // Only if needed
     });
 });
 
@@ -145,6 +147,7 @@ builder.Services.AddHsts(options =>
     options.ExcludedHosts.Add("www.example.com");
 });
 var app = builder.Build();
+app.UseCors("AllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -189,8 +192,6 @@ PermissionEndpoints.Map(app);
 
 //IdentityEndpoints.MapCustomIdentityApi<User>(app);
 
-//Allow cors
-app.UseCors("AllowAll");
 
 // Run the application
 app.Run();

@@ -11,7 +11,19 @@ namespace Account.Infrastructure.Context
             base.OnModelCreating(builder);
 
             builder.Entity<User>().Property(e => e.Initials).HasMaxLength(5);
-            builder.Entity<Role>().Property(r => r.Description).HasMaxLength(250);
+            builder.Entity<User>()
+                .Property(e => e.LastName)
+                .HasMaxLength(50); // Adjusted length as needed
+
+            builder.Entity<User>()
+                .Property(e => e.PhoneNumber)
+                .HasMaxLength(20); // Adjusted length as needed
+
+            // Configure Role entity
+            builder.Entity<Role>()
+                .Property(r => r.Description)
+                .HasMaxLength(250);
+
             builder.Entity<RefreshToken>().HasKey(t => t.Id);
 
 

@@ -16,6 +16,7 @@ using Account.Application.Dtos;
 using Account.Domain.Models;
 using Common.Dtos;
 using Common.Configurations;
+using Azure;
 
 namespace Account.API.Endpoints
 {
@@ -47,8 +48,6 @@ namespace Account.API.Endpoints
             routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
        ([FromBody] UserRequestDto userRequestDto, HttpContext context, [FromServices] IUserService userService, IUserRedisCache userRedisCache, IEmailSender emailSender) =>
             {
-                var email = userRequestDto.Email;
-
                 // Attempt to create the user
                 var createUserResponse = await userService.CreateUserAsync(userRequestDto);
 
@@ -392,7 +391,7 @@ namespace Account.API.Endpoints
             #endregion
 
             #region Get Info
-            accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
+            accountGroup.MapGet("/info", async Task<Results<Ok<BaseResponse<InfoResponse>>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<TUser>>();
@@ -401,7 +400,12 @@ namespace Account.API.Endpoints
                     return TypedResults.NotFound();
                 }
 
-                return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
+                var infoResponse = await CreateInfoResponseAsync(user, userManager);
+
+                // Wrap the infoResponse in BaseResponse
+                var successResponse = BaseResponse<InfoResponse>.Success(infoResponse);
+
+                return TypedResults.Ok(successResponse);
             });
             #endregion
 
