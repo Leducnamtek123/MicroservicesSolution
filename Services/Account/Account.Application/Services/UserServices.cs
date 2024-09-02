@@ -70,6 +70,7 @@ public class UserService : IUserService
         }
 
         var user = _mapper.Map<User>(userRequestDto);
+        user.UserName = user.Email;
         var result = await _userManager.CreateAsync(user, userRequestDto.Password);
 
         if (result.Succeeded)

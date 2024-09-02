@@ -4027,19 +4027,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\vcecp\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+      "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
       "projectName": "Account.PostgresMigrations",
-      "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.PostgresMigrations\\obj\\",
+      "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\Account.PostgresMigrations.csproj",
+      "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
+      "outputPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.PostgresMigrations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4054,8 +4054,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\admin\\Documents\\MicroservicesSolution\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj"
+            "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj": {
+              "projectPath": "D:\\Project-Study\\Microservices\\Services\\Account\\Account.Infrastructure\\Account.Infrastructure.csproj"
             }
           }
         }
