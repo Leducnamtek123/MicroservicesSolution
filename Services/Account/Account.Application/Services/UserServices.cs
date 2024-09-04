@@ -163,20 +163,27 @@ public class UserService : IUserService
             throw new ArgumentNullException(nameof(filter));
         }
 
-        var users = await _userManager.Users
-            .ToListAsync();
+        // Khởi tạo giá trị mặc định nếu cần
+        filter.PageIndex = filter.PageIndex ?? 1;
+        filter.PageSize = filter.PageSize ?? 10;
 
-        var userResponseDtos = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        // Retrieve paged users from repository
+        var userPage = await _userRepository.GetPagedAsync(filter);
 
+        // Map the User entities to UserResponseDto
+        var userResponseDtos = _mapper.Map<IEnumerable<UserResponseDto>>(userPage.Items);
+
+        // Create the paged response for UserResponseDto
         var pagedResponse = new PagedDto<UserResponseDto>(
             userResponseDtos,
-            await _userManager.Users.CountAsync(),
-            filter.PageIndex,
-            filter.PageSize
+            userPage.TotalCount,
+            filter.PageIndex.Value,
+            filter.PageSize.Value
         );
 
         return pagedResponse;
     }
+
     #endregion
 
 }

@@ -24,35 +24,46 @@ namespace Account.Infrastructure.Repositories
             // Retrieve the role from the database using the provided ID
             return await _dbSet.FindAsync(id);
         }
-
         public async Task<PagedDto<Role>> GetPagedAsync(RoleFilter filter)
         {
+            // Đảm bảo filter không phải là null và khởi tạo giá trị mặc định nếu cần
+            filter.PageIndex = filter.PageIndex ?? 1;
+            filter.PageSize = filter.PageSize ?? 10;
+
             var query = _dbSet.AsQueryable();
 
-            // Apply filtering based on keyword (if necessary)
-            if (!string.IsNullOrWhiteSpace(filter.Keyword))
+            // Nạp dữ liệu liên quan nếu IsDeep là true
+            if (filter.IsDeep)
             {
-                query = query.Where(r => r.Name.Contains(filter.Keyword)); // Example filter
+                query = query
+                    .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission);
             }
 
-            // Apply sorting
+            // Áp dụng bộ lọc từ khóa
+            if (!string.IsNullOrWhiteSpace(filter.Keyword))
+            {
+                query = query.Where(r => r.Name.Contains(filter.Keyword));
+            }
+
+            // Áp dụng sắp xếp
             if (!string.IsNullOrWhiteSpace(filter.SortBy))
             {
-                query = filter.IsSortDescending
+                query = filter.IsSortDescending.HasValue && filter.IsSortDescending.Value
                     ? query.OrderByDescending(e => EF.Property<object>(e, filter.SortBy))
                     : query.OrderBy(e => EF.Property<object>(e, filter.SortBy));
             }
 
-            // Get total count for pagination
+            // Lấy tổng số bản ghi để phân trang
             var totalCount = await query.CountAsync();
 
-            // Apply paging
+            // Áp dụng phân trang
             var items = await query
-                .Skip((filter.PageIndex - 1) * filter.PageSize)
-                .Take(filter.PageSize)
+                .Skip((filter.PageIndex.Value - 1) * filter.PageSize.Value)
+                .Take(filter.PageSize.Value)
                 .ToListAsync();
 
-            return new PagedDto<Role>(items, totalCount, filter.PageIndex, filter.PageSize);
+            return new PagedDto<Role>(items, totalCount, filter.PageIndex.Value, filter.PageSize.Value);
         }
     }
 }

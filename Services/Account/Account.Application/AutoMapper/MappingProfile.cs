@@ -15,12 +15,16 @@ namespace Account.Application.AutoMapper
         public MappingProfile()
         {
             #region User
-            CreateMap<User, UserResponseDto>();
+            CreateMap<User, UserResponseDto>()
+                    .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role)));
+
             CreateMap<UserRequestDto, User>();
             #endregion
 
+
             #region Role
-            CreateMap<Role, RoleResponseDto>();
+            CreateMap<Role, RoleResponseDto>().ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.RolePermissions.Select(ur => ur.Permission)));
+            ;
             CreateMap<Permission, PermissionResponseDto>();
             #endregion
 

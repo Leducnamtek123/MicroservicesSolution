@@ -16,7 +16,7 @@ namespace Account.API.Endpoints
         {
             #region Define
             var userGroup = app.MapGroup("/users")
-                .WithTags("User").RequireAuthorization(); // Yêu cầu xác thực cho tất cả các endpoint trong nhóm này
+                .WithTags("User");
             #endregion
 
             #region GetPagedUsers
@@ -24,6 +24,8 @@ namespace Account.API.Endpoints
             {
                 try
                 {
+                    filter ??= new UserFilter();
+
                     var pagedUsers = await userService.GetPagedUsersAsync(filter);
                     var response = BaseResponse<PagedDto<UserResponseDto>>.Success(pagedUsers);
                     return Results.Ok(response);
