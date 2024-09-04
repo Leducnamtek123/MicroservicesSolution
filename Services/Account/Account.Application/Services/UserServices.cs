@@ -163,6 +163,10 @@ public class UserService : IUserService
             throw new ArgumentNullException(nameof(filter));
         }
 
+        // Khởi tạo giá trị mặc định nếu cần
+        filter.PageIndex = filter.PageIndex ?? 1;
+        filter.PageSize = filter.PageSize ?? 10;
+
         // Retrieve paged users from repository
         var userPage = await _userRepository.GetPagedAsync(filter);
 
@@ -173,12 +177,13 @@ public class UserService : IUserService
         var pagedResponse = new PagedDto<UserResponseDto>(
             userResponseDtos,
             userPage.TotalCount,
-            filter.PageIndex,
-            filter.PageSize
+            filter.PageIndex.Value,
+            filter.PageSize.Value
         );
 
         return pagedResponse;
     }
+
     #endregion
 
 }
