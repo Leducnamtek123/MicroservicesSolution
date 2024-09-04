@@ -11,6 +11,7 @@ namespace Account.Domain.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public virtual ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
     }
 
 }

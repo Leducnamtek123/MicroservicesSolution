@@ -23,7 +23,8 @@ namespace Account.Application.AutoMapper
 
 
             #region Role
-            CreateMap<Role, RoleResponseDto>();
+            CreateMap<Role, RoleResponseDto>().ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.RolePermissions.Select(ur => ur.Permission)));
+            ;
             CreateMap<Permission, PermissionResponseDto>();
             #endregion
 
