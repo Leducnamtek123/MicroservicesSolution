@@ -19,21 +19,29 @@ namespace Account.Infrastructure.Repositories
         {
         }
 
-        public async Task<Role?> GetByIdAsync(string id)
+        public async Task<Role?> GetByIdAsync(string id, bool IsDeep = false)
         {
             // Retrieve the role from the database using the provided ID
+            if (!IsDeep)
             return await _dbSet.FindAsync(id);
+            return await _dbSet
+                .AsNoTracking()
+                .Include(r => r.RolePermissions)
+                .ThenInclude(rp => rp.Permission)
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
         public async Task<PagedDto<Role>> GetPagedAsync(RoleFilter filter)
         {
             // Đảm bảo filter không phải là null và khởi tạo giá trị mặc định nếu cần
             filter.PageIndex = filter.PageIndex ?? 1;
             filter.PageSize = filter.PageSize ?? 10;
+            if (!filter.IsDeep.HasValue)
+                filter.IsDeep = false;
 
             var query = _dbSet.AsQueryable();
 
             // Nạp dữ liệu liên quan nếu IsDeep là true
-            if (filter.IsDeep)
+            if ((bool)filter.IsDeep)
             {
                 query = query
                     .Include(r => r.RolePermissions)

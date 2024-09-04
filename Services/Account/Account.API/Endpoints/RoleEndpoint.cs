@@ -3,6 +3,7 @@ using Account.Application.Services;
 using Account.Domain.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Threading.Tasks;
 
@@ -36,9 +37,9 @@ namespace Account.API.Endpoints
 
             #region Get role by Id
             // Endpoint để lấy thông tin vai trò theo ID
-            userGroup.MapGet("/{id:guid}", async (IRoleService roleService, string id) =>
+            userGroup.MapGet("/{id:guid}", async (IRoleService roleService, string id, bool? IsDeep = false) =>
             {
-                var role = await roleService.GetRoleByIdAsync(id);
+                var role = await roleService.GetRoleByIdAsync(id, (bool)IsDeep);
                 if (role == null)
                 {
                     return Results.NotFound();
@@ -79,7 +80,7 @@ namespace Account.API.Endpoints
             });
             #endregion
 
-            #region Update role
+            #region Delete role
             // Endpoint để xóa vai trò theo ID
             userGroup.MapDelete("/{id:guid}", async (IRoleService roleService, string id) =>
             {
@@ -89,6 +90,30 @@ namespace Account.API.Endpoints
                     return Results.NotFound();
                 }
                 return Results.NoContent();
+            });
+            #endregion
+
+            #region Assign Permission
+            userGroup.MapPost("/{roleId:guid}/assign-permission", async (IRolePermissionService rolePermissionService, string roleId, string permisisonId) =>
+            {
+                if (permisisonId.IsNullOrEmpty())
+                    return Results.BadRequest("Permission ID is required.");
+                var newRolePermission = await rolePermissionService.AddRolePermissionAsync(roleId, permisisonId);
+                if (newRolePermission == null)
+                    return Results.NotFound();
+                return Results.Ok(newRolePermission);
+            });
+            #endregion
+
+            #region Revoke Permission
+            userGroup.MapDelete("/{roleId:guid}/revoke-permission", async (IRolePermissionService rolePermissionService, string roleId, string permisisonId) =>
+            {
+                if (permisisonId.IsNullOrEmpty())
+                    return Results.BadRequest("Permission ID is required.");
+                var newRolePermission = await rolePermissionService.RemoveRolePermissionAsync(roleId, permisisonId);
+                if (!newRolePermission)
+                    return Results.NotFound();
+                return Results.Ok();
             });
             #endregion
         }

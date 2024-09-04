@@ -51,6 +51,6 @@
             return !string.IsNullOrWhiteSpace(Keyword);
         }
 
-        public bool IsDeep { get; set; } = false;
+        public bool? IsDeep { get; set; } = false;
     }
 }
