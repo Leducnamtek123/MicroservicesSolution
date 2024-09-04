@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Account.PostgresMigrations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f161efded0eb31dce877b2cd97f7e3f399157902")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5f32320de7506bb8a00944c4231d3360d84b29f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Account.PostgresMigrations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Account.PostgresMigrations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

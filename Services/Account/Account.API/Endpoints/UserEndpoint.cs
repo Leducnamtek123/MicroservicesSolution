@@ -24,6 +24,8 @@ namespace Account.API.Endpoints
             {
                 try
                 {
+                    filter ??= new UserFilter();
+
                     var pagedUsers = await userService.GetPagedUsersAsync(filter);
                     var response = BaseResponse<PagedDto<UserResponseDto>>.Success(pagedUsers);
                     return Results.Ok(response);
