@@ -16,7 +16,8 @@ namespace Common.Configurations
             return builder
                 .Produces<BaseResponse<string>>(StatusCodes.Status200OK)
                 .Produces<BaseResponse<string>>(StatusCodes.Status400BadRequest)
-                .Produces<BaseResponse<string>>(StatusCodes.Status500InternalServerError);
+                .Produces<BaseResponse<string>>(StatusCodes.Status500InternalServerError)
+                .Produces<BaseResponse<string>>(StatusCodes.Status401Unauthorized);
         }
     }
 

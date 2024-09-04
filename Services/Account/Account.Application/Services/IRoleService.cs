@@ -16,5 +16,6 @@ namespace Account.Application.Services
         Task<RoleResponseDto> UpdateRoleAsync(string id, RoleRequestDto roleRequestDto);
         Task<bool> DeleteRoleAsync(string id);
         Task<PagedDto<RoleResponseDto>> GetPagedRolesAsync(RoleFilter filter);
+
     }
 }

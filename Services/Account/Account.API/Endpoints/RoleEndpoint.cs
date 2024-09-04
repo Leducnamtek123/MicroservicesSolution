@@ -14,7 +14,6 @@ namespace Account.API.Endpoints
         {
             #region Define
             var userGroup = app.MapGroup("/roles").WithTags("Role");
-            //.WithOpenApi()
             //.RequireAuthorization();
             #endregion
 
