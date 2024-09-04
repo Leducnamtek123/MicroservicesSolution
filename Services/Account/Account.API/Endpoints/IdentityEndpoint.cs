@@ -103,7 +103,7 @@ namespace Account.API.Endpoints
                 }
                 else
                 {
-                    var token =  jwtTokenService.GenerateAccessToken(user.Id,user.Email);
+                    var token = jwtTokenService.GenerateAccessToken(user.Id, user.Email);
                     var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
                     response = new AccessTokenResponse
                     {
@@ -120,7 +120,18 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
-
+            routeGroup.MapPost("/logout", async ([FromServices] SignInManager<User> signInManager,
+    [FromBody] object empty) =>
+            {
+                if (empty != null)
+                {
+                    await signInManager.SignOutAsync();
+                    return Results.Ok();
+                }
+                return Results.Unauthorized();
+            })
+.WithOpenApi()
+.RequireAuthorization();
             #region Refresh Token
             routeGroup.MapPost("/refresh", async Task<IResult> (
                 [FromServices] IServiceProvider sp,
@@ -175,7 +186,6 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
-
 
             #region Confirm Email
             routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
