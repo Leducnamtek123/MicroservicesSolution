@@ -163,14 +163,16 @@ public class UserService : IUserService
             throw new ArgumentNullException(nameof(filter));
         }
 
-        var users = await _userManager.Users
-            .ToListAsync();
+        // Retrieve paged users from repository
+        var userPage = await _userRepository.GetPagedAsync(filter);
 
-        var userResponseDtos = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+        // Map the User entities to UserResponseDto
+        var userResponseDtos = _mapper.Map<IEnumerable<UserResponseDto>>(userPage.Items);
 
+        // Create the paged response for UserResponseDto
         var pagedResponse = new PagedDto<UserResponseDto>(
             userResponseDtos,
-            await _userManager.Users.CountAsync(),
+            userPage.TotalCount,
             filter.PageIndex,
             filter.PageSize
         );

@@ -46,3 +46,15 @@ C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.A
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\refint\CatalogService.Application.dll
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.pdb
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\ref\CatalogService.Application.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.deps.json
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\bin\Debug\net8.0\CatalogService.Application.pdb
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.AssemblyInfo.cs
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.sourcelink.json
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\refint\CatalogService.Application.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\CatalogService.Application.pdb
+C:\Users\admin\Documents\Namle_Project\BE\Services\Catalog\CatalogService.Application\obj\Debug\net8.0\ref\CatalogService.Application.dll

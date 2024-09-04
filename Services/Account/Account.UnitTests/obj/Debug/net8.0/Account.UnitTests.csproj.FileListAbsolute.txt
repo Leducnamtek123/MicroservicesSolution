@@ -46,3 +46,15 @@ C:\Users\vcecp\Documents\MicroservicesSolution\Services\Account\Account.UnitTest
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\refint\Account.UnitTests.dll
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.pdb
 C:\Users\vcecp\Documents\MicroservicesSolution\Services\Account\Account.UnitTests\obj\Debug\net8.0\ref\Account.UnitTests.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.deps.json
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\bin\Debug\net8.0\Account.UnitTests.pdb
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.AssemblyInfo.cs
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.sourcelink.json
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\refint\Account.UnitTests.dll
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\Account.UnitTests.pdb
+C:\Users\admin\Documents\Namle_Project\BE\Services\Account\Account.UnitTests\obj\Debug\net8.0\ref\Account.UnitTests.dll

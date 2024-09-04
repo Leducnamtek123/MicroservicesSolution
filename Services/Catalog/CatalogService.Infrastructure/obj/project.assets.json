@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\vcecp\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\Namle_Project\\BE\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
       "projectName": "CatalogService.Infrastructure",
-      "projectPath": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\vcecp\\.nuget\\packages\\",
-      "outputPath": "D:\\Project-Study\\Microservices\\Services\\Catalog\\CatalogService.Infrastructure\\obj\\",
+      "projectPath": "C:\\Users\\admin\\Documents\\Namle_Project\\BE\\Services\\Catalog\\CatalogService.Infrastructure\\CatalogService.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\Namle_Project\\BE\\Services\\Catalog\\CatalogService.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\vcecp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

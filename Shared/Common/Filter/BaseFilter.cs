@@ -46,6 +46,7 @@
         {
             return !string.IsNullOrWhiteSpace(Keyword);
         }
+        public bool IsDeep { get; set; } = false;
 
         // Gợi ý: Có thể thêm các phương thức để xử lý logic tìm kiếm, sắp xếp và phân trang tùy thuộc vào yêu cầu cụ thể.
     }
