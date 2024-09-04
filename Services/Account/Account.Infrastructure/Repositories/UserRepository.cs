@@ -34,7 +34,7 @@ namespace Account.Infrastructure.Repositories
             var query = _dbSet.AsQueryable();
 
             // Nạp dữ liệu liên quan nếu IsDeep có giá trị
-            if (filter.IsDeep)
+            if ((bool)filter.IsDeep)
             {
                 query = query
                     .Include(u => u.UserRoles)

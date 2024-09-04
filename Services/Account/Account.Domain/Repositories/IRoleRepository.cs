@@ -12,7 +12,7 @@ namespace Account.Domain.Repositories
 {
     public interface IRoleRepository : IBaseRepository<Role>
     {
-        Task<Role?> GetByIdAsync(string id);
+        Task<Role?> GetByIdAsync(string id, bool IsDeep);
         Task<PagedDto<Role>> GetPagedAsync(RoleFilter filter);
     }
 }

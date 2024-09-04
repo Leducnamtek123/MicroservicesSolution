@@ -113,6 +113,9 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 
+builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
+
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();

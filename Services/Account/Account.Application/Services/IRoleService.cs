@@ -11,7 +11,7 @@ namespace Account.Application.Services
 {
     public interface IRoleService
     {
-        Task<RoleResponseDto> GetRoleByIdAsync(string id);
+        Task<RoleResponseDto> GetRoleByIdAsync(string id, bool IsDeep);
         Task<RoleResponseDto> CreateRoleAsync(RoleRequestDto roleRequestDto);
         Task<RoleResponseDto> UpdateRoleAsync(string id, RoleRequestDto roleRequestDto);
         Task<bool> DeleteRoleAsync(string id);

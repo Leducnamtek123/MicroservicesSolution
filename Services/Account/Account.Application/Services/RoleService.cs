@@ -23,9 +23,9 @@ namespace Account.Application.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<RoleResponseDto> GetRoleByIdAsync(string id)
+        public async Task<RoleResponseDto> GetRoleByIdAsync(string id, bool IsDeep)
         {
-            var role = await _roleRepository.GetByIdAsync(id);
+            var role = await _roleRepository.GetByIdAsync(id, IsDeep);
             if (role == null)
             {
                 return null; // or throw an exception if preferred
