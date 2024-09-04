@@ -40,6 +40,20 @@ namespace Account.Infrastructure.Context
               .HasForeignKey(ur => ur.RoleId)
               .IsRequired();
             });
+            builder.Entity<RolePermission>()
+        .HasKey(rp => new { rp.RoleId, rp.PermissionId });
+
+            builder.Entity<RolePermission>()
+                .HasOne(rp => rp.Role)
+                .WithMany(r => r.RolePermissions)
+                .HasForeignKey(rp => rp.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RolePermission>()
+                .HasOne(rp => rp.Permission)
+                .WithMany(p => p.RolePermissions)
+                .HasForeignKey(rp => rp.PermissionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<RefreshToken>().HasKey(t => t.Id);
 
@@ -51,6 +65,6 @@ namespace Account.Infrastructure.Context
         }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-
+        public DbSet<RolePermission> RolePermissions { get; set; }
     }
 }

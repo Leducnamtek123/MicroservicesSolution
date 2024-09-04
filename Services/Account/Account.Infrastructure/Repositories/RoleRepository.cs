@@ -28,7 +28,12 @@ namespace Account.Infrastructure.Repositories
         public async Task<PagedDto<Role>> GetPagedAsync(RoleFilter filter)
         {
             var query = _dbSet.AsQueryable();
-
+            if (filter.IsDeep)
+            {
+                query = query
+                    .Include(u => u.RolePermissions) // Nạp UserRoles
+                    .ThenInclude(ur => ur.Permission); // Nạp Role qua UserRoles
+            }
             // Apply filtering based on keyword (if necessary)
             if (!string.IsNullOrWhiteSpace(filter.Keyword))
             {
