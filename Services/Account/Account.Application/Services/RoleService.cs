@@ -40,8 +40,9 @@ namespace Account.Application.Services
             {
                 throw new ArgumentNullException(nameof(roleRequestDto));
             }
-            
+
             var role = _mapper.Map<Role>(roleRequestDto);
+            role.NormalizedName = role.Name.ToUpper();
             role.Id = Guid.NewGuid().ToString();
             await _roleRepository.AddAsync(role);
             return _mapper.Map<RoleResponseDto>(role);

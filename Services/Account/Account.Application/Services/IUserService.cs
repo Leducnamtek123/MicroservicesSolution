@@ -14,5 +14,10 @@ namespace Account.Application.Services
         Task<BaseResponse<UserResponseDto>> UpdateUserAsync(string id, UserRequestDto userRequestDto);
         Task<BaseResponse<bool>> DeleteUserAsync(string id);
         Task<PagedDto<UserResponseDto>> GetPagedUsersAsync(UserFilter filter); // Đã điều chỉnh để sử dụng BaseResponse
+        Task<BaseResponse<bool>> AssignRoleToUserAsync(string userId, string roleName);
+        Task<BaseResponse<bool>> AssignRolesToUserAsync(string userId, IEnumerable<string> roleNames);
+
+        Task<BaseResponse<bool>> RemoveRoleFromUserAsync(string userId, string roleName);
+        Task<BaseResponse<bool>> UpdateUserRolesAsync(string userId, IEnumerable<string> roleNames);
     }
 }
