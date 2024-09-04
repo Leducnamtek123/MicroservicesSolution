@@ -52,7 +52,6 @@ builder.Services.AddSwaggerGen(c => {
         }
     });
     c.EnableAnnotations();
-
 });
 
 
@@ -120,24 +119,29 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Add DbContext configuration
 builder.Services.AddDbContext<AccountDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Account"), b => b.MigrationsAssembly("Account.PostgresMigrations")));
-    
+           options.UseNpgsql(
+               builder.Configuration.GetConnectionString("Account"),
+               b => b.MigrationsAssembly("Account.PostgresMigrations")));
 builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>()
     .AddEntityFrameworkStores<AccountDbContext>();
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins", builder =>
-    {
-        builder.WithOrigins("http://localhost:3000", "http://localhost:4200") // Add multiple origins
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials(); // Only if needed
-    });
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000",
+                                              "https://localhost:3000")
+                             .AllowAnyMethod()
+                                .AllowAnyHeader(); // Cho phép tất cả các header
+                          ;
+                      });
 });
-
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -147,7 +151,7 @@ builder.Services.AddHsts(options =>
     options.ExcludedHosts.Add("www.example.com");
 });
 var app = builder.Build();
-app.UseCors("AllowSpecificOrigins");
+app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -155,7 +159,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHsts();
-
 }
 app.UseExceptionHandler(errorApp =>
 {

@@ -9,6 +9,14 @@ namespace Account.Domain.Models
 {
     public class Role : IdentityRole<string>
     {
+        public Role() : base() { }
+
+        public Role(string name)
+            : base(name)
+        {
+        }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
+
         public string Description { get; set; } // Ví dụ thêm thuộc tính mô tả
 
     }

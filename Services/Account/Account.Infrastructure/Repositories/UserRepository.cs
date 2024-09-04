@@ -30,6 +30,13 @@ namespace Account.Infrastructure.Repositories
         {
             var query = _dbSet.AsQueryable();
 
+            if (filter.IsDeep)
+            {
+                query = query
+                    .Include(u => u.UserRoles) // Nạp UserRoles
+                    .ThenInclude(ur => ur.Role); // Nạp Role qua UserRoles
+            }
+
             // Apply filtering based on keyword
             if (!string.IsNullOrWhiteSpace(filter.Keyword))
             {
@@ -55,5 +62,6 @@ namespace Account.Infrastructure.Repositories
 
             return new PagedDto<User>(items, totalCount, filter.PageIndex, filter.PageSize);
         }
+
     }
 }
