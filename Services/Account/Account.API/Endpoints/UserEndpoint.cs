@@ -1,12 +1,10 @@
 ﻿using Account.Application.Dtos;
 using Account.Application.Services;
 using Account.Domain.Filters;
-using Account.Domain.Models;
 using Common.Dtos;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
+
+using Common.Configurations; // Assuming this contains extension methods for API response configuration
 
 namespace Account.API.Endpoints
 {
@@ -14,18 +12,14 @@ namespace Account.API.Endpoints
     {
         public static void Map(WebApplication app)
         {
-            #region Define
             var userGroup = app.MapGroup("/users")
                 .WithTags("User");
-            #endregion
 
-            #region GetPagedUsers
             userGroup.MapGet("/", async ([FromServices] IUserService userService, [AsParameters] UserFilter filter) =>
             {
                 try
                 {
                     filter ??= new UserFilter();
-
                     var pagedUsers = await userService.GetPagedUsersAsync(filter);
                     var response = BaseResponse<PagedDto<UserResponseDto>>.Success(pagedUsers);
                     return Results.Ok(response);
@@ -34,18 +28,16 @@ namespace Account.API.Endpoints
                 {
                     // Log the exception if necessary
                     var errorResponse = BaseResponse<PagedDto<UserResponseDto>>.Failure("An error occurred while retrieving users.");
-                    return Results.Problem(detail: errorResponse.Errors[0]);
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
                 }
-            });
-            #endregion
+            }).ConfigureApiResponses();
 
-            #region GetUserById
             userGroup.MapGet("/{id:guid}", async (IUserService userService, string id) =>
             {
                 try
                 {
                     var userResponse = await userService.GetUserByIdAsync(id);
-                    if (userResponse == null)
+                    if (!userResponse.IsSuccess)
                     {
                         var errorResponse = BaseResponse<UserResponseDto>.Failure("User not found.");
                         return Results.NotFound(errorResponse);
@@ -56,12 +48,10 @@ namespace Account.API.Endpoints
                 {
                     // Log the exception if necessary
                     var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while retrieving the user.");
-                    return Results.Problem(detail: errorResponse.Errors[0]);
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
                 }
-            });
-            #endregion
+            }).ConfigureApiResponses();
 
-            #region CreateUser
             userGroup.MapPost("/", async (IUserService userService, [FromBody] UserRequestDto createUserDto) =>
             {
                 if (createUserDto == null)
@@ -73,7 +63,7 @@ namespace Account.API.Endpoints
                 try
                 {
                     var userResponse = await userService.CreateUserAsync(createUserDto);
-                    if (userResponse == null)
+                    if (!userResponse.IsSuccess)
                     {
                         var errorResponse = BaseResponse<UserResponseDto>.Failure("User creation failed.");
                         return Results.BadRequest(errorResponse);
@@ -84,12 +74,10 @@ namespace Account.API.Endpoints
                 {
                     // Log the exception if necessary
                     var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while creating the user.");
-                    return Results.Problem(detail: errorResponse.Errors[0]);
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
                 }
-            });
-            #endregion
+            }).ConfigureApiResponses();
 
-            #region UpdateUser
             userGroup.MapPut("/{id:guid}", async (IUserService userService, string id, [FromBody] UserRequestDto updateUserDto) =>
             {
                 if (updateUserDto == null)
@@ -101,7 +89,7 @@ namespace Account.API.Endpoints
                 try
                 {
                     var userResponse = await userService.UpdateUserAsync(id, updateUserDto);
-                    if (userResponse == null)
+                    if (!userResponse.IsSuccess)
                     {
                         var errorResponse = BaseResponse<UserResponseDto>.Failure("User not found.");
                         return Results.NotFound(errorResponse);
@@ -112,12 +100,10 @@ namespace Account.API.Endpoints
                 {
                     // Log the exception if necessary
                     var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while updating the user.");
-                    return Results.Problem(detail: errorResponse.Errors[0]);
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
                 }
-            });
-            #endregion
+            }).ConfigureApiResponses();
 
-            #region DeleteUser
             userGroup.MapDelete("/{id:guid}", async (IUserService userService, string id) =>
             {
                 try
@@ -134,10 +120,69 @@ namespace Account.API.Endpoints
                 {
                     // Log the exception if necessary
                     var errorResponse = BaseResponse<UserResponseDto>.Failure("An error occurred while deleting the user.");
-                    return Results.Problem(detail: errorResponse.Errors[0]);
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
                 }
-            });
-            #endregion
+            }).ConfigureApiResponses();
+
+            userGroup.MapPost("/{userId:guid}/roles/{roleName}", async (IUserService userService, string userId, string roleName) =>
+            {
+                try
+                {
+                    var response = await userService.AssignRoleToUserAsync(userId, roleName);
+                    if (!response.IsSuccess)
+                    {
+                        var errorResponse = BaseResponse<bool>.Failure("Failed to assign role.");
+                        return Results.BadRequest(errorResponse);
+                    }
+                    return Results.Ok(BaseResponse<bool>.Success(true, 200));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<bool>.Failure("An error occurred while assigning the role.");
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
+                }
+            }).ConfigureApiResponses();
+
+            userGroup.MapPost("/{userId:guid}/roles", async (IUserService userService, string userId, [FromBody] IEnumerable<string> roleNames) =>
+            {
+                try
+                {
+                    var response = await userService.AssignRolesToUserAsync(userId, roleNames);
+                    if (!response.IsSuccess)
+                    {
+                        var errorResponse = BaseResponse<bool>.Failure("Failed to assign roles.");
+                        return Results.BadRequest(errorResponse);
+                    }
+                    return Results.Ok(BaseResponse<bool>.Success(true, 200));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<bool>.Failure("An error occurred while assigning the roles.");
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
+                }
+            }).ConfigureApiResponses();
+
+            userGroup.MapDelete("/{userId:guid}/roles/{roleName}", async (IUserService userService, string userId, string roleName) =>
+            {
+                try
+                {
+                    var response = await userService.RemoveRoleFromUserAsync(userId, roleName);
+                    if (!response.IsSuccess)
+                    {
+                        var errorResponse = BaseResponse<bool>.Failure("Failed to remove role.");
+                        return Results.BadRequest(errorResponse);
+                    }
+                    return Results.Ok(BaseResponse<bool>.Success(true, 200));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception if necessary
+                    var errorResponse = BaseResponse<bool>.Failure("An error occurred while removing the role.");
+                    return Results.Problem(detail: errorResponse.Errors[0], statusCode: errorResponse.StatusCode);
+                }
+            }).ConfigureApiResponses();
         }
     }
 }

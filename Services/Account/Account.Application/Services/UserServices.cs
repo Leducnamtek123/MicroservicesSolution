@@ -186,4 +186,165 @@ public class UserService : IUserService
 
     #endregion
 
+    #region Assign Role to User
+
+    public async Task<BaseResponse<bool>> AssignRoleToUserAsync(string userId, string roleName)
+    {
+        if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(roleName))
+        {
+            return BaseResponse<bool>.Failure("User ID and Role Name cannot be null or empty.");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return BaseResponse<bool>.Failure("User not found.");
+        }
+
+        // Kiểm tra xem vai trò đã tồn tại chưa
+        var roleExists = await _userManager.IsInRoleAsync(user, roleName);
+        if (roleExists)
+        {
+            return BaseResponse<bool>.Failure("User already has this role.");
+        }
+
+        // Gán vai trò cho người dùng
+        var result = await _userManager.AddToRoleAsync(user, roleName);
+
+        if (result.Succeeded)
+        {
+            return BaseResponse<bool>.Success(true);
+        }
+        else
+        {
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
+    }
+
+    #endregion
+
+    #region Assign Roles to User
+
+    public async Task<BaseResponse<bool>> AssignRolesToUserAsync(string userId, IEnumerable<string> roleNames)
+    {
+        if (string.IsNullOrWhiteSpace(userId) || roleNames == null || !roleNames.Any())
+        {
+            return BaseResponse<bool>.Failure("User ID and Role Names cannot be null or empty.");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return BaseResponse<bool>.Failure("User not found.");
+        }
+
+        // Kiểm tra xem tất cả các vai trò có tồn tại không
+        var validRoleNames = new List<string>();
+        foreach (var roleName in roleNames)
+        {
+            if (await _userManager.IsInRoleAsync(user, roleName) == false)
+            {
+                validRoleNames.Add(roleName);
+            }
+        }
+
+        if (!validRoleNames.Any())
+        {
+            return BaseResponse<bool>.Failure("No valid roles to assign.");
+        }
+
+        // Gán tất cả các vai trò cho người dùng
+        var result = await _userManager.AddToRolesAsync(user, validRoleNames);
+
+        if (result.Succeeded)
+        {
+            return BaseResponse<bool>.Success(true);
+        }
+        else
+        {
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
+    }
+
+    #endregion
+    #region Remove Role from User
+
+    public async Task<BaseResponse<bool>> RemoveRoleFromUserAsync(string userId, string roleName)
+    {
+        if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(roleName))
+        {
+            return BaseResponse<bool>.Failure("User ID and Role Name cannot be null or empty.");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return BaseResponse<bool>.Failure("User not found.");
+        }
+
+        // Kiểm tra xem người dùng có vai trò này không
+        var roleExists = await _userManager.IsInRoleAsync(user, roleName);
+        if (!roleExists)
+        {
+            return BaseResponse<bool>.Failure("User does not have this role.");
+        }
+
+        // Xóa vai trò khỏi người dùng
+        var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+
+        if (result.Succeeded)
+        {
+            return BaseResponse<bool>.Success(true);
+        }
+        else
+        {
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
+    }
+
+    #endregion
+    #region Update User Roles
+
+    public async Task<BaseResponse<bool>> UpdateUserRolesAsync(string userId, IEnumerable<string> roleNames)
+    {
+        if (string.IsNullOrWhiteSpace(userId) || roleNames == null || !roleNames.Any())
+        {
+            return BaseResponse<bool>.Failure("User ID and Role Names cannot be null or empty.");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return BaseResponse<bool>.Failure("User not found.");
+        }
+
+        // Lấy tất cả các vai trò hiện tại của người dùng
+        var currentRoles = await _userManager.GetRolesAsync(user);
+
+        // Xóa tất cả các vai trò hiện tại
+        var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+        if (!removeResult.Succeeded)
+        {
+            var errors = removeResult.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
+
+        // Gán các vai trò mới
+        var addResult = await _userManager.AddToRolesAsync(user, roleNames);
+        if (addResult.Succeeded)
+        {
+            return BaseResponse<bool>.Success(true);
+        }
+        else
+        {
+            var errors = addResult.Errors.Select(e => e.Description).ToList();
+            return BaseResponse<bool>.Failure(errors);
+        }
+    }
+
+    #endregion
+
 }

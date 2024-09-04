@@ -156,31 +156,26 @@ namespace Account.API.Endpoints
                     var errorResponse = BaseResponse<string>.Failure("User validation failed");
                     return Results.BadRequest(errorResponse);
                 }
-                   // Xóa refresh token cũ
-                await jwtTokenService.RevokeRefreshTokenAsync(token.UserId);
+
                 // Tạo access token mới
                 var newAccessToken = jwtTokenService.GenerateAccessToken(token.UserId, user.Email);
 
-                // Tạo refresh token mới
-                var newRefreshToken =  jwtTokenService.GenerateRefreshToken(token.UserId);
-
-
-                // Lưu token mới vào cache
+                // Lưu token mới vào cache (nếu cần)
                 var tokenKey = $"jwt_token_{token.UserId}";
                 var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
                 await userRedisCache.SetUserDataAsync(tokenKey, newAccessToken, TimeSpan.FromMinutes(expiryInMinutes));
 
-                var response = new AccessTokenResponse
+                var response = new RequestTokenResponseDto
                 {
                     AccessToken = newAccessToken,
-                    ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
-                    RefreshToken = newRefreshToken
+                    Expires = (long)(expiryInMinutes * 60), // Convert minutes to seconds
                 };
 
-                var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
+                var successResponse = BaseResponse<RequestTokenResponseDto>.Success(response);
                 return Results.Ok(successResponse);
-            }).ConfigureApiResponses(); ;
+            }).ConfigureApiResponses();
             #endregion
+
 
             #region Confirm Email
             routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
