@@ -56,7 +56,5 @@ namespace Account.Application.Services
             // Send the email
             await SendEmailAsync(email, "Welcome to Our Service", emailBody);
         }
-
-
     } 
 }
