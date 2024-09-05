@@ -7,5 +7,6 @@
         Task DeleteAsync(T entity);
         Task<T?> GetByIdAsync(object id);
         Task<IEnumerable<T>> GetAllAsync();
+        Task<int> DeleteListAsync(IEnumerable<T> entities);
     }
 }

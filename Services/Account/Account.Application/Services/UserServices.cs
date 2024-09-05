@@ -269,6 +269,7 @@ public class UserService : IUserService
     }
 
     #endregion
+
     #region Remove Role from User
 
     public async Task<BaseResponse<bool>> RemoveRoleFromUserAsync(string userId, string roleName)
@@ -306,6 +307,7 @@ public class UserService : IUserService
     }
 
     #endregion
+
     #region Update User Roles
 
     public async Task<BaseResponse<bool>> UpdateUserRolesAsync(string userId, IEnumerable<string> roleNames)

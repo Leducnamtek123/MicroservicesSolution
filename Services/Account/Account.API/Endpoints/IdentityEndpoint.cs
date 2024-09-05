@@ -263,17 +263,19 @@ namespace Account.API.Endpoints
 
             #region Forgot Password
             routeGroup.MapPost("/forgotPassword", async Task<Results<Ok, ValidationProblem>>
-                ([FromBody] ForgotPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
+                ([FromBody] ForgotPasswordRequest resetRequest, [FromServices] IServiceProvider sp, [FromServices] IEmailSender emailSender) =>
             {
-                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                var userManager = sp.GetRequiredService<UserManager<User>>();
                 var user = await userManager.FindByEmailAsync(resetRequest.Email);
 
                 if (user is not null && await userManager.IsEmailConfirmedAsync(user))
                 {
                     var code = await userManager.GeneratePasswordResetTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var resetLink = $"http://localhost:5165/Auth/ResetPassword?Email={user.Email}&code={code}";
 
-                    await emailSender.SendPasswordResetCodeAsync(user, resetRequest.Email, HtmlEncoder.Default.Encode(code));
+                    //await emailSender.SendPasswordResetCodeAsync(user, resetRequest.Email, HtmlEncoder.Default.Encode(code));
+                    await emailSender.SendPasswordResetCodeAsync(user.Email, user.UserName, resetLink);
                 }
 
                 // Don't reveal that the user does not exist or is not confirmed, so don't return a 200 if we would have
