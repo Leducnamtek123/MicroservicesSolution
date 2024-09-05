@@ -98,5 +98,7 @@ namespace Account.Application.Services
 
             return pagedResponse;
         }
+
+        //public async Task<int> DeleteRoleList
     }
 }

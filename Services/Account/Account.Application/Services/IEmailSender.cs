@@ -10,6 +10,7 @@ namespace Account.Application.Services
     {
         Task SendEmailAsync(string email, string subject, string message);
         Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink);
+        Task SendPasswordResetCodeAsync(string email, string userName, string resetLink);
 
     }
 

@@ -9,5 +9,6 @@ namespace Common.Helpers
     public interface IMailHelper
     {
         Task SendWelcomeEmailAsync(string email, string userName, string confirmationLink);
+        Task SendPasswordResetCodeAsync(string email, string userName, string resetLink);
     }
 }

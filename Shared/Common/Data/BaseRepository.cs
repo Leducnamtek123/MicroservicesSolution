@@ -51,5 +51,17 @@ namespace Common.Data
             _logger.LogInformation($"Getting entity of type {typeof(T).Name} with ID {id}");
             return await _dbSet.FindAsync(id);
         }
+
+        public async Task<int> DeleteListAsync(IEnumerable<T> entities)
+        {
+            if (entities == null || !entities.Any())
+            {
+                throw new ArgumentException("The list cannot be null or empty", nameof(entities));
+            }
+
+            _dbSet.RemoveRange(entities);
+            int count = await _context.SaveChangesAsync();
+            return count;
+        }
     }
 }

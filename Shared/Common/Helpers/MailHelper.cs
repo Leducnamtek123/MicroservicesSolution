@@ -29,5 +29,17 @@ namespace Common.Helpers
             // Gửi email sử dụng IEmailSender
             await _emailSender.SendEmailAsync(email, "Welcome to Our Service", emailBody);
         }
+        public async Task SendPasswordResetCodeAsync(string email, string userName, string resetLink)
+        {
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "ResetPassword.html");
+            var emailBody = await File.ReadAllTextAsync(templatePath);
+
+            // Replace placeholders in the email template
+            emailBody = emailBody.Replace("{{UserName}}", userName);
+            emailBody = emailBody.Replace("{{ResetLink}}", resetLink);
+
+            // Send the email
+            await _emailSender.SendEmailAsync(email, "Welcome to Our Service", emailBody);
+        }
     }
 }
