@@ -120,6 +120,8 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
+
+            #region Logout
             routeGroup.MapPost("/logout", async ([FromServices] SignInManager<User> signInManager,
     [FromBody] object empty) =>
             {
@@ -129,9 +131,9 @@ namespace Account.API.Endpoints
                     return Results.Ok();
                 }
                 return Results.Unauthorized();
-            })
-.WithOpenApi()
-.RequireAuthorization();
+            }).RequireAuthorization();
+            #endregion
+
             #region Refresh Token
             routeGroup.MapPost("/refresh", async Task<IResult> (
                 [FromServices] IServiceProvider sp,
@@ -242,9 +244,8 @@ namespace Account.API.Endpoints
 
             #region Resend confirm email
             routeGroup.MapPost("/resendConfirmationEmail", async Task<Ok>
-                ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
+                ([FromBody] ResendConfirmationEmailRequest resendRequest, HttpContext context, [FromServices] IServiceProvider sp, [FromServices] IEmailSender emailSender) =>
             {
-                var emailSender = endpoints.ServiceProvider.GetRequiredService<IEmailSender>();
 
                 var userManager = sp.GetRequiredService<UserManager<User>>();
                 if (await userManager.FindByEmailAsync(resendRequest.Email) is not { } user)
