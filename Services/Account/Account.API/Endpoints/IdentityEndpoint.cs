@@ -65,7 +65,7 @@ namespace Account.API.Endpoints
 
             #region Login 
             routeGroup.MapPost("/login", async Task<IResult>
-    ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
+            ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<User>>();
                 var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
@@ -98,7 +98,8 @@ namespace Account.API.Endpoints
                     response = new AccessTokenResponse
                     {
                         AccessToken = cachedToken,
-                        ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
                         RefreshToken = refreshToken
                     };
                 }
@@ -109,7 +110,8 @@ namespace Account.API.Endpoints
                     response = new AccessTokenResponse
                     {
                         AccessToken = token,
-                        ExpiresIn = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
                         RefreshToken = refreshToken // Provide a mechanism to handle refresh tokens if needed
                     };
 
@@ -121,18 +123,33 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
-            routeGroup.MapPost("/logout", async ([FromServices] SignInManager<User> signInManager,
-    [FromBody] object empty) =>
+            routeGroup.MapPost("/logout", async (
+                [FromServices] SignInManager<User> signInManager,
+                [FromServices] IUserRedisCache userRedisCache,
+                [FromBody] object empty) =>
             {
                 if (empty != null)
                 {
+                    // Lấy thông tin người dùng hiện tại
+                    var user = await signInManager.UserManager.GetUserAsync(signInManager.Context.User);
+                    if (user == null)
+                    {
+                        return Results.Unauthorized();
+                    }
+
+                    var userId = user.Id; // Giả sử User có thuộc tính Id là userId
+
+                    // Xóa cache của người dùng
+                    var tokenKey = $"jwt_token_{userId}";
+                    await userRedisCache.RemoveUserDataAsync(tokenKey);
+
+                    // Thực hiện đăng xuất
                     await signInManager.SignOutAsync();
                     return Results.Ok();
                 }
                 return Results.Unauthorized();
             })
-.WithOpenApi()
-.RequireAuthorization();
+            .RequireAuthorization();
             #region Refresh Token
             routeGroup.MapPost("/refresh", async Task<IResult> (
                 [FromServices] IServiceProvider sp,
@@ -177,16 +194,20 @@ namespace Account.API.Endpoints
                 var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
                 await userRedisCache.SetUserDataAsync(tokenKey, newAccessToken, TimeSpan.FromMinutes(expiryInMinutes));
 
+                // Tính toán thời gian hết hạn (ticks)
+                var expiresInTicks = TimeSpan.FromMinutes(expiryInMinutes).Ticks;
+
                 var response = new RequestTokenResponseDto
                 {
                     AccessToken = newAccessToken,
-                    Expires = (long)(expiryInMinutes * 60), // Convert minutes to seconds
+                    Expires = expiresInTicks // Sử dụng ticks thay vì giây
                 };
 
                 var successResponse = BaseResponse<RequestTokenResponseDto>.Success(response);
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
+
 
             #region Confirm Email
             routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
