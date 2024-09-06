@@ -100,6 +100,7 @@ builder.Services.AddHealthChecks();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+builder.Services.AddScoped<I2faService, _2faService>();
 
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 builder.Services.AddScoped<IUserRedisCache,UserRedisCache>();

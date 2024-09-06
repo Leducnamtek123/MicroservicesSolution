@@ -17,6 +17,7 @@ using Account.Domain.Models;
 using Common.Dtos;
 using Common.Configurations;
 using Azure;
+using Microsoft.AspNetCore.Builder;
 
 namespace Account.API.Endpoints
 {
@@ -288,7 +289,7 @@ namespace Account.API.Endpoints
             routeGroup.MapPost("/resetPassword", async Task<Results<Ok, ValidationProblem>>
                 ([FromBody] ResetPasswordRequest resetRequest, [FromServices] IServiceProvider sp) =>
             {
-                var userManager = sp.GetRequiredService<UserManager<TUser>>();
+                var userManager = sp.GetRequiredService<UserManager<User>>();
 
                 var user = await userManager.FindByEmailAsync(resetRequest.Email);
 
@@ -325,7 +326,7 @@ namespace Account.API.Endpoints
             accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
             {
-                var signInManager = sp.GetRequiredService<SignInManager<TUser>>();
+                var signInManager = sp.GetRequiredService<SignInManager<User>>();
                 var userManager = signInManager.UserManager;
                 if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
                 {
@@ -394,6 +395,26 @@ namespace Account.API.Endpoints
                     IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
                     IsMachineRemembered = await signInManager.IsTwoFactorClientRememberedAsync(user),
                 });
+            });
+
+            #endregion
+
+            #region Setup 2fa
+            accountGroup.MapGet("/2fa/setup", async Task<Results<Ok<BaseResponse<EnableAuthenticatorDto>>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
+            {
+                var i2faService = serviceProvider.GetRequiredService<I2faService>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                var enableAuthenInfo = await i2faService.LoadSharedKeyAndQrCodeUriAsync(user);
+                var successResponse = BaseResponse<EnableAuthenticatorDto>.Success(enableAuthenInfo);
+                return TypedResults.Ok(successResponse);
             });
             #endregion
 
