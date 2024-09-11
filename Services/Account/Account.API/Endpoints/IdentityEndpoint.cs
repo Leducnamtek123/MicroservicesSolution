@@ -65,7 +65,7 @@ namespace Account.API.Endpoints
 
             #region Login 
             routeGroup.MapPost("/login", async Task<IResult>
-            ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
+            ([FromBody] LoginRequestDto login, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<User>>();
                 var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
@@ -79,6 +79,86 @@ namespace Account.API.Endpoints
                     // Trả về phản hồi thất bại với thông báo lỗi chuỗi
                     var errorResponse = BaseResponse<string>.Failure("Invalid login attempt");
                     return Results.BadRequest(errorResponse);
+                }
+
+                if (await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    var tfaResponse = BaseResponse<string>.Accepted("Two-factor authentication is enabled.");
+                    return Results.Ok(tfaResponse);
+                }
+                
+
+                var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
+                var tokenKey = $"jwt_token_{user.Id}";
+                var cachedToken = await userRedisCache.GetUserDataAsync(tokenKey);
+
+                AccessTokenResponse response;
+
+                if (cachedToken != null)
+                {
+                    // Revoke the old refresh token
+                    await jwtTokenService.RevokeRefreshTokenAsync(user.Id);
+
+                    // Generate new refresh token
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+
+                    response = new AccessTokenResponse
+                    {
+                        AccessToken = cachedToken,
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken
+                    };
+                }
+                else
+                {
+                    var token = jwtTokenService.GenerateAccessToken(user.Id, user.Email);
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+                    response = new AccessTokenResponse
+                    {
+                        AccessToken = token,
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken // Provide a mechanism to handle refresh tokens if needed
+                    };
+
+                    // Store token in cache
+                    await userRedisCache.SetUserDataAsync(tokenKey, token, TimeSpan.FromMinutes(expiryInMinutes));
+                }
+
+                var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
+                return Results.Ok(successResponse);
+            }).ConfigureApiResponses();
+            #endregion
+
+            #region Login2fa
+            routeGroup.MapPost("/login2fa", async Task<IResult>
+            ([FromBody] Login2faRequestDto login, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
+                var userRedisCache = sp.GetRequiredService<IUserRedisCache>(); // Inject cache service
+                var configuration = sp.GetRequiredService<IConfiguration>();
+
+                // Tìm người dùng theo email
+                var user = await userManager.FindByEmailAsync(login.Email);
+
+                if(user == null)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("User not found");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                if (!await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Invalid two-factor verification code.");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                if (!await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, login.VerificationCode))
+                {
+                    var tfaResponse = BaseResponse<string>.Failure("Two-factor authentication is not enabled.");
+                    return Results.BadRequest(tfaResponse);
                 }
 
                 var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
@@ -123,6 +203,8 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
+
+            #region Logout
             routeGroup.MapPost("/logout", async (
                 [FromServices] SignInManager<User> signInManager,
                 [FromServices] IUserRedisCache userRedisCache,
@@ -148,8 +230,11 @@ namespace Account.API.Endpoints
                     return Results.Ok();
                 }
                 return Results.Unauthorized();
+
             })
             .RequireAuthorization();
+            #endregion
+
             #region Refresh Token
             routeGroup.MapPost("/refresh", async Task<IResult> (
                 [FromServices] IServiceProvider sp,
