@@ -18,6 +18,7 @@ using Common.Dtos;
 using Common.Configurations;
 using Azure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Account.API.Endpoints
 {
@@ -43,7 +44,11 @@ namespace Account.API.Endpoints
 
             #endregion
 
+            #region Route Groups
             var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
+            var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
+            var tfaGroup = endpoints.MapGroup("/2fa").RequireAuthorization().WithTags("2FA");
+            #endregion
 
             #region Register
             routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
@@ -65,7 +70,7 @@ namespace Account.API.Endpoints
 
             #region Login 
             routeGroup.MapPost("/login", async Task<IResult>
-            ([FromBody] LoginRequest login, [FromServices] IServiceProvider sp) =>
+            ([FromBody] LoginRequestDto login, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<User>>();
                 var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
@@ -80,6 +85,13 @@ namespace Account.API.Endpoints
                     var errorResponse = BaseResponse<string>.Failure("Invalid login attempt");
                     return Results.BadRequest(errorResponse);
                 }
+
+                if (await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    var tfaResponse = BaseResponse<string>.Accepted("Two-factor authentication is enabled.");
+                    return Results.Ok(tfaResponse);
+                }
+                
 
                 var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
                 var tokenKey = $"jwt_token_{user.Id}";
@@ -123,6 +135,192 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
+
+            #region Verify 2fa
+            tfaGroup.MapPost("/verify", async Task<IResult>
+            ([FromBody] TwoFactorAuthLoginRequestDto login, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
+                var userRedisCache = sp.GetRequiredService<IUserRedisCache>(); // Inject cache service
+                var configuration = sp.GetRequiredService<IConfiguration>();
+
+                // Tìm người dùng theo email
+                var user = await userManager.FindByEmailAsync(login.Email);
+
+                if(user == null)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("User not found.");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                if (!await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Two-factor authentication not enabled.");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                if (!await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, login.VerificationCode))
+                {
+                    var tfaResponse = BaseResponse<string>.Failure("Invalid verification code");
+                    return Results.BadRequest(tfaResponse);
+                }
+
+                var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
+                var tokenKey = $"jwt_token_{user.Id}";
+                var cachedToken = await userRedisCache.GetUserDataAsync(tokenKey);
+
+                AccessTokenResponse response;
+
+                if (cachedToken != null)
+                {
+                    // Revoke the old refresh token
+                    await jwtTokenService.RevokeRefreshTokenAsync(user.Id);
+
+                    // Generate new refresh token
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+
+                    response = new AccessTokenResponse
+                    {
+                        AccessToken = cachedToken,
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken
+                    };
+                }
+                else
+                {
+                    var token = jwtTokenService.GenerateAccessToken(user.Id, user.Email);
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+                    response = new AccessTokenResponse
+                    {
+                        AccessToken = token,
+                        // Chuyển đổi thời gian hết hạn thành số ticks
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken // Provide a mechanism to handle refresh tokens if needed
+                    };
+
+                    // Store token in cache
+                    await userRedisCache.SetUserDataAsync(tokenKey, token, TimeSpan.FromMinutes(expiryInMinutes));
+                }
+
+                var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
+                return Results.Ok(successResponse);
+            })
+            .ConfigureApiResponses()
+            .AllowAnonymous();
+            #endregion
+
+            #region Login with 2fa recovery code
+            tfaGroup.MapPost("/recovery", async Task<IResult>
+            ([FromBody] RecoveryCodeLoginRequestDto login, [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                var jwtTokenService = sp.GetRequiredService<IJwtTokenService>();
+                var userRedisCache = sp.GetRequiredService<IUserRedisCache>(); // Inject cache service
+                var configuration = sp.GetRequiredService<IConfiguration>();
+
+                // Find user by email
+                var user = await userManager.FindByEmailAsync(login.UserName);
+
+                if (user == null)
+                {
+                    var errorResponse = BaseResponse<string>.Failure("User not found");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                if (!await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    var errorResponse = BaseResponse<string>.Failure("Two-factor authentication not enabled");
+                    return Results.BadRequest(errorResponse);
+                }
+
+                var recoveryCodeValid = await userManager.RedeemTwoFactorRecoveryCodeAsync(user, login.RecoveryCode);
+                if (!recoveryCodeValid.Succeeded)
+                {
+                    return CreateValidationProblem("InvalidRecoveryCode", "The recovery code provided is invalid or has already been used.");
+                }
+
+                var expiryInMinutes = Convert.ToDouble(configuration.GetSection("Jwt")["ExpiryInMinutes"]);
+                var tokenKey = $"jwt_token_{user.Id}";
+                var cachedToken = await userRedisCache.GetUserDataAsync(tokenKey);
+
+                AccessTokenResponse tokenResponse;
+                RecoveryCodesResponseDto? recoveryCodesResponse = null;
+
+                if (cachedToken != null)
+                {
+                    // Revoke the old refresh token
+                    await jwtTokenService.RevokeRefreshTokenAsync(user.Id);
+
+                    // Generate new refresh token
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+
+                    tokenResponse = new AccessTokenResponse
+                    {
+                        AccessToken = cachedToken,
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken
+                    };
+                }
+                else
+                {
+                    var token = jwtTokenService.GenerateAccessToken(user.Id, user.Email);
+                    var refreshToken = jwtTokenService.GenerateRefreshToken(user.Id);
+                    tokenResponse = new AccessTokenResponse
+                    {
+                        AccessToken = token,
+                        ExpiresIn = TimeSpan.FromMinutes(expiryInMinutes).Ticks,
+                        RefreshToken = refreshToken
+                    };
+
+                    // Store token in cache
+                    await userRedisCache.SetUserDataAsync(tokenKey, token, TimeSpan.FromMinutes(expiryInMinutes));
+                }
+
+                // Check if recovery codes need to be generated
+                if (await userManager.CountRecoveryCodesAsync(user) == 0)
+                {
+                    var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                    var newRecoveryCodes = recoveryCodesEnumerable?.ToArray();
+
+                    if (newRecoveryCodes != null)
+                    {
+                        recoveryCodesResponse = new RecoveryCodesResponseDto
+                        {
+                            RecoveryCodes = newRecoveryCodes,
+                            RecoveryCodesLeft = newRecoveryCodes.Length
+                        };
+                    }
+                }
+
+                if (recoveryCodesResponse != null)
+                {
+                    var responseWithCodes = new AccessTokenWithRecoveryCodesResponseDto
+                    {
+                        AccessTokenResponse = tokenResponse,
+                        RecoveryCodesResponse = recoveryCodesResponse
+                    };
+                    return Results.Ok(BaseResponse<AccessTokenWithRecoveryCodesResponseDto>.Success(responseWithCodes));
+                }
+                else
+                {
+                    var responseWithoutCodes = new AccessTokenResponse
+                    {
+                        AccessToken = tokenResponse.AccessToken,
+                        ExpiresIn = tokenResponse.ExpiresIn,
+                        RefreshToken = tokenResponse.RefreshToken
+                    };
+                    return Results.Ok(BaseResponse<AccessTokenResponse>.Success(responseWithoutCodes));
+                }
+            })
+            .ConfigureApiResponses()
+            .AllowAnonymous();
+            #endregion
+
+
+
+            #region Logout
             routeGroup.MapPost("/logout", async (
                 [FromServices] SignInManager<User> signInManager,
                 [FromServices] IUserRedisCache userRedisCache,
@@ -148,8 +346,11 @@ namespace Account.API.Endpoints
                     return Results.Ok();
                 }
                 return Results.Unauthorized();
+
             })
             .RequireAuthorization();
+            #endregion
+
             #region Refresh Token
             routeGroup.MapPost("/refresh", async Task<IResult> (
                 [FromServices] IServiceProvider sp,
@@ -207,7 +408,6 @@ namespace Account.API.Endpoints
                 return Results.Ok(successResponse);
             }).ConfigureApiResponses();
             #endregion
-
 
             #region Confirm Email
             routeGroup.MapGet("/confirmEmail", async Task<Results<ContentHttpResult, UnauthorizedHttpResult>>
@@ -341,8 +541,6 @@ namespace Account.API.Endpoints
             });
             #endregion
 
-            var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
-
             #region 2fa
             accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
@@ -420,8 +618,29 @@ namespace Account.API.Endpoints
 
             #endregion
 
-            #region Setup 2fa
-            accountGroup.MapGet("/2fa/setup", async Task<Results<Ok<BaseResponse<EnableAuthenticatorDto>>, ValidationProblem, NotFound>>
+            #region Setup information for enabling 2fa
+            tfaGroup.MapGet("/enable-info", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
+            {
+                var _2faService = serviceProvider.GetRequiredService<I2faService>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+                //Reset auth key for first time enabling or re-enabling
+                await userManager.ResetAuthenticatorKeyAsync(user);
+                var enableAuthenInfo = await _2faService.LoadSharedKeyAndQrCodeUriAsync(user);
+                var successResponse = BaseResponse<TwoFactorAuthSetupInfoDto>.Success(enableAuthenInfo);
+                return TypedResults.Ok(successResponse);
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Setup information for connecting 2fa
+            tfaGroup.MapGet("/setup-info", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
             {
                 var i2faService = serviceProvider.GetRequiredService<I2faService>();
@@ -432,11 +651,270 @@ namespace Account.API.Endpoints
                 {
                     return TypedResults.NotFound();
                 }
-
                 var enableAuthenInfo = await i2faService.LoadSharedKeyAndQrCodeUriAsync(user);
-                var successResponse = BaseResponse<EnableAuthenticatorDto>.Success(enableAuthenInfo);
+                var successResponse = BaseResponse<TwoFactorAuthSetupInfoDto>.Success(enableAuthenInfo);
                 return TypedResults.Ok(successResponse);
-            });
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Enable 2fa
+            tfaGroup.MapPost("/enable", async Task<Results<Ok<BaseResponse<TwoFactorResponse>>, ValidationProblem, NotFound>> (
+                ClaimsPrincipal claimsPrincipal,
+                [FromServices] IServiceProvider sp,
+                [FromBody] TwoFactorAuthSetupRequestDto tfaRequest) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+
+                // Get the user based on the claims principal
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound(); // Return 404 if user is not found
+                }
+
+                // Check if 2FA is already enabled
+                if (await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    return CreateValidationProblem("TwoFactorAlreadyEnabled", "Two-factor authentication is already enabled for this user.");
+                }
+
+                // Check if verification code is provided in the request
+                if (string.IsNullOrEmpty(tfaRequest.VerificationCode))
+                {
+                    return CreateValidationProblem("RequiresTwoFactor", "No 2FA token was provided by the request. A valid 2FA token is required to enable 2FA.");
+                }
+
+                // Verify the provided 2FA code
+                var verified = await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, tfaRequest.VerificationCode);
+                if (!verified)
+                {
+                    return CreateValidationProblem("InvalidTwoFactorCode", "The 2FA token provided by the request was invalid. A valid 2FA token is required to enable 2FA.");
+                }
+
+                // Enable 2FA for the user
+                var setTwoFactorResult = await userManager.SetTwoFactorEnabledAsync(user, true);
+                if (!setTwoFactorResult.Succeeded)
+                {
+                    return CreateValidationProblem("SetTwoFactorError", "Failed to enable 2FA for the user.");
+                }
+
+                // Generate new recovery codes if none exist
+                string[]? recoveryCodes = null;
+                if (await userManager.CountRecoveryCodesAsync(user) == 0)
+                {
+                    var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                    recoveryCodes = recoveryCodesEnumerable?.ToArray();
+                }
+
+                // Get or reset the authenticator key
+                var key = await userManager.GetAuthenticatorKeyAsync(user);
+                if (string.IsNullOrEmpty(key))
+                {
+                    await userManager.ResetAuthenticatorKeyAsync(user);
+                    key = await userManager.GetAuthenticatorKeyAsync(user);
+
+                    if (string.IsNullOrEmpty(key))
+                    {
+                        throw new NotSupportedException("The user manager must produce an authenticator key after reset.");
+                    }
+                }
+
+                // Create the response object
+                var response = new TwoFactorResponse
+                {
+                    SharedKey = key,
+                    RecoveryCodes = recoveryCodes,
+                    RecoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user),
+                    IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
+                    IsMachineRemembered = false,
+                };
+
+                // Return the response
+                return TypedResults.Ok(new BaseResponse<TwoFactorResponse>
+                {
+                    Data = response,
+                    IsSuccess = true,
+                    StatusCode = 200
+                });
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Reset 2fa
+            tfaGroup.MapPost("/reset", async Task<Results<Ok<BaseResponse<TwoFactorResponse>>, ValidationProblem, NotFound>> (
+                ClaimsPrincipal claimsPrincipal,
+                [FromServices] IServiceProvider sp,
+                [FromBody] TwoFactorResetRequestDto reconfigureRequest) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound(); // Return 404 if user is not found
+                }
+
+                if (!await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    return CreateValidationProblem("TwoFactorNotEnabled", "Two-factor authentication is not currently enabled for this user.");
+                }
+
+                // Reset the existing authenticator key
+                await userManager.ResetAuthenticatorKeyAsync(user);
+
+                // Generate new recovery codes
+                var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var recoveryCodes = recoveryCodesEnumerable?.ToArray();
+
+                // Generate a new shared key (if needed) and prepare response
+                var key = await userManager.GetAuthenticatorKeyAsync(user);
+                if (string.IsNullOrEmpty(key))
+                {
+                    await userManager.ResetAuthenticatorKeyAsync(user);
+                    key = await userManager.GetAuthenticatorKeyAsync(user);
+
+                    if (string.IsNullOrEmpty(key))
+                    {
+                        throw new NotSupportedException("The user manager must produce an authenticator key after reset.");
+                    }
+                }
+
+                var response = new TwoFactorResponse
+                {
+                    SharedKey = key,
+                    RecoveryCodes = recoveryCodes,
+                    RecoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user),
+                    IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
+                    IsMachineRemembered = false
+                };
+
+                return TypedResults.Ok(new BaseResponse<TwoFactorResponse>
+                {
+                    Data = response,
+                    IsSuccess = true,
+                    StatusCode = 200
+                });
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Disable 2fa
+            tfaGroup.MapPost("/disable", async Task<Results<Ok<BaseResponse<string>>, ValidationProblem, NotFound>> (
+                ClaimsPrincipal claimsPrincipal,
+                [FromServices] IServiceProvider sp,
+                [FromBody] TwoFactorAuthDisableRequestDto tfaRequest) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+
+                // Get the user based on the claims principal
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound(); // Return 404 if user is not found
+                }
+
+                // Check if password is provided in the request
+                if (string.IsNullOrEmpty(tfaRequest.Password))
+                {
+                    return CreateValidationProblem("RequiresTwoFactor", "No 2FA token was provided by the request. A valid 2FA token is required to enable 2FA.");
+                }
+
+                // Confirm user password
+                var passwordValid = await userManager.CheckPasswordAsync(user, tfaRequest.Password);
+                if (!passwordValid)
+                {
+                    return CreateValidationProblem("InvalidPassword", "The password provided is incorrect. A valid password is required to disable 2FA.");
+                }
+
+                // Disable 2FA for the user
+                var setTwoFactorResult = await userManager.SetTwoFactorEnabledAsync(user, false);
+                if (!setTwoFactorResult.Succeeded)
+                {
+                    return CreateValidationProblem("SetTwoFactorError", "Failed to disable 2FA for the user.");
+                }
+
+                //Reset shared key
+                await userManager.ResetAuthenticatorKeyAsync(user);
+
+                // Delete recovery code
+                await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 0);
+
+                // Return the response
+                return TypedResults.Ok(new BaseResponse<string>
+                {
+                    Data = "Two-factor Authentication disabled.",
+                    IsSuccess = true,
+                    StatusCode = 200
+                });
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Get Recovery Code Count
+
+            accountGroup.MapGet("/recovery-codes/count", async Task<Results<Ok<BaseResponse<int>>, NotFound>> (
+                ClaimsPrincipal claimsPrincipal,
+                [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+
+                // Get the user based on the claims principal
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound(); // Return 404 if user is not found
+                }
+
+                // Get the count of recovery codes
+                var recoveryCodeCount = await userManager.CountRecoveryCodesAsync(user);
+
+                // Create the response object
+                var response = new BaseResponse<int>
+                {
+                    Data = recoveryCodeCount,
+                    IsSuccess = true,
+                    StatusCode = 200
+                };
+
+                // Return the response
+                return TypedResults.Ok(response);
+            })
+            .ConfigureApiResponses();
+
+            #endregion
+
+            #region Generate New Recovery Codes
+
+            tfaGroup.MapPost("/generate-recovery-codes", async Task<Results<Ok<BaseResponse<RecoveryCodesResponseDto>>, NotFound>> (
+                ClaimsPrincipal claimsPrincipal,
+                [FromServices] IServiceProvider sp) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+
+                // Get the user based on the claims principal
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound(); // Return 404 if user is not found
+                }
+
+                // Generate new recovery codes
+                var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var recoveryCodes = recoveryCodesEnumerable?.ToArray();
+
+                // Create the response object
+                var response = new BaseResponse<RecoveryCodesResponseDto>
+                {
+                    Data = new RecoveryCodesResponseDto
+                    {
+                        RecoveryCodes = recoveryCodes,
+                        RecoveryCodesLeft = recoveryCodes?.Length ?? 0
+                    },
+                    IsSuccess = true,
+                    StatusCode = 200
+                };
+
+                // Return the response
+                return TypedResults.Ok(response);
+            })
+            .ConfigureApiResponses();
+
             #endregion
 
             #region Get Info
@@ -533,7 +1011,7 @@ namespace Account.API.Endpoints
 
                 await emailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(confirmEmailUrl));
             }
-            #endregion
+            #endregion  
 
             return new IdentityEndpointsConventionBuilder(routeGroup);
         }

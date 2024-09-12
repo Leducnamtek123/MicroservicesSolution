@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Dtos
 {
-    public class EnableAuthenticatorRequestDto
+    public class TwoFactorResetRequestDto
     {
-        public string verificationCode;
+        public string Password { get; set; }
     }
 }

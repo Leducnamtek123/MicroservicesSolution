@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Dtos
 {
-    public class EnableAuthenticatorDto
+    public class TwoFactorAuthSetupInfoDto
     {
-        public EnableAuthenticatorDto(string sharedKey, string authenticatorUri)
+        public TwoFactorAuthSetupInfoDto(string sharedKey, string authenticatorUri)
         {
             SharedKey = sharedKey;
             AuthenticatorUri = authenticatorUri;

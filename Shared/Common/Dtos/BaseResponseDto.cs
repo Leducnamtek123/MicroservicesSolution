@@ -13,7 +13,7 @@ namespace Common.Dtos
         /// <summary>
         /// Dữ liệu trả về khi thành công.
         /// </summary>
-        public T Data { get; set; }
+        public T? Data { get; set; }
 
         /// <summary>
         /// Danh sách các thông báo lỗi nếu có.
@@ -74,6 +74,22 @@ namespace Common.Dtos
             {
                 IsSuccess = false,
                 Errors = new List<string> { error },
+                StatusCode = statusCode
+            };
+        }
+
+        /// <summary>
+        /// Tạo phản hồi thành công với dữ liệu và mã trạng thái.
+        /// </summary>
+        /// <param name="data">Dữ liệu cần trả về.</param>
+        /// <param name="statusCode">Mã trạng thái HTTP.</param>
+        /// <returns>Phản hồi với trạng thái thành công và dữ liệu kèm theo.</returns>
+        public static BaseResponse<T> Accepted(T data, int statusCode = 202)
+        {
+            return new BaseResponse<T>
+            {
+                IsSuccess = true,
+                Data = data,
                 StatusCode = statusCode
             };
         }
