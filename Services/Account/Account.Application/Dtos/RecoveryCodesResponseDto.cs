@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Dtos
 {
-    public class TwoFactorAuthSetupRequestDto
+    public class RecoveryCodesResponseDto
     {
-        public required string VerificationCode {  get; set; }
+        public string[]? RecoveryCodes { get; set; }
+        public int RecoveryCodesLeft { get; set; }
     }
 }

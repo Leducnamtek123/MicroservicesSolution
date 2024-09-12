@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Account.Application.Dtos
 {
-    public class Login2faRequestDto
+    public class TwoFactorAuthLoginRequestDto
     {
         /// <summary>
         /// The user's email address which acts as a user name.
