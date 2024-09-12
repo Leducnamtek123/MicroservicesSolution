@@ -31,7 +31,7 @@ namespace Account.Application.Services
             _urlEncoder = urlEncoder;
         }
 
-        public async Task<EnableAuthenticatorDto> LoadSharedKeyAndQrCodeUriAsync(User user)
+        public async Task<TwoFactorAuthSetupInfoDto> LoadSharedKeyAndQrCodeUriAsync(User user)
         {
             // Load the authenticator key & QR code URI to display on the form
             var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
@@ -45,7 +45,7 @@ namespace Account.Application.Services
 
             var email = await _userManager.GetEmailAsync(user);
             var AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
-            EnableAuthenticatorDto newAuth = new EnableAuthenticatorDto(SharedKey, AuthenticatorUri);
+            TwoFactorAuthSetupInfoDto newAuth = new TwoFactorAuthSetupInfoDto(SharedKey, AuthenticatorUri);
             return newAuth;
         }
 

@@ -12,7 +12,7 @@ namespace Account.Application.Services
 {
     public interface I2faService
     {
-        Task<EnableAuthenticatorDto> LoadSharedKeyAndQrCodeUriAsync(User user);
+        Task<TwoFactorAuthSetupInfoDto> LoadSharedKeyAndQrCodeUriAsync(User user);
         //Task<BaseResponse<bool>> Verify2faToken(User user, string verificationCode);
     }
 }

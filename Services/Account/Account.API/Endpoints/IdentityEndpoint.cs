@@ -18,6 +18,7 @@ using Common.Dtos;
 using Common.Configurations;
 using Azure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Account.API.Endpoints
 {
@@ -43,7 +44,11 @@ namespace Account.API.Endpoints
 
             #endregion
 
+            #region Route Groups
             var routeGroup = endpoints.MapGroup("Auth").WithTags("Auth");
+            var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
+            var tfaGroup = routeGroup.MapGroup("/2fa").RequireAuthorization().WithTags("2FA");
+            #endregion
 
             #region Register
             routeGroup.MapPost("/register", async Task<Results<Ok<BaseResponse<UserResponseDto>>, BadRequest<BaseResponse<UserResponseDto>>>>
@@ -131,8 +136,8 @@ namespace Account.API.Endpoints
             }).ConfigureApiResponses();
             #endregion
 
-            #region Login2fa
-            routeGroup.MapPost("/login2fa", async Task<IResult>
+            #region Verify 2fa
+            tfaGroup.MapPost("/verify", async Task<IResult>
             ([FromBody] Login2faRequestDto login, [FromServices] IServiceProvider sp) =>
             {
                 var userManager = sp.GetRequiredService<UserManager<User>>();
@@ -201,7 +206,9 @@ namespace Account.API.Endpoints
 
                 var successResponse = BaseResponse<AccessTokenResponse>.Success(response);
                 return Results.Ok(successResponse);
-            }).ConfigureApiResponses();
+            })
+            .ConfigureApiResponses()
+            .AllowAnonymous();
             #endregion
 
             #region Logout
@@ -426,8 +433,6 @@ namespace Account.API.Endpoints
             });
             #endregion
 
-            var accountGroup = routeGroup.MapGroup("/manage").RequireAuthorization();
-
             #region 2fa
             accountGroup.MapPost("/2fa", async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromBody] TwoFactorRequest tfaRequest, [FromServices] IServiceProvider sp) =>
@@ -505,8 +510,8 @@ namespace Account.API.Endpoints
 
             #endregion
 
-            #region Setup 2fa
-            accountGroup.MapGet("/2fa/setup", async Task<Results<Ok<BaseResponse<EnableAuthenticatorDto>>, ValidationProblem, NotFound>>
+            #region Setup information for 2fa
+            accountGroup.MapGet("/2fa/setup-info", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
             {
                 var i2faService = serviceProvider.GetRequiredService<I2faService>();
@@ -519,9 +524,53 @@ namespace Account.API.Endpoints
                 }
 
                 var enableAuthenInfo = await i2faService.LoadSharedKeyAndQrCodeUriAsync(user);
-                var successResponse = BaseResponse<EnableAuthenticatorDto>.Success(enableAuthenInfo);
+                var successResponse = BaseResponse<TwoFactorAuthSetupInfoDto>.Success(enableAuthenInfo);
                 return TypedResults.Ok(successResponse);
-            });
+            })
+            .ConfigureApiResponses();
+            #endregion
+
+            #region Enable 2fa
+            tfaGroup.MapPost("/enable2fa", async Task<Results<Ok<BaseResponse<TwoFactorResponse>>, ValidationProblem, NotFound>>
+                (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp, [FromBody] TwoFactorAuthSetupRequestDto tfaRequest) =>
+            {
+                var userManager = sp.GetRequiredService<UserManager<User>>();
+                if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                if (tfaRequest.verificationCode == null)
+                {
+                    return CreateValidationProblem("RequiresTwoFactor",
+                            "No 2fa token was provided by the request. A valid 2fa token is required to enable 2fa.");
+                }
+
+                if (!await userManager.VerifyTwoFactorTokenAsync(user, userManager.Options.Tokens.AuthenticatorTokenProvider, tfaRequest.verificationCode))
+                {
+                    return CreateValidationProblem("InvalidTwoFactorCode",
+                            "The 2fa token provided by the request was invalid. A valid 2fa token is required to enable 2fa.");
+                }
+
+                //await userManager.SetTwoFactorEnabledAsync(user, true);
+
+                //string[]? recoveryCodes = null;
+                //if (tfaRequest.ResetRecoveryCodes || (tfaRequest.Enable == true && await userManager.CountRecoveryCodesAsync(user) == 0))
+                //{
+                //    var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                //    recoveryCodes = recoveryCodesEnumerable?.ToArray();
+                //}
+
+                //return TypedResults.Ok(new TwoFactorResponse
+                //{
+                //    SharedKey = key,
+                //    RecoveryCodes = recoveryCodes,
+                //    RecoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user),
+                //    IsTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user),
+                //});
+                return TypedResults.NotFound();
+            })
+            .ConfigureApiResponses();
             #endregion
 
             #region Get Info
