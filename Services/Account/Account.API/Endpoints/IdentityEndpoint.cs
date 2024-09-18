@@ -318,8 +318,6 @@ namespace Account.API.Endpoints
             .AllowAnonymous();
             #endregion
 
-
-
             #region Logout
             routeGroup.MapPost("/logout", async (
                 [FromServices] SignInManager<User> signInManager,
@@ -618,8 +616,8 @@ namespace Account.API.Endpoints
 
             #endregion
 
-            #region Setup information for enabling 2fa
-            tfaGroup.MapGet("/enable-info", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
+            #region Generate and Get 2fa code
+            tfaGroup.MapGet("/enable-code", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
             {
                 var _2faService = serviceProvider.GetRequiredService<I2faService>();
@@ -639,8 +637,8 @@ namespace Account.API.Endpoints
             .ConfigureApiResponses();
             #endregion
 
-            #region Setup information for connecting 2fa
-            tfaGroup.MapGet("/setup-info", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
+            #region Get 2fa code
+            tfaGroup.MapGet("/code", async Task<Results<Ok<BaseResponse<TwoFactorAuthSetupInfoDto>>, ValidationProblem, NotFound>>
                 (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider serviceProvider) =>
             {
                 var i2faService = serviceProvider.GetRequiredService<I2faService>();
@@ -850,7 +848,7 @@ namespace Account.API.Endpoints
 
             #region Get Recovery Code Count
 
-            accountGroup.MapGet("/recovery-codes/count", async Task<Results<Ok<BaseResponse<int>>, NotFound>> (
+            tfaGroup.MapGet("/recovery-codes/count", async Task<Results<Ok<BaseResponse<int>>, NotFound>> (
                 ClaimsPrincipal claimsPrincipal,
                 [FromServices] IServiceProvider sp) =>
             {
